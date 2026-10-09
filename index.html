@@ -445,7 +445,7 @@ function openDetail(s){
     <div><h3>${esc(p.t)}</h3><div class="price" style="margin:6px 0">${money(p.p)} <small style="display:inline">Dealer Price</small></div>
     <ul class="feat">${p.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
     <table><tr><td>SKU</td><td>${esc(p.sku)}</td></tr><tr><td>Brand</td><td>${esc(p.b)}</td></tr><tr><td>Category</td><td>${esc(p.ty)}</td></tr><tr><td>Fitment</td><td>${p.e.map(e=>esc(ENG_NAME[e])).join("<br>")}</td></tr><tr><td>Availability</td><td>${p.out?"Backordered":"In stock"}${p.note?"<br>"+esc(p.note):""}</td></tr></table>
-    <div class="dacts"><button class="btn" data-add="${p.sku}">Add to Build</button>${p.page?`<a class="btn ghost" href="${p.page}">View Product Page →</a>`:""}</div></div></div></div>`;
+    <div class="dacts"><button class="btn" data-add="${p.sku}">Add to Build</button><a class="btn ghost" href="product.html">View Product Page →</a></div></div></div></div>`;
   d.showModal();
 }
 $("#dlg").addEventListener("click",e=>{if(e.target.classList.contains("dlgx")||e.target===e.currentTarget)$("#dlg").close();if(e.target.dataset.add){addToBuild(e.target.dataset.add,1);$("#dlg").close();}});
