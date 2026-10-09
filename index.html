@@ -176,7 +176,9 @@ nav.main .bar::-webkit-scrollbar{display:none}
 
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
 .toast.on{opacity:1}
-dialog{border:0;border-radius:10px;padding:0;max-width:760px;width:calc(100% - 32px)}
+dialog{border:0;border-radius:10px;padding:0;max-width:760px;width:calc(100% - 32px);background:var(--card);color:var(--ink)}
+.dacts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+a.btn{display:inline-flex;align-items:center;text-decoration:none}
 dialog::backdrop{background:rgba(0,0,0,.45)}
 .dlg{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18px}
 .dlg img{width:100%;aspect-ratio:1;object-fit:contain;background:#fafafa;border-radius:6px}
@@ -443,7 +445,7 @@ function openDetail(s){
     <div><h3>${esc(p.t)}</h3><div class="price" style="margin:6px 0">${money(p.p)} <small style="display:inline">Dealer Price</small></div>
     <ul class="feat">${p.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
     <table><tr><td>SKU</td><td>${esc(p.sku)}</td></tr><tr><td>Brand</td><td>${esc(p.b)}</td></tr><tr><td>Category</td><td>${esc(p.ty)}</td></tr><tr><td>Fitment</td><td>${p.e.map(e=>esc(ENG_NAME[e])).join("<br>")}</td></tr><tr><td>Availability</td><td>${p.out?"Backordered":"In stock"}${p.note?"<br>"+esc(p.note):""}</td></tr></table>
-    <button class="btn" style="margin-top:12px" data-add="${p.sku}">Add to Build</button></div></div></div>`;
+    <div class="dacts"><button class="btn" data-add="${p.sku}">Add to Build</button>${p.page?`<a class="btn ghost" href="${p.page}">View Product Page →</a>`:""}</div></div></div></div>`;
   d.showModal();
 }
 $("#dlg").addEventListener("click",e=>{if(e.target.classList.contains("dlgx")||e.target===e.currentTarget)$("#dlg").close();if(e.target.dataset.add){addToBuild(e.target.dataset.add,1);$("#dlg").close();}});
