@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DRP B2B Parts Portal</title>
+<style>
+/* Layout: 4-column B2B build workspace — engine | product type | results | build. Stacks on narrow screens. */
+:root{
+  --brand:#e8401c; --brand-dk:#c73312; --ink:#16181d; --ink-2:#4a4f5a; --muted:#80858f;
+  --line:#e3e5e9; --bg:#f4f5f7; --card:#fff; --ok:#16a34a; --warn:#b45309;
+  --nav:#1b1e24;
+  --f:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:14px/1.4 var(--f);color:var(--ink);background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.wrap{max-width:1600px;margin:0 auto;padding-inline:16px}
+
+/* Header */
+.top{background:#fff;border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.logo b{font:italic 900 34px/1 var(--f);color:var(--brand);letter-spacing:-2px}
+.logo span{font-size:13px;line-height:1.25;color:var(--ink-2)}
+.logo span strong{display:block;font-size:15px;color:var(--ink)}
+.search{flex:1;display:flex;min-width:240px;max-width:640px}
+.search input{flex:1;min-width:0;border:1px solid var(--line);border-right:0;border-radius:6px 0 0 6px;padding:10px 12px}
+.search button{border:0;background:var(--brand);color:#fff;border-radius:0 6px 6px 0;padding:0 18px}
+.acct{display:flex;gap:18px;align-items:center;margin-left:auto}
+.acct button{background:none;border:0;display:flex;gap:6px;align-items:center}
+.cartbtn{position:relative}
+.cartbtn i{position:absolute;top:-6px;left:12px;background:var(--brand);color:#fff;font-style:normal;font-size:11px;border-radius:9px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
+nav.main{background:var(--nav);color:#e9eaee}
+nav.main .wrap{display:flex;gap:4px;align-items:center;overflow-x:auto}
+nav.main a{color:inherit;text-decoration:none;padding:12px;white-space:nowrap;font-size:14px}
+nav.main a:hover{color:#fff;background:#2a2e36}
+nav.main .sep{width:1px;height:20px;background:#444a55;margin:0 6px}
+nav.main .apply{background:var(--brand);color:#fff;border-radius:4px;padding:8px 14px;margin-left:auto}
+
+/* Quick tools */
+.tools{background:#fff;border-bottom:1px solid var(--line)}
+.tools .wrap{display:grid;grid-template-columns:minmax(0,560px);gap:24px;padding-block:14px}
+.tool h3{margin:0 0 6px;font-size:15px}
+.tool p{margin:0 0 6px;color:var(--muted);font-size:12px}
+.row{display:flex;gap:8px;align-items:stretch}
+.in{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:#fff;min-width:0}
+.btn{background:var(--brand);color:#fff;border:0;border-radius:6px;padding:8px 14px;font-weight:600;white-space:nowrap}
+.btn:hover{background:var(--brand-dk)}
+.btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--brand)}
+.btn.lite{background:#f1f2f4;color:var(--ink);font-weight:500}
+.btn.lite:hover{background:#e6e8eb}
+.msg{font-size:12px;min-height:16px;margin-top:4px}
+.msg.ok{color:var(--ok)} .msg.err{color:var(--brand-dk)}
+
+/* Workspace */
+.ws{display:grid;grid-template-columns:240px 240px minmax(0,1fr) 340px;gap:14px;padding-block:14px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;align-self:start}
+.step{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.step em{font-style:normal;background:var(--brand);color:#fff;border-radius:50%;width:24px;height:24px;flex:none;display:grid;place-items:center;font-weight:700;font-size:13px}
+.step h2{margin:0;font-size:16px}
+.step p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.make{border-top:1px solid var(--line)}
+.make>button{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;padding:12px 4px;font-weight:700;font-size:15px;text-align:left}
+.make.open>button{color:var(--brand)}
+.make ul{list-style:none;margin:0 0 8px;padding:0}
+.make li button{width:100%;text-align:left;background:none;border:0;padding:7px 10px;border-radius:4px;color:var(--ink-2)}
+.make li button:hover{background:#f6f7f8}
+.make li button[aria-pressed=true]{background:#fdece7;color:var(--brand-dk);font-weight:600}
+.make li small{color:var(--muted);float:right}
+.chev{transition:transform .15s}
+.make.open .chev{transform:rotate(90deg)}
+
+.types label{display:flex;align-items:center;gap:10px;padding:7px 6px;border-radius:4px;cursor:pointer}
+.types label:hover{background:#f6f7f8}
+.types label span{flex:1}
+.types label small{color:var(--muted);font-variant-numeric:tabular-nums}
+.types input{width:16px;height:16px;accent-color:var(--brand)}
+.tsearch{width:100%;margin-bottom:8px}
+
+.reshead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.reshead .crumb{flex-basis:100%;color:var(--muted);font-size:12px;margin-top:-6px;padding-left:34px}
+.reshead .grow{flex:1}
+.count{color:var(--ink-2);font-variant-numeric:tabular-nums}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 10px 34px}
+.chip{background:#f1f2f4;border:0;border-radius:12px;padding:3px 10px;font-size:12px}
+.chip:hover{background:#e6e8eb}
+
+.prod{display:grid;grid-template-columns:150px minmax(0,1fr) 170px;gap:14px;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;background:#fff;position:relative}
+.prod.hl{border-color:var(--brand)}
+.prod .badge{position:absolute;top:10px;left:10px;background:var(--brand);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:3px;z-index:1}
+.thumb{width:150px;height:150px;background:#fafafa;border-radius:6px;display:grid;place-items:center;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:contain}
+.prod h3{margin:0 0 4px;font-size:15px;line-height:1.3}
+.meta{color:var(--muted);font-size:12px;margin-bottom:6px}
+.meta b{color:var(--ink-2);font-weight:600}
+.stock{font-size:12px;font-weight:600;color:var(--ok)}
+.stock.out{color:var(--warn)}
+.feat{list-style:none;padding:0;margin:4px 0 0;font-size:12px;color:var(--ink-2)}
+.feat li{padding-left:18px;position:relative;margin:2px 0}
+.feat li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+.fit{font-size:12px;margin-top:4px;color:var(--ok)} .fit.no{color:var(--muted)}
+.buy{display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right}
+.price{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.price small{display:block;font-size:11px;font-weight:400;color:var(--muted)}
+.price s{font-size:12px;font-weight:400;color:var(--muted)}
+.qty{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.qty button{border:0;background:#fff;width:30px;height:30px;font-size:16px}
+.qty button:hover{background:#f1f2f4}
+.qty input{width:40px;border:0;border-inline:1px solid var(--line);text-align:center;font-variant-numeric:tabular-nums}
+.buy .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:auto}
+.empty{padding:40px 10px;text-align:center;color:var(--muted)}
+
+/* Build */
+.build{position:sticky;top:10px}
+.build header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.build header h2{margin:0;font-size:17px}
+.qadd{padding:10px 12px 6px;margin-bottom:4px;background:#f8f9fa;border:1px solid var(--line);border-radius:6px}
+.qadd h3{margin:0 0 6px;font-size:13px}
+.qadd .msg{margin-top:2px}
+.linkbtn{background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0}
+.bi{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.bi img{width:64px;height:64px;object-fit:contain;background:#fafafa;border-radius:4px}
+.bi h4{margin:0;font-size:13px;line-height:1.25}
+.bi .sku{font-size:11px;color:var(--muted);margin:2px 0 6px}
+.bi .r{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between}
+.bi .x{background:none;border:0;color:var(--muted);font-size:16px;line-height:1;padding:0}
+.bi .lt{font-weight:700;font-variant-numeric:tabular-nums}
+.bi .qty button{width:26px;height:26px}
+.bi .qty input{width:34px}
+.tot{margin-top:10px;font-variant-numeric:tabular-nums}
+.tot div{display:flex;justify-content:space-between;padding:3px 0}
+.tot .disc{color:var(--ok)}
+.tot .grand{font-size:20px;font-weight:800;border-top:1px solid var(--line);margin-top:6px;padding-top:8px}
+.bigbtn{width:100%;margin-top:12px;padding:13px;font-size:16px;letter-spacing:.04em;text-transform:uppercase}
+.saverow{display:flex;gap:6px;margin-top:8px}
+.saverow input{flex:1}
+.perks{display:flex;justify-content:space-between;gap:6px;margin-top:12px;color:var(--ink-2);font-size:11px;text-align:center}
+.perks div{flex:1}
+.bempty{color:var(--muted);padding:18px 0;text-align:center;font-size:13px}
+
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
+.toast.on{opacity:1}
+dialog{border:0;border-radius:10px;padding:0;max-width:760px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.dlg{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18px}
+.dlg img{width:100%;aspect-ratio:1;object-fit:contain;background:#fafafa;border-radius:6px}
+.dlg h3{margin:0 0 6px}
+.dlg table{border-collapse:collapse;font-size:13px;width:100%;margin-top:8px}
+.dlg td{border-bottom:1px solid var(--line);padding:5px 4px;vertical-align:top}
+.dlg td:first-child{color:var(--muted);width:110px}
+.dlgx{position:absolute;right:10px;top:8px;background:none;border:0;font-size:22px}
+
+/* Responsive */
+@media (max-width:1300px){.ws{grid-template-columns:220px minmax(0,1fr) 320px}.ws .ptype{grid-column:1;grid-row:2}.ws .results{grid-row:1/3;grid-column:2}.ws .build{grid-row:1/3;grid-column:3}}
+@media (max-width:1000px){.tools .wrap{grid-template-columns:1fr}.ws{grid-template-columns:1fr}.ws>*{grid-column:auto!important;grid-row:auto!important}.build{position:static}.acct span.lbl{display:none}}
+@media (max-width:640px){.prod{grid-template-columns:96px minmax(0,1fr)}.thumb{width:96px;height:96px}.buy{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;text-align:left}.buy .acts{margin-top:0}.dlg{grid-template-columns:1fr}.logo span{display:none}nav.main .apply{margin-left:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><b>DRP</b><span><strong>B2B PARTS PORTAL</strong>FOR DEALERS, INSTALLERS &amp; FLEET BUYERS</span></a>
+    <form class="search" id="topSearch" role="search">
+      <input id="q" type="search" placeholder="Search by SKU, part number or keyword…" aria-label="Search parts">
+      <button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+    </form>
+    <div class="acct">
+      <button type="button" id="loginBtn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="lbl">Login</span></button>
+      <button type="button" class="cartbtn" id="cartBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 11h11l2-8H6.2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg><i id="cartCount">0</i><span class="lbl" style="text-align:left;line-height:1.2"><b>Your Cart</b><br><small id="cartItems">0 item(s)</small></span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="main"><div class="wrap">
+  <a href="#" data-make="ford">Powerstroke ▾</a>
+  <a href="#" data-make="ram">Cummins ▾</a>
+  <a href="#" data-make="gm">GM Duramax ▾</a>
+  <a href="#" data-make="eco">EcoDiesel ▾</a>
+  <span class="sep"></span>
+  <a href="#" data-type="">Products ▾</a>
+  <a href="#" data-type="Tuners">Tuners</a>
+  <a href="#" data-type="tuning">Tuning</a>
+  <a href="#" class="apply" id="applyBtn">Apply for Dealer Access</a>
+</div></nav>
+
+<section class="tools"><div class="wrap">
+  <div class="tool">
+    <h3>Reorder From Previous Build</h3>
+    <p>Builds you save stay in this browser.</p>
+    <div class="row">
+      <select class="in" id="prevSel" style="flex:1"><option value="">Select a previous build…</option></select>
+      <button class="btn ghost" id="loadBtn">Load Build</button>
+    </div>
+    <div class="msg" id="prevMsg"></div>
+  </div>
+</div></section>
+
+<main class="wrap ws">
+  <aside class="panel engine">
+    <div class="step"><em>1</em><div><h2>Select Make &amp; Engine</h2><p>Choose platform and engine generation to see compatible parts.</p></div></div>
+    <div id="makes"></div>
+  </aside>
+
+  <aside class="panel ptype">
+    <div class="step"><em>2</em><div><h2>Select Product Type</h2><p>Narrow by category.</p></div></div>
+    <input class="in tsearch" id="tq" placeholder="Filter product types…" aria-label="Filter product types">
+    <div class="types" id="types"></div>
+  </aside>
+
+  <section class="panel results">
+    <div class="reshead">
+      <div class="step" style="margin:0"><em>3</em><div><h2>Compatible Products</h2></div></div>
+      <span class="grow"></span>
+      <span class="count" id="count"></span>
+      <label><span class="lbl" style="color:var(--muted)">Sort</span>
+        <select class="in" id="sort">
+          <option value="feat">Essentials first</option>
+          <option value="pa">Price: low to high</option>
+          <option value="pd">Price: high to low</option>
+          <option value="name">Name A–Z</option>
+        </select></label>
+      <label style="display:flex;gap:6px;align-items:center;font-size:13px"><input type="checkbox" id="instock" style="accent-color:var(--brand)"> In stock only</label>
+      <div class="crumb" id="crumb"></div>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div id="list"></div>
+  </section>
+
+  <aside class="panel build" id="buildPanel">
+    <header><h2 id="bTitle">Your Build (0 Items)</h2><button class="linkbtn" id="clearBtn">Clear All</button></header>
+    <div class="qadd">
+      <h3>Quick Add by SKU</h3>
+      <form class="row" id="qaForm">
+        <input class="in" id="qaSku" list="skuList" placeholder="Enter SKU" style="flex:1" aria-label="SKU">
+        <input class="in" id="qaQty" type="number" min="1" value="1" style="width:56px" aria-label="Quantity">
+        <button class="btn">Add</button>
+      </form>
+      <datalist id="skuList"></datalist>
+      <div class="msg" id="qaMsg"></div>
+    </div>
+    <div id="bItems"></div>
+    <div class="tot">
+      <div><span id="subLbl">Subtotal (0 items)</span><span id="sub">$0.00</span></div>
+      <div class="disc"><span>Dealer Discount (<span id="discPct">5</span>%)</span><span id="disc">-$0.00</span></div>
+      <div class="grand"><span>Estimated Total</span><span id="total">$0.00</span></div>
+    </div>
+    <button class="btn bigbtn" id="toCart">Add Build to Cart</button>
+    <div class="saverow"><input class="in" id="buildName" placeholder="Name this build (e.g. Smith F-350)"><button class="btn lite" id="saveBtn">Save</button></div>
+    <div class="perks"><div>🛡️<br>Dealer pricing</div><div>🔁<br>Quick reorder</div><div>⚙️<br>Fitment matched</div></div>
+  </aside>
+</main>
+
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---------- Catalog (titles, prices & images from tunerdepot.com, Oct 2026) ---------- */
+const CDN="https://cdn.shopify.com/s/files/1/0712/1131/9389/files/";
+const ENGINES={
+  ford:{name:"Ford Powerstroke",list:[["ps67-20","6.7L Powerstroke (2020-2026)"],["ps67-11","6.7L Powerstroke (2011-2019)"],["ps30","3.0L Powerstroke (2018-2020)"],["ps64","6.4L Powerstroke (2008-2010)"],["ps60","6.0L Powerstroke (2003-2007)"],["ps73","7.3L Powerstroke (1999-2003)"]]},
+  ram:{name:"Ram Cummins",list:[["c67-13","6.7L Ram Cummins (2013-2025)"],["c67-10","6.7L Ram Cummins (2010-2012)"],["c67-07","6.7L Ram Cummins (2007.5-2009)"],["c50","5.0L Nissan Cummins (2016-2019)"]]},
+  gm:{name:"GM Duramax",list:[["l5p","6.6L Duramax L5P (2017-2026)"],["lml","6.6L Duramax LML (2011-2016)"],["lmm","6.6L Duramax LMM (2007.5-2010)"],["lb7","6.6L LB7/LLY/LBZ (2001-2007)"],["lm2","3.0L Duramax LM2/LZ0 (2020-2025)"]]},
+  eco:{name:"EcoDiesel",list:[["eco-ram","3.0L EcoDiesel RAM (2014-2023)"],["eco-jgc","Jeep Grand Cherokee (2014-2020)"],["eco-jw","Jeep Wrangler / Gladiator (2020-2023)"]]}
+};
+const ENG_NAME={};for(const m in ENGINES)for(const[id,n]of ENGINES[m].list)ENG_NAME[id]=n;
+
+const P=[
+ {sku:"INT-SB-FOR-20",t:"Powerstroke S&B Cold Air Intake | FORD 1999-2026",b:"S&B Filters",p:399,ty:"Cold Air Intake",e:["ps73","ps60","ps64","ps67-11","ps67-20"],img:"S_B-cold-air-intake-Powerstroke.png?v=1790370753",f:["Fully enclosed airbox, clear sealed lid","Cotton cleanable or dry extendable filter","MAF calibrated – no check engine light","Million Mile limited warranty"],best:1,note:"Ships from manufacturer in 1–2 weeks"},
+ {sku:"AC-INTERCOOLER-FOR-11",t:"Ford 6.7L Powerstroke Upgraded Intercooler 50% Larger Core | 2011–2026",b:"Tuner Depot",p:1199.99,ty:"Intercooler",e:["ps67-11","ps67-20"],img:"AC-INTERCOOLER-FOR-11.png?v=1790268217",f:["All-aluminum bar-and-plate core","Core ~50% larger than factory","Lower intake-air temps and EGTs","Generation-specific 2011–16 / 2017–26"]},
+ {sku:"ICP-FOR-11-CS",t:"6.7L Powerstroke Intercooler Charge Pipe Kit | Cold Side Upgrade | FORD 2011–2016",b:"Black Bandit",p:165,was:396,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2011-2016-44135034978555_cd28f7a5-e676-46e8-a184-ff8a8d01b0bd.webp?v=1775076734",f:["Mandrel-bent aluminum tubing","4-ply silicone couplers","Heavy-duty spring clamps","Replaces crack-prone OEM plastic pipe"],best:1},
+ {sku:"ICP-FOR-17-CS",t:"6.7L Powerstroke Cold Side Intercooler Charge Pipe Kit (2017-2019)",b:"Black Bandit",p:275,was:330,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-intercooler-pipe-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2017-2019-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-44135032062203_94d35b63-477f-459a-9d42-b7f824e82337.webp?v=1775076727",f:["Quick-disconnect flange","Retains factory IAT sensor","Spring-loaded clamps","Direct OEM replacement"]},
+ {sku:"ICP-FOR-11-CSK",t:"6.7L Powerstroke Cold Side Intercooler Pipe Kit | FORD 2011-2015",b:"Black Bandit",p:247.5,was:330,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-pipe-kit-2011-2015-ford-powerstroke-6-7l-cold-side-intercooler-pipe-kit-44135037042939_7ecadf79-c09b-4ba1-82fb-29aaa1bafc2c.webp?v=1775076666",f:["Mandrel-bent aluminum","4-ply silicone couplers","All hardware included"]},
+ {sku:"INT-FOR-11-B",t:"6.7L Powerstroke Cold Air Intake Kit | FORD 2011-2016",b:"Black Bandit",p:99.99,ty:"Cold Air Intake",e:["ps67-11"],img:"black-bandit-cold-air-intake-ford-powerstroke-6-7l-cold-air-intake-kit-2011-2016-ford-powerstroke-6-7l-cold-air-intake-kit-2011-2016-1174017547_d6a10171-7098-4e56-a335-2a2913903af0.png?v=1775076484",f:["4\" aluminum piping, gloss black","Washable micro cotton filter","Bolt-on, all hardware included"]},
+ {sku:"INT-FOR-17-B",t:"6.7L Powerstroke Cold Air Intake Kit | FORD 2017-2019",b:"Black Bandit",p:179.99,ty:"Cold Air Intake",e:["ps67-11"],img:"tuner-depot-cold-air-intake-ford-powerstroke-6-7l-cold-air-intake-kit-2017-2019-ford-powerstroke-6-7l-cold-air-intake-kit-2017-2019-1173833110_e526402b-69e4-4d5c-b940-346ad980d504.png?v=1775076490",f:["Powder-coated aluminum pipe","Washable micro cotton filter","No cutting required"]},
+ {sku:"INT-FOR-08",t:"6.4L Powerstroke Cold Air Intake | Ford 2008-2010",b:"Black Bandit",p:121,was:198,ty:"Cold Air Intake",e:["ps64"],img:"black-bandit-cold-air-intake-ford-powerstroke-6-4l-cold-air-intake-2008-2010-44135004373243_6b037e9b-66e1-4be1-9c0c-478db6c4d596.webp?v=1775076736",f:["Mandrel-bent aluminum tube","Oversized reusable cotton filter","Bolt-on install"]},
+ {sku:"ICP-FOR-08-CS",t:"6.4L Powerstroke Intercooler Charge Pipe Kit | Cold Side Upgrade | Ford 2008–2010",b:"Black Bandit",p:165,was:220,ty:"Intercooler Pipe",e:["ps64"],img:"6.4L_Powerstroke_cold_side_intercooler.webp?v=1789666931",f:["Mandrel-bent aluminum","4-ply silicone couplers","No tuning required"]},
+ {sku:"ICP-FOR-08-HS",t:"6.4L Powerstroke Intercooler Charge Pipe Kit | Hot Side Upgrade | Ford 2008–2010",b:"Black Bandit",p:165,was:220,ty:"Intercooler Pipe",e:["ps64"],img:"black-bandit-intercooler-pipe-ford-powerstroke-6-4l-hot-side-intercooler-charge-pipe-kit-2008-2010-ford-powerstroke-6-4l-hot-side-intercooler-charge-pipe-kit-44135041106171_80e308b8-2ec0-4fe5-bc8a-4ff45613684d.webp?v=1775076732",f:["Turbo outlet to intercooler inlet","Pairs with cold-side kit","No tuning required"]},
+ {sku:"INT-FOR-03",t:"6.0L Powerstroke Cold Air Intake | FORD 2003-2007",b:"Black Bandit",p:144.99,was:275,ty:"Cold Air Intake",e:["ps60"],img:"black-bandit-cold-air-intake-ford-powerstroke-6-0l-cold-air-intake-2003-2007-cold-air-intake-for-ford-powerstroke-6-0l-2003-2007-43847648575739_266e23d3-b411-44ac-a459-6916588b2e80.webp?v=1775076738",f:["Mandrel-bent aluminum tube","Oversized cotton filter","30–60 min install"],out:1},
+ {sku:"75-5132",t:"S&B Cold Air Intake for 6.7L Cummins Ram 2500 & 3500 | 2007-2024",b:"S&B Filters",p:399,ty:"Cold Air Intake",e:["c67-07","c67-10","c67-13"],img:"Cummins-6.7.-S_B-Cold-Air-Intake_1.png?v=1790368026",f:["Up to 54.6% more airflow than stock","Swing gate on 2013–2024","Enclosed airbox","Not for Cab & Chassis"],best:1,note:"Ships from manufacturer in 1–2 weeks"},
+ {sku:"INT-RAM-13",t:"6.7L Cummins Cold Air Intake | 2013-2018 Ram 2500/3500",b:"Black Bandit",p:275,ty:"Cold Air Intake",e:["c67-13"],img:"RAM_6.7_Cummins_cold_air_intake_kit.webp?v=1789670545",f:["Mandrel-bent aluminum tubing","Oversized cotton filter","Faster turbo spool"]},
+ {sku:"INT-RAM-07-B",t:"Ram Cummins 6.7L - Cold Air Intake (2007-2012)",b:"Black Bandit",p:119.99,ty:"Cold Air Intake",e:["c67-07","c67-10"],img:"tuner-depot-cold-air-intake-ram-cummins-6-7l-cold-air-intake-2007-2012-ram-cummins-6-7l-cold-air-intake-2007-2012-1173833113_0d7f887e-3106-4e61-bb1b-bced0012b43b.png?v=1775076492",f:["Black powder-coated aluminum","Micro cotton washable filter","Direct fit, hardware included"]},
+ {sku:"INT-SB-GM-20",t:"S&B Cold Air Intake 6.6L Duramax L5P, LML, LMM | 2007.5-2026 GMC Chevrolet",b:"S&B Filters",p:383.9,ty:"Cold Air Intake",e:["lmm","lml","l5p"],img:"Duramax-6.6.-S_B-Cold-Air-Intake.png?v=1790368955",f:["Up to 53% more airflow than stock","Enclosed airbox with seal","MAF calibrated","Not for Cab & Chassis"],best:1,note:"Ships from manufacturer in 1–2 weeks"},
+ {sku:"INT-CKP-L5P-17",t:"6.6L Duramax L5P Intercooler Pipe & Boot Kit 3 Inch Piping | 2017-2019",b:"Tuner Depot",p:250,ty:"Intercooler Pipe",e:["l5p"],img:"INT-CKP-L5P-17.jpg?v=1789067363",f:["3\" piping, up to 55% less restrictive","Resonator-free hot side","T-bolt clamps, sensor bungs","2017–2019 only"]},
+ {sku:"IP-TIH-GM-L5P",t:"GM Duramax L5P 6.6L - Turbo Intake Horn (2017-2025)",b:"Tuner Depot",p:99.99,ty:"Turbo Components",e:["l5p"],img:"tuner-depot-intake-horn-gm-duramax-l5p-6-6l-turbo-intake-horn-2017-2025-gm-duramax-l5p-6-6l-turbo-intake-horn-2017-2025-1156352747_a16b48b7-c51f-4040-afad-b6c8b645df0e.png?v=1775076501",f:["Replaces fragile plastic OEM inlet","Black powder-coated steel","Stock or aftermarket turbos"]},
+ {sku:"INT-GM-LML-2",t:"6.6L Duramax LML Cold Air Intake | 2013-2016 GMC/Chevrolet",b:"Black Bandit",p:139.99,ty:"Cold Air Intake",e:["lml"],img:"tuner-depot-cold-air-intake-gm-duramax-6-6l-lml-cold-air-intake-2013-2016-gm-duramax-6-6l-lml-cold-air-intake-2013-2016-1156375593_28a77f3c-c7c0-49fc-9f1b-fd69967536cf.png?v=1775076499",f:["4\" aluminum piping","Wrinkle black finish","Washable micro cotton filter"]},
+ {sku:"ICP-GM-LML",t:"GM Duramax LML - Intercooler Pipe & Boot Kit (2011-2016)",b:"Black Bandit",p:299.99,ty:"Intercooler Pipe",e:["lml"],img:"tuner-depot-intercooler-pipe-gm-duramax-lml-intercooler-pipe-boot-kit-2011-2016-gm-duramax-lml-intercooler-pipe-boot-kit-2011-2016-1173891083_04e4d7f5-8cd7-4686-a4ad-0a08e62aa798.png?v=1775076483",f:["Polished 3\" aluminum","Oil-resistant silicone boots","Complete hardware kit"]},
+ {sku:"ICP-GM-LB7",t:"GM Duramax LB7 - Intercooler Pipe & Boot Kit (2002-2004)",b:"Black Bandit",p:299.99,ty:"Intercooler Pipe",e:["lb7"],img:"tuner-depot-intercooler-pipe-gm-duramax-lb7-intercooler-pipe-boot-kit-2002-2004-gm-duramax-lb7-intercooler-pipe-boot-kit-2002-2004-1173976244_77af16fd-bd2b-45ae-972d-3da4b56b8540.png?v=1775076481",f:["Polished 3\" aluminum","Multi-layer silicone couplers","Lower EGTs"]},
+ {sku:"ICP-GM-01-HS",t:"GM Duramax 6.6L Hot Side Intercooler Charge Pipe Kit (2001-2010)",b:"Black Bandit",p:220,was:297,ty:"Intercooler Pipe",e:["lb7","lmm"],img:"black-bandit-egr-gm-duramax-6-6l-hot-side-intercooler-charge-pipe-kit-2001-2010-44135064895739_d79821ea-1fa6-4d7a-9edc-211c2e5e3b30.webp?v=1775076724",f:["Up to 40% more flow than factory","4-ply silicone couplers","Heavy-duty spring clamps"]}
+];
+const TYPES=["Cold Air Intake","Intercooler Pipe","Intercooler","Turbo Components","Fuel System","Transmission","Supporting Mods","Accessories"];
+const BYSKU=Object.fromEntries(P.map(x=>[x.sku.toUpperCase(),x]));
+const img=(x,w)=>CDN+x.img+(x.img.includes("?")?"&":"?")+"width="+w;
+const $=s=>document.querySelector(s);
+const money=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- Storage (safe) ---------- */
+const store={get(k,d){try{const v=localStorage.getItem("drp_"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("drp_"+k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- State ---------- */
+const S={make:"ford",engine:"ps67-11",types:new Set(),q:"",sort:"feat",instock:false,qty:{},
+  build:store.get("build",[{sku:"INT-SB-FOR-20",q:1},{sku:"ICP-FOR-11-CS",q:2},{sku:"AC-INTERCOOLER-FOR-11",q:1}]),
+  cart:store.get("cart",[]),saved:store.get("saved",null),disc:5};
+if(!S.saved){S.saved=[{name:"Example – Fleet F-350 refresh",items:[{sku:"INT-FOR-17-B",q:4},{sku:"ICP-FOR-17-CS",q:4}]},{name:"Example – L5P shop stock",items:[{sku:"IP-TIH-GM-L5P",q:6},{sku:"INT-CKP-L5P-17",q:2},{sku:"INT-SB-GM-20",q:2}]}];}
+
+/* ---------- Render: makes ---------- */
+function renderMakes(){
+  $("#makes").innerHTML=Object.entries(ENGINES).map(([k,m])=>{
+    const open=S.make===k;
+    return `<div class="make${open?" open":""}"><button data-m="${k}" aria-expanded="${open}">${m.name}<span class="chev">›</span></button>${open?`<ul>
+      <li><button data-e="" aria-pressed="${S.engine===""}">Shop all ${m.name}<small>${P.filter(p=>p.e.some(e=>m.list.some(l=>l[0]===e))).length}</small></button></li>
+      ${m.list.map(([id,n])=>`<li><button data-e="${id}" aria-pressed="${S.engine===id}">${n}<small>${P.filter(p=>p.e.includes(id)).length}</small></button></li>`).join("")}</ul>`:""}</div>`}).join("");
+}
+$("#makes").addEventListener("click",e=>{
+  const m=e.target.closest("[data-m]"),en=e.target.closest("[data-e]");
+  if(m){S.make=S.make===m.dataset.m?"":m.dataset.m;S.engine="";}
+  else if(en){S.engine=en.dataset.e;}
+  else return;
+  renderAll();
+});
+
+/* ---------- Filtering ---------- */
+function engineMatch(p){
+  if(S.engine)return p.e.includes(S.engine);
+  if(S.make)return p.e.some(e=>ENGINES[S.make].list.some(l=>l[0]===e));
+  return true;
+}
+function results(ignoreType){
+  const q=S.q.trim().toLowerCase();
+  let r=P.filter(p=>engineMatch(p)&&(!S.instock||!p.out)&&(!q||(p.t+" "+p.sku+" "+p.b+" "+p.ty).toLowerCase().includes(q)));
+  if(!ignoreType&&S.types.size)r=r.filter(p=>S.types.has(p.ty));
+  const s=S.sort;
+  if(s==="pa")r.sort((a,b)=>a.p-b.p);else if(s==="pd")r.sort((a,b)=>b.p-a.p);else if(s==="name")r.sort((a,b)=>a.t.localeCompare(b.t));else r.sort((a,b)=>(b.best||0)-(a.best||0));
+  return r;
+}
+
+/* ---------- Render: types ---------- */
+function renderTypes(){
+  const base=results(true),tq=$("#tq").value.trim().toLowerCase();
+  const rows=[["",`All Product Types`,base.length],...TYPES.map(t=>[t,t,base.filter(p=>p.ty===t).length])].filter(r=>!tq||r[1].toLowerCase().includes(tq));
+  $("#types").innerHTML=rows.map(([v,l,c])=>`<label><input type="checkbox" value="${esc(v)}" ${v===""?(S.types.size?"":"checked"):(S.types.has(v)?"checked":"")}><span>${esc(l)}</span><small>${c}</small></label>`).join("");
+}
+$("#types").addEventListener("change",e=>{
+  const v=e.target.value;
+  if(v==="")S.types.clear();else e.target.checked?S.types.add(v):S.types.delete(v);
+  renderAll();
+});
+$("#tq").addEventListener("input",renderTypes);
+
+/* ---------- Render: list ---------- */
+function renderList(){
+  const r=results(false);
+  $("#count").textContent=r.length+" Results";
+  const eng=S.engine?ENG_NAME[S.engine]:S.make?"All "+ENGINES[S.make].name:"All platforms";
+  $("#crumb").textContent="Showing parts for "+eng+(S.types.size?"  ›  "+[...S.types].join(", "):"");
+  const chips=[];
+  if(S.q)chips.push(`<button class="chip" data-c="q">Search: “${esc(S.q)}” ✕</button>`);
+  S.types.forEach(t=>chips.push(`<button class="chip" data-c="t" data-v="${esc(t)}">${esc(t)} ✕</button>`));
+  if(S.instock)chips.push(`<button class="chip" data-c="s">In stock ✕</button>`);
+  $("#chips").innerHTML=chips.join("");
+  if(!r.length){$("#list").innerHTML=`<div class="empty">No parts match these filters.<br><button class="btn lite" style="margin-top:10px" id="resetF">Reset filters</button></div>`;return;}
+  $("#list").innerHTML=r.map(p=>{
+    const q=S.qty[p.sku]||1,fit=S.engine?`<div class="fit">✓ Fitment matched for ${esc(ENG_NAME[S.engine])}</div>`:`<div class="fit no">Fits: ${p.e.map(e=>esc(ENG_NAME[e])).join(" · ")}</div>`;
+    return `<article class="prod${p.best?" hl":""}">
+      ${p.best?'<span class="badge" title="Core part we recommend for most builds on this platform">Essential</span>':""}
+      <div class="thumb"><img loading="lazy" src="${img(p,320)}" alt="${esc(p.t)}"></div>
+      <div style="min-width:0">
+        <h3>${esc(p.t)}</h3>
+        <div class="meta"><b>${esc(p.b)}</b> · ${esc(p.ty)} · SKU: ${esc(p.sku)}</div>
+        <div class="stock${p.out?" out":""}">${p.out?"● Backordered":"● In Stock"}${p.note?` <span style="color:var(--muted);font-weight:400">– ${esc(p.note)}</span>`:""}</div>
+        <ul class="feat">${p.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${fit}
+      </div>
+      <div class="buy">
+        <div class="price">${p.was?`<s>${money(p.was)}</s> `:""}${money(p.p)}<small>Dealer Price</small></div>
+        <div class="qty"><button data-a="dec" data-s="${p.sku}" aria-label="Less">−</button><input id="q-${p.sku}" data-s="${p.sku}" value="${q}" inputmode="numeric" aria-label="Quantity"><button data-a="inc" data-s="${p.sku}" aria-label="More">+</button></div>
+        <div class="acts"><button class="btn lite" data-a="view" data-s="${p.sku}">View Details</button><button class="btn" data-a="add" data-s="${p.sku}">Add to Build</button></div>
+      </div></article>`}).join("");
+}
+$("#chips").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;
+  if(c.dataset.c==="q"){S.q="";$("#q").value="";}else if(c.dataset.c==="t")S.types.delete(c.dataset.v);else{S.instock=false;$("#instock").checked=false;}renderAll();});
+$("#list").addEventListener("click",e=>{
+  if(e.target.id==="resetF"){S.types.clear();S.q="";$("#q").value="";S.instock=false;$("#instock").checked=false;S.engine="";renderAll();return;}
+  const b=e.target.closest("[data-a]");if(!b)return;const s=b.dataset.s,a=b.dataset.a;
+  if(a==="inc"||a==="dec"){S.qty[s]=Math.max(1,(S.qty[s]||1)+(a==="inc"?1:-1));document.getElementById("q-"+s).value=S.qty[s];}
+  else if(a==="add"){addToBuild(s,S.qty[s]||1);}
+  else if(a==="view")openDetail(s);
+});
+$("#list").addEventListener("change",e=>{if(e.target.dataset.s){S.qty[e.target.dataset.s]=Math.max(1,parseInt(e.target.value)||1);e.target.value=S.qty[e.target.dataset.s];}});
+
+/* ---------- Detail dialog ---------- */
+function openDetail(s){
+  const p=BYSKU[s.toUpperCase()],d=$("#dlg");
+  d.innerHTML=`<div style="position:relative"><button class="dlgx" aria-label="Close">×</button><div class="dlg">
+    <img src="${img(p,700)}" alt="${esc(p.t)}">
+    <div><h3>${esc(p.t)}</h3><div class="price" style="margin:6px 0">${money(p.p)} <small style="display:inline">Dealer Price</small></div>
+    <ul class="feat">${p.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+    <table><tr><td>SKU</td><td>${esc(p.sku)}</td></tr><tr><td>Brand</td><td>${esc(p.b)}</td></tr><tr><td>Category</td><td>${esc(p.ty)}</td></tr><tr><td>Fitment</td><td>${p.e.map(e=>esc(ENG_NAME[e])).join("<br>")}</td></tr><tr><td>Availability</td><td>${p.out?"Backordered":"In stock"}${p.note?"<br>"+esc(p.note):""}</td></tr></table>
+    <button class="btn" style="margin-top:12px" data-add="${p.sku}">Add to Build</button></div></div></div>`;
+  d.showModal();
+}
+$("#dlg").addEventListener("click",e=>{if(e.target.classList.contains("dlgx")||e.target===e.currentTarget)$("#dlg").close();if(e.target.dataset.add){addToBuild(e.target.dataset.add,1);$("#dlg").close();}});
+
+/* ---------- Build ---------- */
+function addToBuild(sku,q){
+  const p=BYSKU[String(sku).trim().toUpperCase()];if(!p)return false;
+  const it=S.build.find(x=>x.sku===p.sku);if(it)it.q+=q;else S.build.push({sku:p.sku,q});
+  renderBuild();toast(`Added ${q} × ${p.sku} to build`);return true;
+}
+function totals(items){const sub=items.reduce((s,i)=>s+BYSKU[i.sku.toUpperCase()].p*i.q,0),d=Math.round(sub*S.disc)/100;return{sub,d,tot:sub-d,n:items.reduce((s,i)=>s+i.q,0)};}
+function renderBuild(){
+  store.set("build",S.build);
+  const t=totals(S.build);
+  $("#bTitle").textContent=`Your Build (${S.build.length} Item${S.build.length===1?"":"s"})`;
+  $("#bItems").innerHTML=S.build.length?S.build.map(i=>{const p=BYSKU[i.sku.toUpperCase()],fits=!S.engine||p.e.includes(S.engine);
+    return `<div class="bi"><img src="${img(p,140)}" alt=""><div style="min-width:0"><h4>${esc(p.t)}</h4><div class="sku">SKU: ${esc(p.sku)}</div>
+      <div class="qty"><button data-b="dec" data-s="${p.sku}" aria-label="Less">−</button><input data-bs="${p.sku}" value="${i.q}" inputmode="numeric" aria-label="Quantity"><button data-b="inc" data-s="${p.sku}" aria-label="More">+</button></div>
+      <div class="fit${fits?"":" no"}" style="${fits?"":"color:var(--warn)"}">${fits?"✓ Fitment matched":"⚠ Not listed for selected engine"}</div></div>
+      <div class="r"><button class="x" data-b="rm" data-s="${p.sku}" aria-label="Remove">×</button><span class="lt">${money(p.p*i.q)}</span></div></div>`}).join(""):`<div class="bempty">No parts yet. Add parts from the list or enter a SKU above.</div>`;
+  $("#subLbl").textContent=`Subtotal (${t.n} item${t.n===1?"":"s"})`;
+  $("#sub").textContent=money(t.sub);$("#disc").textContent="-"+money(t.d);$("#total").textContent=money(t.tot);$("#discPct").textContent=S.disc;
+}
+$("#bItems").addEventListener("click",e=>{const b=e.target.closest("[data-b]");if(!b)return;const i=S.build.find(x=>x.sku===b.dataset.s);
+  if(b.dataset.b==="rm")S.build=S.build.filter(x=>x!==i);else if(b.dataset.b==="inc")i.q++;else i.q=Math.max(1,i.q-1);renderBuild();});
+$("#bItems").addEventListener("change",e=>{const i=S.build.find(x=>x.sku===e.target.dataset.bs);if(i){i.q=Math.max(1,parseInt(e.target.value)||1);renderBuild();}});
+$("#clearBtn").onclick=()=>{S.build=[];renderBuild();};
+$("#toCart").onclick=()=>{
+  if(!S.build.length){toast("Your build is empty");return;}
+  for(const i of S.build){const c=S.cart.find(x=>x.sku===i.sku);if(c)c.q+=i.q;else S.cart.push({...i});}
+  store.set("cart",S.cart);renderCart();toast("Build added to cart");
+};
+function renderCart(){const n=S.cart.reduce((s,i)=>s+i.q,0);$("#cartCount").textContent=n;$("#cartItems").textContent=n+" item(s)";}
+$("#cartBtn").onclick=()=>{const t=totals(S.cart),d=$("#dlg");
+  d.innerHTML=`<div style="position:relative;padding:18px"><button class="dlgx" aria-label="Close">×</button><h3 style="margin:0 0 10px">Cart</h3>
+  ${S.cart.length?S.cart.map(i=>{const p=BYSKU[i.sku.toUpperCase()];return `<div style="display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)"><span>${i.q} × ${esc(p.t)}<br><small style="color:var(--muted)">${esc(p.sku)}</small></span><b>${money(p.p*i.q)}</b></div>`}).join("")+
+  `<div class="tot"><div><span>Subtotal</span><span>${money(t.sub)}</span></div><div class="disc"><span>Dealer Discount (${S.disc}%)</span><span>-${money(t.d)}</span></div><div class="grand"><span>Total</span><span>${money(t.tot)}</span></div></div>
+  <div style="display:flex;gap:8px;margin-top:12px"><button class="btn lite" id="emptyCart">Empty cart</button><button class="btn" style="flex:1" id="checkout">Checkout (connect your backend)</button></div>`:"<p>Your cart is empty.</p>"}</div>`;
+  d.showModal();
+  const ec=$("#emptyCart");if(ec)ec.onclick=()=>{S.cart=[];store.set("cart",S.cart);renderCart();d.close();};
+  const co=$("#checkout");if(co)co.onclick=()=>toast("Checkout is front-end only – wire this to your order API");
+};
+
+/* ---------- Quick add / reorder ---------- */
+$("#skuList").innerHTML=P.map(p=>`<option value="${p.sku}">${esc(p.t)}</option>`).join("");
+$("#qaForm").addEventListener("submit",e=>{e.preventDefault();const s=$("#qaSku").value,q=Math.max(1,parseInt($("#qaQty").value)||1),m=$("#qaMsg");
+  if(addToBuild(s,q)){m.className="msg ok";m.textContent="Added.";$("#qaSku").value="";$("#qaQty").value=1;}else{m.className="msg err";m.textContent=`SKU “${s}” not found. Check the part number.`;}});
+function renderSaved(){store.set("saved",S.saved);$("#prevSel").innerHTML='<option value="">Select a previous build…</option>'+S.saved.map((b,i)=>`<option value="${i}">${esc(b.name)} (${b.items.length} parts)</option>`).join("");}
+$("#loadBtn").onclick=()=>{const v=$("#prevSel").value,m=$("#prevMsg");if(v===""){m.className="msg err";m.textContent="Choose a saved build first.";return;}
+  S.build=S.saved[v].items.map(x=>({...x}));renderBuild();m.className="msg ok";m.textContent="Loaded “"+S.saved[v].name+"”.";};
+$("#saveBtn").onclick=()=>{if(!S.build.length){toast("Add parts before saving");return;}const n=$("#buildName").value.trim()||"Build "+new Date().toLocaleDateString();
+  S.saved.unshift({name:n,items:S.build.map(x=>({...x}))});renderSaved();$("#buildName").value="";toast("Saved “"+n+"”");};
+
+/* ---------- Header / nav ---------- */
+$("#topSearch").addEventListener("submit",e=>{e.preventDefault();S.q=$("#q").value;const p=BYSKU[S.q.trim().toUpperCase()];if(p){S.q="";$("#q").value="";openDetail(p.sku);}renderAll();});
+$("#sort").onchange=e=>{S.sort=e.target.value;renderList();};
+$("#instock").onchange=e=>{S.instock=e.target.checked;renderAll();};
+document.querySelector("nav.main").addEventListener("click",e=>{const a=e.target.closest("a");if(!a)return;e.preventDefault();
+  if(a.dataset.make){S.make=a.dataset.make;S.engine="";renderAll();}
+  else if(a.dataset.type!==undefined){S.types.clear();if(a.dataset.type)S.types.add(a.dataset.type);renderAll();}
+  else if(a.id==="rfq")toast("Request a Quote – connect to your quote form");
+  else if(a.id==="applyBtn")toast("Dealer application – connect to your signup flow");
+  document.querySelector(".ws").scrollIntoView({behavior:"smooth"});});
+$("#loginBtn").onclick=()=>toast("Dealer login – connect to your auth");
+
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);}
+function renderAll(){renderMakes();renderTypes();renderList();renderBuild();}
+renderAll();renderCart();renderSaved();
+</script>
+</body>
+</html>
