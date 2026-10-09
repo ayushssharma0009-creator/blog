@@ -57,11 +57,25 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .navpanel .all{font-weight:600;color:var(--ink)}
 .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 24px}
 
-/* Quick tools */
-.tools{background:#fff;border-bottom:1px solid var(--line)}
-.tools .wrap{display:grid;grid-template-columns:minmax(0,560px);gap:24px;padding-block:14px}
-.tool h3{margin:0 0 6px;font-size:15px}
-.tool p{margin:0 0 6px;color:var(--muted);font-size:12px}
+/* Marketing strip: dealer-program banner + assurance tiles */
+.promo{background:#fff;border-bottom:1px solid var(--line)}
+.promo .wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:14px;padding-block:14px}
+.hero{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:10px;padding:24px 28px;border-radius:8px;background:var(--nav);color:#e9eaee}
+.hero::after{content:"";position:absolute;inset:0 0 0 auto;width:40%;background:repeating-linear-gradient(-60deg,transparent 0 22px,rgba(232,64,28,.12) 22px 44px);clip-path:polygon(30% 0,100% 0,100% 100%,0 100%);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+.hero h2{margin:0;max-width:22ch;font:italic 900 clamp(24px,2.5vw,34px)/1.08 var(--f);letter-spacing:-.5px;color:#fff;text-wrap:balance}
+.hero h2 em{color:var(--brand);font-style:inherit}
+.hero p{margin:0;max-width:52ch;color:#b9bdc6}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:4px}
+.hero .btn{padding:10px 18px}
+.hero .linkbtn{color:#e9eaee;font-weight:600;text-decoration:none}
+.hero .linkbtn:hover{color:#fff;text-decoration:underline}
+.assure{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.as{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.as svg{flex:none;color:var(--brand)}
+.as b{display:block;margin-bottom:2px;font-size:14px}
+.as span{font-size:12px;color:var(--ink-2)}
 .row{display:flex;gap:8px;align-items:stretch}
 .in{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:#fff;min-width:0}
 .btn{background:var(--brand);color:#fff;border:0;border-radius:6px;padding:8px 14px;font-weight:600;white-space:nowrap}
@@ -154,8 +168,8 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .bigbtn{width:100%;margin-top:12px;padding:13px;font-size:16px;letter-spacing:.04em;text-transform:uppercase}
 .saverow{display:flex;gap:6px;margin-top:8px}
 .saverow input{flex:1}
-.perks{display:flex;justify-content:space-between;gap:6px;margin-top:12px;color:var(--ink-2);font-size:11px;text-align:center}
-.perks div{flex:1}
+.reorder{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.reorder label{display:block;margin-bottom:6px;font-size:13px;font-weight:600}
 .bempty{color:var(--muted);padding:18px 0;text-align:center;font-size:13px}
 
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
@@ -172,8 +186,8 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 
 /* Responsive */
 @media (max-width:1300px){.ws{grid-template-columns:220px minmax(0,1fr) 320px}.ws .ptype{grid-column:1;grid-row:2}.ws .results{grid-row:1/3;grid-column:2}.ws .build{grid-row:1/3;grid-column:3}}
-@media (max-width:1000px){.tools .wrap{grid-template-columns:minmax(0,1fr)}.ws{grid-template-columns:minmax(0,1fr)}.ws>*{grid-column:auto!important;grid-row:auto!important}.build{position:static}.acct span.lbl{display:none}}
-@media (max-width:640px){.prod{grid-template-columns:96px minmax(0,1fr)}.thumb{width:96px;height:96px}.buy{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;text-align:left}.buy .acts{margin-top:0}.dlg{grid-template-columns:1fr}.logo span{display:none}.ni.dealer{margin-left:0}}
+@media (max-width:1000px){.promo .wrap{grid-template-columns:minmax(0,1fr)}.ws{grid-template-columns:minmax(0,1fr)}.ws>*{grid-column:auto!important;grid-row:auto!important}.build{position:static}.acct span.lbl{display:none}}
+@media (max-width:640px){.prod{grid-template-columns:96px minmax(0,1fr)}.thumb{width:96px;height:96px}.buy{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;text-align:left}.buy .acts{margin-top:0}.dlg{grid-template-columns:1fr}.logo span{display:none}.ni.dealer{margin-left:0}.as{flex-direction:column;align-items:flex-start;gap:8px}.hero{padding:20px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -208,16 +222,19 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   <div class="navpanel" id="navPanel" hidden></div>
 </nav>
 
-<section class="tools"><div class="wrap">
-  <div class="tool">
-    <h3>Reorder From Previous Build</h3>
-    <p>Builds you save stay in this browser.</p>
-    <div class="row">
-      <select class="in" id="prevSel" style="flex:1"><option value="">Select a previous build…</option></select>
-      <button class="btn ghost" id="loadBtn">Load Build</button>
-    </div>
-    <div class="msg" id="prevMsg"></div>
+<section class="promo" aria-label="DRP Dealer Program"><div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">DRP Dealer Program</span>
+    <h2>Build it, check fitment, order at <em>dealer pricing.</em></h2>
+    <p>Made for shops, installers and fleet buyers. Pick an engine, add parts by SKU, save builds for repeat jobs, and your dealer discount applies automatically.</p>
+    <div class="ctas"><button type="button" class="btn" id="heroApply">Apply for Dealer Access</button><button type="button" class="linkbtn" id="heroShop">Browse by vehicle →</button></div>
   </div>
+  <ul class="assure">
+    <li class="as"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><div><b>Fitment matched</b><span>Every part is checked against the engine you select.</span></div></li>
+    <li class="as"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><div><b>Dealer pricing</b><span>Your discount is applied to every build and order.</span></div></li>
+    <li class="as"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4h14v12H1zM15 8h4l4 4v4h-8"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg><div><b>Fast dispatch</b><span>In-stock parts ship the same business day.</span></div></li>
+    <li class="as"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><div><b>Trusted brands</b><span>S&amp;B Filters, Black Bandit and Tuner Depot.</span></div></li>
+  </ul>
 </div></section>
 
 <main class="wrap ws">
@@ -271,7 +288,11 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
     </div>
     <button class="btn bigbtn" id="toCart">Add Build to Cart</button>
     <div class="saverow"><input class="in" id="buildName" placeholder="Name this build (e.g. Smith F-350)"><button class="btn lite" id="saveBtn">Save</button></div>
-    <div class="perks"><div>🛡️<br>Dealer pricing</div><div>🔁<br>Quick reorder</div><div>⚙️<br>Fitment matched</div></div>
+    <div class="reorder">
+      <label for="prevSel">Reorder a saved build</label>
+      <div class="row"><select class="in" id="prevSel" style="flex:1"><option value="">Select a previous build…</option></select><button class="btn ghost" id="loadBtn">Load</button></div>
+      <div class="msg" id="prevMsg"></div>
+    </div>
   </aside>
 </main>
 
@@ -504,7 +525,7 @@ nav.addEventListener("click",e=>{
     if(b.dataset.menu){openBtn===b?closeMenu():openMenu(b);return;}
     closeMenu();
     if(b.dataset.go==="quick"){$("#buildPanel").scrollIntoView({behavior:"smooth",block:"start"});$("#qaSku").focus({preventScroll:true});}
-    else if(b.dataset.go==="reorder"){$(".tools").scrollIntoView({behavior:"smooth",block:"start"});$("#prevSel").focus({preventScroll:true});}
+    else if(b.dataset.go==="reorder"){$("#buildPanel").scrollIntoView({behavior:"smooth",block:"start"});$("#prevSel").focus({preventScroll:true});}
     else if(b.id==="applyBtn")toast("Dealer application – connect to your signup flow");
     return;
   }
@@ -516,7 +537,9 @@ nav.addEventListener("click",e=>{
 });
 document.addEventListener("click",e=>{if(openBtn&&!nav.contains(e.target))closeMenu();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&openBtn){const b=openBtn;closeMenu();b.focus();}});
-$("#mainNav .bar").addEventListener("scroll",closeMenu);addEventListener("resize",closeMenu);
+$("#mainNav .bar").addEventListener("scroll",closeMenu);
+$("#heroApply").onclick=()=>toast("Dealer application – connect to your signup flow");
+$("#heroShop").onclick=e=>{e.stopPropagation();scrollTo({top:0,behavior:"smooth"});openMenu($('[data-menu="vehicle"]'));};addEventListener("resize",closeMenu);
 $("#loginBtn").onclick=()=>toast("Dealer login – connect to your auth");
 
 let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);}
