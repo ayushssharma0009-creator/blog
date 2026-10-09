@@ -35,12 +35,27 @@ button{cursor:pointer}
 .acct button{background:none;border:0;display:flex;gap:6px;align-items:center}
 .cartbtn{position:relative}
 .cartbtn i{position:absolute;top:-6px;left:12px;background:var(--brand);color:#fff;font-style:normal;font-size:11px;border-radius:9px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
-nav.main{background:var(--nav);color:#e9eaee}
-nav.main .wrap{display:flex;gap:4px;align-items:center;overflow-x:auto}
-nav.main a{color:inherit;text-decoration:none;padding:12px;white-space:nowrap;font-size:14px}
-nav.main a:hover{color:#fff;background:#2a2e36}
-nav.main .sep{width:1px;height:20px;background:#444a55;margin:0 6px}
-nav.main .apply{background:var(--brand);color:#fff;border-radius:4px;padding:8px 14px;margin-left:auto}
+nav.main{background:var(--nav);color:#e9eaee;position:relative;z-index:20}
+nav.main .bar{display:flex;gap:2px;align-items:center;min-height:58px;overflow-x:auto;scrollbar-width:none}
+nav.main .bar::-webkit-scrollbar{display:none}
+.ni{display:inline-flex;flex:none;align-items:center;gap:8px;height:42px;padding:0 14px;background:none;border:1.5px solid transparent;border-radius:6px;color:inherit;font-size:15px;font-weight:500;white-space:nowrap}
+.ni:hover,.ni[aria-expanded=true]{background:#2a2e36;color:#fff}
+.ni .cv{width:12px;height:12px;opacity:.75;transition:transform .15s}
+.ni[aria-expanded=true] .cv{transform:rotate(180deg)}
+.ni.veh{height:46px;padding:0 18px;margin-right:12px;background:var(--brand);color:#fff;font-weight:700}
+.ni.veh:hover,.ni.veh[aria-expanded=true]{background:var(--brand-dk)}
+.ni.dealer{margin-left:auto;border-color:var(--brand);font-weight:600}
+.ni.dealer svg{color:var(--brand)}
+.ni.dealer:hover{background:#2a2e36;border-color:var(--brand)}
+.navpanel{position:absolute;top:100%;min-width:250px;max-width:calc(100vw - 32px);padding:14px;background:#fff;color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:0 0 8px 8px;box-shadow:0 14px 30px rgba(22,24,29,.2)}
+.navpanel.wide{width:min(1200px,calc(100vw - 32px))}
+.navpanel h4{margin:0 0 6px;padding:0 8px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.navpanel ul{list-style:none;margin:0;padding:0}
+.navpanel li button{display:flex;justify-content:space-between;gap:16px;width:100%;padding:7px 8px;background:none;border:0;border-radius:4px;text-align:left;color:var(--ink-2)}
+.navpanel li button:hover{background:#fdece7;color:var(--brand-dk)}
+.navpanel li small{color:var(--muted);font-variant-numeric:tabular-nums}
+.navpanel .all{font-weight:600;color:var(--ink)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 24px}
 
 /* Quick tools */
 .tools{background:#fff;border-bottom:1px solid var(--line)}
@@ -157,8 +172,8 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 
 /* Responsive */
 @media (max-width:1300px){.ws{grid-template-columns:220px minmax(0,1fr) 320px}.ws .ptype{grid-column:1;grid-row:2}.ws .results{grid-row:1/3;grid-column:2}.ws .build{grid-row:1/3;grid-column:3}}
-@media (max-width:1000px){.tools .wrap{grid-template-columns:1fr}.ws{grid-template-columns:1fr}.ws>*{grid-column:auto!important;grid-row:auto!important}.build{position:static}.acct span.lbl{display:none}}
-@media (max-width:640px){.prod{grid-template-columns:96px minmax(0,1fr)}.thumb{width:96px;height:96px}.buy{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;text-align:left}.buy .acts{margin-top:0}.dlg{grid-template-columns:1fr}.logo span{display:none}nav.main .apply{margin-left:0}}
+@media (max-width:1000px){.tools .wrap{grid-template-columns:minmax(0,1fr)}.ws{grid-template-columns:minmax(0,1fr)}.ws>*{grid-column:auto!important;grid-row:auto!important}.build{position:static}.acct span.lbl{display:none}}
+@media (max-width:640px){.prod{grid-template-columns:96px minmax(0,1fr)}.thumb{width:96px;height:96px}.buy{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;text-align:left}.buy .acts{margin-top:0}.dlg{grid-template-columns:1fr}.logo span{display:none}.ni.dealer{margin-left:0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -178,17 +193,20 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   </div>
 </header>
 
-<nav class="main"><div class="wrap">
-  <a href="#" data-make="ford">Powerstroke ▾</a>
-  <a href="#" data-make="ram">Cummins ▾</a>
-  <a href="#" data-make="gm">GM Duramax ▾</a>
-  <a href="#" data-make="eco">EcoDiesel ▾</a>
-  <span class="sep"></span>
-  <a href="#" data-type="">Products ▾</a>
-  <a href="#" data-type="Tuners">Tuners</a>
-  <a href="#" data-type="tuning">Tuning</a>
-  <a href="#" class="apply" id="applyBtn">Apply for Dealer Access</a>
-</div></nav>
+<nav class="main" id="mainNav" aria-label="Main">
+  <div class="wrap bar">
+    <button type="button" class="ni veh" data-menu="vehicle" aria-haspopup="true" aria-expanded="false"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 3.5h13v10h-13zM14.5 7h5l4 4v2.5h-9"/><circle cx="6" cy="15.5" r="2.2" fill="var(--brand)"/><circle cx="19" cy="15.5" r="2.2" fill="var(--brand)"/></svg>Shop by Vehicle<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-menu="Tuners" aria-haspopup="true" aria-expanded="false">Tuners<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-menu="Exhaust" aria-haspopup="true" aria-expanded="false">Exhaust<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-menu="Delete Kits" aria-haspopup="true" aria-expanded="false">Delete Kits<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-menu="Tuning" aria-haspopup="true" aria-expanded="false">Tuning<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-go="quick">Quick Order</button>
+    <button type="button" class="ni" data-go="reorder">Reorders</button>
+    <button type="button" class="ni dealer" id="applyBtn"><svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="1.5" y="7.5" width="13" height="9" rx="1.5"/><path d="M4.5 7.5V5a3.5 3.5 0 0 1 7 0v2.5"/><path d="M8 11.5v1.5"/></svg>Dealer Access</button>
+    <button type="button" class="ni" data-menu="support" aria-haspopup="true" aria-expanded="false">Support<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  </div>
+  <div class="navpanel" id="navPanel" hidden></div>
+</nav>
 
 <section class="tools"><div class="wrap">
   <div class="tool">
@@ -294,7 +312,7 @@ const P=[
  {sku:"ICP-GM-LB7",t:"GM Duramax LB7 - Intercooler Pipe & Boot Kit (2002-2004)",b:"Black Bandit",p:299.99,ty:"Intercooler Pipe",e:["lb7"],img:"tuner-depot-intercooler-pipe-gm-duramax-lb7-intercooler-pipe-boot-kit-2002-2004-gm-duramax-lb7-intercooler-pipe-boot-kit-2002-2004-1173976244_77af16fd-bd2b-45ae-972d-3da4b56b8540.png?v=1775076481",f:["Polished 3\" aluminum","Multi-layer silicone couplers","Lower EGTs"]},
  {sku:"ICP-GM-01-HS",t:"GM Duramax 6.6L Hot Side Intercooler Charge Pipe Kit (2001-2010)",b:"Black Bandit",p:220,was:297,ty:"Intercooler Pipe",e:["lb7","lmm"],img:"black-bandit-egr-gm-duramax-6-6l-hot-side-intercooler-charge-pipe-kit-2001-2010-44135064895739_d79821ea-1fa6-4d7a-9edc-211c2e5e3b30.webp?v=1775076724",f:["Up to 40% more flow than factory","4-ply silicone couplers","Heavy-duty spring clamps"]}
 ];
-const TYPES=["Cold Air Intake","Intercooler Pipe","Intercooler","Turbo Components","Fuel System","Transmission","Supporting Mods","Accessories"];
+const TYPES=["Cold Air Intake","Intercooler Pipe","Intercooler","Turbo Components","Fuel System","Transmission","Supporting Mods","Accessories","Tuners","Exhaust","Delete Kits","Tuning"];
 const BYSKU=Object.fromEntries(P.map(x=>[x.sku.toUpperCase(),x]));
 const img=(x,w)=>CDN+x.img+(x.img.includes("?")?"&":"?")+"width="+w;
 const $=s=>document.querySelector(s);
@@ -460,12 +478,45 @@ $("#saveBtn").onclick=()=>{if(!S.build.length){toast("Add parts before saving");
 $("#topSearch").addEventListener("submit",e=>{e.preventDefault();S.q=$("#q").value;const p=BYSKU[S.q.trim().toUpperCase()];if(p){S.q="";$("#q").value="";openDetail(p.sku);}renderAll();});
 $("#sort").onchange=e=>{S.sort=e.target.value;renderList();};
 $("#instock").onchange=e=>{S.instock=e.target.checked;renderAll();};
-document.querySelector("nav.main").addEventListener("click",e=>{const a=e.target.closest("a");if(!a)return;e.preventDefault();
-  if(a.dataset.make){S.make=a.dataset.make;S.engine="";renderAll();}
-  else if(a.dataset.type!==undefined){S.types.clear();if(a.dataset.type)S.types.add(a.dataset.type);renderAll();}
-  else if(a.id==="rfq")toast("Request a Quote – connect to your quote form");
-  else if(a.id==="applyBtn")toast("Dealer application – connect to your signup flow");
-  document.querySelector(".ws").scrollIntoView({behavior:"smooth"});});
+/* ---------- Main nav: dropdown panel sits outside the scrolling bar so it never gets clipped ---------- */
+const SUPPORT=[["Fitment help","Fitment help – connect to your support desk"],["Order status","Order status – connect to your order API"],["Returns & warranty","Returns & warranty – connect to your RMA form"],["Contact your rep","Contact your rep – connect to your sales team"]];
+const nav=$("#mainNav"),panel=$("#navPanel");let openBtn=null;
+const inMake=(p,k)=>p.e.some(e=>ENGINES[k].list.some(l=>l[0]===e));
+const countFor=(k,ty)=>P.filter(p=>(!k||inMake(p,k))&&(!ty||p.ty===ty)).length;
+function panelHTML(m){
+  if(m==="vehicle")return `<div class="vgrid">${Object.entries(ENGINES).map(([k,mk])=>`<div><h4>${mk.name}</h4><ul>
+    <li><button class="all" data-make="${k}" data-engine="">Shop all ${mk.name}<small>${countFor(k)}</small></button></li>
+    ${mk.list.map(([id,n])=>`<li><button data-make="${k}" data-engine="${id}">${n}<small>${P.filter(p=>p.e.includes(id)).length}</small></button></li>`).join("")}</ul></div>`).join("")}</div>`;
+  if(m==="support")return `<ul>${SUPPORT.map(([l],i)=>`<li><button data-support="${i}">${esc(l)}</button></li>`).join("")}</ul>`;
+  return `<h4>${esc(m)} by platform</h4><ul><li><button class="all" data-type="${esc(m)}" data-make="">Shop all ${esc(m)}<small>${countFor("",m)}</small></button></li>
+    ${Object.entries(ENGINES).map(([k,mk])=>`<li><button data-type="${esc(m)}" data-make="${k}">${mk.name}<small>${countFor(k,m)}</small></button></li>`).join("")}</ul>`;
+}
+function closeMenu(){if(!openBtn)return;openBtn.setAttribute("aria-expanded","false");openBtn=null;panel.hidden=true;}
+function openMenu(b){
+  closeMenu();openBtn=b;b.setAttribute("aria-expanded","true");
+  panel.className="navpanel"+(b.dataset.menu==="vehicle"?" wide":"");panel.innerHTML=panelHTML(b.dataset.menu);panel.hidden=false;
+  const nr=nav.getBoundingClientRect(),br=b.getBoundingClientRect();
+  panel.style.left=Math.max(16,Math.min(br.left-nr.left,nr.width-panel.offsetWidth-16))+"px";
+}
+nav.addEventListener("click",e=>{
+  const b=e.target.closest(".ni");
+  if(b){
+    if(b.dataset.menu){openBtn===b?closeMenu():openMenu(b);return;}
+    closeMenu();
+    if(b.dataset.go==="quick"){$("#buildPanel").scrollIntoView({behavior:"smooth",block:"start"});$("#qaSku").focus({preventScroll:true});}
+    else if(b.dataset.go==="reorder"){$(".tools").scrollIntoView({behavior:"smooth",block:"start"});$("#prevSel").focus({preventScroll:true});}
+    else if(b.id==="applyBtn")toast("Dealer application – connect to your signup flow");
+    return;
+  }
+  const t=e.target.closest(".navpanel button");if(!t)return;
+  if(t.dataset.support!==undefined){toast(SUPPORT[+t.dataset.support][1]);closeMenu();return;}
+  if(t.dataset.type){S.types=new Set([t.dataset.type]);S.make=t.dataset.make;S.engine="";}
+  else{S.types.clear();S.make=t.dataset.make;S.engine=t.dataset.engine;}
+  closeMenu();renderAll();$(".ws").scrollIntoView({behavior:"smooth"});
+});
+document.addEventListener("click",e=>{if(openBtn&&!nav.contains(e.target))closeMenu();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&openBtn){const b=openBtn;closeMenu();b.focus();}});
+$("#mainNav .bar").addEventListener("scroll",closeMenu);addEventListener("resize",closeMenu);
 $("#loginBtn").onclick=()=>toast("Dealer login – connect to your auth");
 
 let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);}
