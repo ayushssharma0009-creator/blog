@@ -125,6 +125,8 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .thumb{width:150px;height:150px;background:#fafafa;border-radius:6px;display:grid;place-items:center;overflow:hidden}
 .thumb img{width:100%;height:100%;object-fit:contain}
 .prod h3{margin:0 0 4px;font-size:15px;line-height:1.3}
+.prod h3 a{color:inherit;text-decoration:none}
+.prod h3 a:hover{color:var(--brand);text-decoration:underline}
 .meta{color:var(--muted);font-size:12px;margin-bottom:6px}
 .meta b{color:var(--ink-2);font-weight:600}
 .stock{font-size:12px;font-weight:600;color:var(--ok)}
@@ -313,7 +315,7 @@ const ENG_NAME={};for(const m in ENGINES)for(const[id,n]of ENGINES[m].list)ENG_N
 const P=[
  {sku:"INT-SB-FOR-20",t:"Powerstroke S&B Cold Air Intake | FORD 1999-2026",b:"S&B Filters",p:399,ty:"Cold Air Intake",e:["ps73","ps60","ps64","ps67-11","ps67-20"],img:"S_B-cold-air-intake-Powerstroke.png?v=1790370753",f:["Fully enclosed airbox, clear sealed lid","Cotton cleanable or dry extendable filter","MAF calibrated – no check engine light","Million Mile limited warranty"],best:1,note:"Ships from manufacturer in 1–2 weeks"},
  {sku:"AC-INTERCOOLER-FOR-11",t:"Ford 6.7L Powerstroke Upgraded Intercooler 50% Larger Core | 2011–2026",b:"Tuner Depot",p:1199.99,ty:"Intercooler",e:["ps67-11","ps67-20"],img:"AC-INTERCOOLER-FOR-11.png?v=1790268217",f:["All-aluminum bar-and-plate core","Core ~50% larger than factory","Lower intake-air temps and EGTs","Generation-specific 2011–16 / 2017–26"]},
- {sku:"ICP-FOR-11-CS",t:"6.7L Powerstroke Intercooler Charge Pipe Kit | Cold Side Upgrade | FORD 2011–2016",b:"Black Bandit",p:165,was:396,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2011-2016-44135034978555_cd28f7a5-e676-46e8-a184-ff8a8d01b0bd.webp?v=1775076734",f:["Mandrel-bent aluminum tubing","4-ply silicone couplers","Heavy-duty spring clamps","Replaces crack-prone OEM plastic pipe"],best:1},
+ {sku:"ICP-FOR-11-CS",page:"product.html",t:"6.7L Powerstroke Intercooler Charge Pipe Kit | Cold Side Upgrade | FORD 2011–2016",b:"Black Bandit",p:165,was:396,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2011-2016-44135034978555_cd28f7a5-e676-46e8-a184-ff8a8d01b0bd.webp?v=1775076734",f:["Mandrel-bent aluminum tubing","4-ply silicone couplers","Heavy-duty spring clamps","Replaces crack-prone OEM plastic pipe"],best:1},
  {sku:"ICP-FOR-17-CS",t:"6.7L Powerstroke Cold Side Intercooler Charge Pipe Kit (2017-2019)",b:"Black Bandit",p:275,was:330,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-intercooler-pipe-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2017-2019-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-44135032062203_94d35b63-477f-459a-9d42-b7f824e82337.webp?v=1775076727",f:["Quick-disconnect flange","Retains factory IAT sensor","Spring-loaded clamps","Direct OEM replacement"]},
  {sku:"ICP-FOR-11-CSK",t:"6.7L Powerstroke Cold Side Intercooler Pipe Kit | FORD 2011-2015",b:"Black Bandit",p:247.5,was:330,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-pipe-kit-2011-2015-ford-powerstroke-6-7l-cold-side-intercooler-pipe-kit-44135037042939_7ecadf79-c09b-4ba1-82fb-29aaa1bafc2c.webp?v=1775076666",f:["Mandrel-bent aluminum","4-ply silicone couplers","All hardware included"]},
  {sku:"INT-FOR-11-B",t:"6.7L Powerstroke Cold Air Intake Kit | FORD 2011-2016",b:"Black Bandit",p:99.99,ty:"Cold Air Intake",e:["ps67-11"],img:"black-bandit-cold-air-intake-ford-powerstroke-6-7l-cold-air-intake-kit-2011-2016-ford-powerstroke-6-7l-cold-air-intake-kit-2011-2016-1174017547_d6a10171-7098-4e56-a335-2a2913903af0.png?v=1775076484",f:["4\" aluminum piping, gloss black","Washable micro cotton filter","Bolt-on, all hardware included"]},
@@ -411,7 +413,7 @@ function renderList(){
       ${p.best?'<span class="badge" title="Core part we recommend for most builds on this platform">Essential</span>':""}
       <div class="thumb"><img loading="lazy" src="${img(p,320)}" alt="${esc(p.t)}"></div>
       <div style="min-width:0">
-        <h3>${esc(p.t)}</h3>
+        <h3>${p.page?`<a href="${p.page}">${esc(p.t)}</a>`:esc(p.t)}</h3>
         <div class="meta"><b>${esc(p.b)}</b> · ${esc(p.ty)} · SKU: ${esc(p.sku)}</div>
         <div class="stock${p.out?" out":""}">${p.out?"● Backordered":"● In Stock"}${p.note?` <span style="color:var(--muted);font-weight:400">– ${esc(p.note)}</span>`:""}</div>
         <ul class="feat">${p.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${fit}
@@ -544,6 +546,17 @@ $("#loginBtn").onclick=()=>toast("Dealer login – connect to your auth");
 
 let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);}
 function renderAll(){renderMakes();renderTypes();renderList();renderBuild();}
+/* ---------- Deep links from other pages (product page menus, breadcrumbs) ---------- */
+(()=>{const u=new URLSearchParams(location.search);if(![...u.keys()].length)return;
+  const en=u.get("engine");if(en&&ENG_NAME[en]){S.engine=en;S.make=Object.keys(ENGINES).find(k=>ENGINES[k].list.some(l=>l[0]===en));}
+  else if(u.has("make")){const m=u.get("make");S.make=ENGINES[m]?m:"";S.engine="";}
+  if(u.get("type")&&TYPES.includes(u.get("type")))S.types=new Set([u.get("type")]);
+  if(u.get("q")){S.q=u.get("q");$("#q").value=S.q;}
+  addEventListener("load",()=>{const f=u.get("focus");
+    if(f==="quick"||f==="reorder"){$("#buildPanel").scrollIntoView({block:"start"});$(f==="quick"?"#qaSku":"#prevSel").focus({preventScroll:true});}
+    else if(u.get("cart"))$("#cartBtn").click();
+    else document.querySelector(".ws").scrollIntoView({block:"start"});});
+})();
 renderAll();renderCart();renderSaved();
 </script>
 </body>

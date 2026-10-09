@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cold Side Charge Pipe Kit</title>
+<style>
+/* Layout: product page — gallery | details + buy box, then overview, specs, fitment, build-together and related parts. Shares tokens, header and nav with index.html. */
+:root{
+  --brand:#e8401c; --brand-dk:#c73312; --ink:#16181d; --ink-2:#4a4f5a; --muted:#80858f;
+  --line:#e3e5e9; --bg:#f4f5f7; --card:#fff; --ok:#16a34a; --warn:#b45309;
+  --nav:#1b1e24;
+  --f:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:14px/1.4 var(--f);color:var(--ink);background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.wrap{max-width:1600px;margin:0 auto;padding-inline:16px}
+
+/* Header */
+.top{background:#fff;border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.logo b{font:italic 900 34px/1 var(--f);color:var(--brand);letter-spacing:-2px}
+.logo span{font-size:13px;line-height:1.25;color:var(--ink-2)}
+.logo span strong{display:block;font-size:15px;color:var(--ink)}
+.search{flex:1;display:flex;min-width:240px;max-width:640px}
+.search input{flex:1;min-width:0;border:1px solid var(--line);border-right:0;border-radius:6px 0 0 6px;padding:10px 12px}
+.search button{border:0;background:var(--brand);color:#fff;border-radius:0 6px 6px 0;padding:0 18px}
+.acct{display:flex;gap:18px;align-items:center;margin-left:auto}
+.acct button{background:none;border:0;display:flex;gap:6px;align-items:center}
+.cartbtn{position:relative}
+.cartbtn i{position:absolute;top:-6px;left:12px;background:var(--brand);color:#fff;font-style:normal;font-size:11px;border-radius:9px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
+nav.main{background:var(--nav);color:#e9eaee;position:relative;z-index:20}
+nav.main .bar{display:flex;gap:2px;align-items:center;min-height:58px;overflow-x:auto;scrollbar-width:none}
+nav.main .bar::-webkit-scrollbar{display:none}
+.ni{display:inline-flex;flex:none;align-items:center;gap:8px;height:42px;padding:0 14px;background:none;border:1.5px solid transparent;border-radius:6px;color:inherit;font-size:15px;font-weight:500;white-space:nowrap}
+.ni:hover,.ni[aria-expanded=true]{background:#2a2e36;color:#fff}
+.ni .cv{width:12px;height:12px;opacity:.75;transition:transform .15s}
+.ni[aria-expanded=true] .cv{transform:rotate(180deg)}
+.ni.veh{height:46px;padding:0 18px;margin-right:12px;background:var(--brand);color:#fff;font-weight:700}
+.ni.veh:hover,.ni.veh[aria-expanded=true]{background:var(--brand-dk)}
+.ni.dealer{margin-left:auto;border-color:var(--brand);font-weight:600}
+.ni.dealer svg{color:var(--brand)}
+.ni.dealer:hover{background:#2a2e36;border-color:var(--brand)}
+.navpanel{position:absolute;top:100%;min-width:250px;max-width:calc(100vw - 32px);padding:14px;background:#fff;color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:0 0 8px 8px;box-shadow:0 14px 30px rgba(22,24,29,.2)}
+.navpanel.wide{width:min(1200px,calc(100vw - 32px))}
+.navpanel h4{margin:0 0 6px;padding:0 8px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.navpanel ul{list-style:none;margin:0;padding:0}
+.navpanel li button{display:flex;justify-content:space-between;gap:16px;width:100%;padding:7px 8px;background:none;border:0;border-radius:4px;text-align:left;color:var(--ink-2)}
+.navpanel li button:hover{background:#fdece7;color:var(--brand-dk)}
+.navpanel li small{color:var(--muted);font-variant-numeric:tabular-nums}
+.navpanel .all{font-weight:600;color:var(--ink)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 24px}
+.row{display:flex;gap:8px;align-items:stretch}
+.in{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:#fff;min-width:0}
+.btn{background:var(--brand);color:#fff;border:0;border-radius:6px;padding:8px 14px;font-weight:600;white-space:nowrap}
+.btn:hover{background:var(--brand-dk)}
+.btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--brand)}
+.btn.lite{background:#f1f2f4;color:var(--ink);font-weight:500}
+.btn.lite:hover{background:#e6e8eb}
+.msg{font-size:12px;min-height:16px;margin-top:4px}
+.msg.ok{color:var(--ok)} .msg.err{color:var(--brand-dk)}
+
+/* Breadcrumb */
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;padding:14px 0 4px;margin:0;list-style:none;font-size:12px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:6px}
+.crumbs a{color:var(--ink-2);text-decoration:none}
+.crumbs a:hover{color:var(--brand);text-decoration:underline}
+
+/* Product hero */
+.pdp{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;padding-block:10px 24px;align-items:start}
+.gallery{position:sticky;top:12px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+.shot{position:relative;aspect-ratio:1;max-width:100%;display:grid;place-items:center;background:#fafafa;border-radius:6px;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:contain}
+.shot.broken img{display:none}
+.shot.broken::after{content:attr(data-sku);font:600 13px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--muted)}
+.badge{position:absolute;top:12px;left:12px;z-index:1;background:var(--brand);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;border-radius:3px}
+.sale{position:absolute;top:12px;right:12px;z-index:1;background:var(--ink);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;border-radius:3px}
+.gnote{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink-2)}
+.gnote span{display:flex;gap:6px;align-items:center}
+.gnote svg{color:var(--ok)}
+
+.info{display:flex;flex-direction:column;gap:14px;min-width:0}
+.brand{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}
+.info h1{margin:0;font-size:clamp(22px,2.2vw,28px);line-height:1.2;text-wrap:balance}
+.ids{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted)}
+.ids b{color:var(--ink-2);font-weight:600}
+.copy{display:inline-flex;align-items:center;gap:4px;background:none;border:0;padding:0;color:var(--ink-2);font:600 12px/1 ui-monospace,Menlo,Consolas,monospace}
+.copy:hover{color:var(--brand)}
+.stock{font-size:13px;font-weight:600;color:var(--ok)}
+.feat{list-style:none;padding:0;margin:0;font-size:14px;color:var(--ink-2)}
+.feat li{padding-left:22px;position:relative;margin:5px 0}
+.feat li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+
+.buybox{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.prices{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;font-variant-numeric:tabular-nums}
+.prices .lbl{font-size:12px;color:var(--muted)}
+.prices .now{font-size:30px;font-weight:800}
+.prices s{color:var(--muted)}
+.prices .save{color:var(--ok);font-weight:600;font-size:13px}
+.prices .yours{font-size:16px;font-weight:700;color:var(--ink)}
+.fitbox{border:1px solid var(--line);border-radius:6px;padding:12px;background:var(--bg)}
+.fitbox label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.fitbox select{width:100%}
+.fitres{margin-top:8px;font-size:13px;min-height:18px}
+.fitres.ok{color:var(--ok)} .fitres.no{color:var(--warn)}
+.fitres a{color:inherit;font-weight:600}
+.buyrow{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+.qty{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff}
+.qty button{border:0;background:#fff;width:38px;font-size:18px}
+.qty button:hover{background:#f1f2f4}
+.qty input{width:52px;border:0;border-inline:1px solid var(--line);text-align:center;font-variant-numeric:tabular-nums}
+.buyrow .btn{flex:1;padding:12px 16px;font-size:15px}
+.line{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.line b{color:var(--ink)}
+.minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.minis li{display:flex;flex-direction:column;gap:4px;align-items:flex-start;font-size:12px;color:var(--ink-2)}
+.minis b{font-size:12px;color:var(--ink)}
+.minis svg{color:var(--brand)}
+
+/* Detail sections */
+.subnav{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.subnav .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.subnav a{padding:12px;white-space:nowrap;color:var(--ink-2);text-decoration:none;font-weight:600;border-bottom:2px solid transparent}
+.subnav a:hover{color:var(--brand);border-bottom-color:var(--brand)}
+.sections{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;padding-block:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px;min-width:0;scroll-margin-top:56px}
+.card h2{margin:0 0 10px;font-size:18px}
+.card p{margin:0 0 10px;max-width:65ch;line-height:1.55;color:var(--ink-2)}
+.card.full{grid-column:1/-1}
+.specs{width:100%;border-collapse:collapse;font-size:13px}
+.specs th,.specs td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.specs th{width:40%;color:var(--muted);font-weight:500}
+.fitlist{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.fitlist li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:6px;background:var(--bg);font-size:13px}
+.fitlist .y{color:var(--ok);font-weight:700}
+.fitlist .n{color:var(--warn);font-weight:700}
+.fitlist a{color:var(--ink);font-weight:600}
+
+/* Build together */
+.combo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(220px,.8fr);gap:12px;align-items:stretch}
+.ci{position:relative;display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.ci:has(input:checked){border-color:var(--brand);background:#fdf6f4}
+.ci input{position:absolute;top:12px;right:12px;width:18px;height:18px;accent-color:var(--brand)}
+.ci .shot{aspect-ratio:4/3}
+.ci b{font-size:13px;line-height:1.3;padding-right:24px}
+.ci .role{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ci .pr{margin-top:auto;font-weight:700;font-variant-numeric:tabular-nums}
+.ctot{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px;border-radius:8px;background:var(--nav);color:#e9eaee;font-variant-numeric:tabular-nums}
+.ctot .big{font-size:26px;font-weight:800;color:#fff}
+.ctot small{color:#b9bdc6}
+
+/* Related */
+.rel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.rc{display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line);border-radius:8px}
+.rc .shot{aspect-ratio:4/3}
+.rc b{font-size:13px;line-height:1.3}
+.rc .why{font-size:12px;color:var(--muted)}
+.rc .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto;font-weight:700;font-variant-numeric:tabular-nums}
+
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
+.toast.on{opacity:1}
+.linkbtn{background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0}
+.mbar{display:none}
+
+@media (max-width:1000px){.pdp{grid-template-columns:minmax(0,1fr)}.gallery{position:static}.sections{grid-template-columns:minmax(0,1fr)}.combo{grid-template-columns:repeat(3,minmax(0,1fr))}.ctot{grid-column:1/-1}.acct span.lbl{display:none}}
+@media (max-width:640px){
+  .logo span{display:none}.ni.dealer{margin-left:0}
+  .combo,.rel{grid-template-columns:minmax(0,1fr)}
+  .ci{flex-direction:row;align-items:center}.ci .shot{width:72px;flex:none;aspect-ratio:1}
+  .minis{grid-template-columns:minmax(0,1fr)}.minis li{flex-direction:row;align-items:center;gap:8px}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(22,24,29,.08);font-variant-numeric:tabular-nums}
+  .mbar b{font-size:18px}.mbar .btn{padding:11px 18px}
+  body{padding-bottom:72px}
+  .toast{bottom:84px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><b>DRP</b><span><strong>B2B PARTS PORTAL</strong>FOR DEALERS, INSTALLERS &amp; FLEET BUYERS</span></a>
+    <form class="search" id="topSearch" role="search">
+      <input id="q" type="search" placeholder="Search by SKU, part number or keyword…" aria-label="Search parts">
+      <button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+    </form>
+    <div class="acct">
+      <button type="button" id="loginBtn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="lbl">Login</span></button>
+      <button type="button" class="cartbtn" id="cartBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 11h11l2-8H6.2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg><i id="cartCount">0</i><span class="lbl" style="text-align:left;line-height:1.2"><b>Your Cart</b><br><small id="cartItems">0 item(s)</small></span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="main" id="mainNav" aria-label="Main">
+  <div class="wrap bar">
+    <button type="button" class="ni veh" data-menu="vehicle" aria-haspopup="true" aria-expanded="false"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 3.5h13v10h-13zM14.5 7h5l4 4v2.5h-9"/><circle cx="6" cy="15.5" r="2.2" fill="var(--brand)"/><circle cx="19" cy="15.5" r="2.2" fill="var(--brand)"/></svg>Shop by Vehicle<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-menu="Tuners" aria-haspopup="true" aria-expanded="false">Tuners<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-menu="Exhaust" aria-haspopup="true" aria-expanded="false">Exhaust<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-menu="Delete Kits" aria-haspopup="true" aria-expanded="false">Delete Kits<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-menu="Tuning" aria-haspopup="true" aria-expanded="false">Tuning<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni" data-go="quick">Quick Order</button>
+    <button type="button" class="ni" data-go="reorder">Reorders</button>
+    <button type="button" class="ni dealer" id="applyBtn"><svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="1.5" y="7.5" width="13" height="9" rx="1.5"/><path d="M4.5 7.5V5a3.5 3.5 0 0 1 7 0v2.5"/><path d="M8 11.5v1.5"/></svg>Dealer Access</button>
+    <button type="button" class="ni" data-menu="support" aria-haspopup="true" aria-expanded="false">Support<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  </div>
+  <div class="navpanel" id="navPanel" hidden></div>
+</nav>
+
+<main>
+  <nav class="wrap" aria-label="Breadcrumb">
+    <ol class="crumbs">
+      <li><a href="index.html">Parts Portal</a></li>
+      <li><a href="index.html?make=ford">Ford Powerstroke</a></li>
+      <li><a href="index.html?make=ford&amp;engine=ps67-11">6.7L Powerstroke (2011-2019)</a></li>
+      <li><a href="index.html?make=ford&amp;engine=ps67-11&amp;type=Intercooler%20Pipe">Intercooler Pipe</a></li>
+      <li aria-current="page">ICP-FOR-11-CS</li>
+    </ol>
+  </nav>
+
+  <div class="wrap pdp">
+    <section class="gallery" aria-label="Product photo">
+      <div class="shot" data-sku="ICP-FOR-11-CS">
+        <span class="badge" title="Core part we recommend for most builds on this platform">Essential</span>
+        <span class="sale">Save 58%</span>
+        <img id="mainImg" alt="Black Bandit cold side intercooler charge pipe kit for 2011–2016 Ford 6.7L Powerstroke">
+      </div>
+      <div class="gnote">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Bolt-on replacement for the factory pipe</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Couplers and clamps included</span>
+      </div>
+    </section>
+
+    <section class="info" aria-labelledby="pTitle">
+      <span class="brand">Black Bandit</span>
+      <h1 id="pTitle">6.7L Powerstroke Intercooler Charge Pipe Kit | Cold Side Upgrade | Ford 2011–2016</h1>
+      <div class="ids"><span>SKU: <button type="button" class="copy" id="copySku" title="Copy SKU">ICP-FOR-11-CS <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></span><span>Category: <b>Intercooler Pipe</b></span><span>Fits: <b>2011–2016 Ford 6.7L Powerstroke</b></span></div>
+      <div class="stock">● In Stock</div>
+      <ul class="feat">
+        <li>Mandrel-bent aluminum tubing</li>
+        <li>4-ply silicone couplers</li>
+        <li>Heavy-duty spring clamps</li>
+        <li>Replaces the crack-prone factory plastic pipe</li>
+      </ul>
+
+      <div class="buybox">
+        <div class="prices">
+          <span class="lbl">Dealer price</span><span><span class="now">$165.00</span> <s>$396.00</s> <span class="save">Save $231.00</span></span>
+          <span class="lbl">With your <span id="discPct">5</span>% discount</span><span class="yours" id="yourPrice">$156.75</span>
+        </div>
+
+        <div class="fitbox">
+          <label for="fitSel">Check fitment for your customer's truck</label>
+          <select class="in" id="fitSel"><option value="">Select engine…</option></select>
+          <div class="fitres" id="fitRes" role="status"></div>
+        </div>
+
+        <div class="buyrow">
+          <div class="qty"><button type="button" data-d="-1" aria-label="Less">−</button><input id="qty" value="1" inputmode="numeric" aria-label="Quantity"><button type="button" data-d="1" aria-label="More">+</button></div>
+          <button type="button" class="btn" id="addBuild">Add to Build</button>
+          <button type="button" class="btn ghost" id="addCart">Add to Cart</button>
+        </div>
+        <div class="line"><span id="lineLbl">1 × $165.00, less 5% dealer discount</span><b id="lineTot">$156.75</b></div>
+
+        <ul class="minis">
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><b>Fitment matched</b>Checked against the engine you pick</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M1 4h14v12H1zM15 8h4l4 4v4h-8"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg><b>Fast dispatch</b>In-stock parts ship the same business day</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h18v4H3zM5 8v12h14V8M10 12h4"/></svg><b>Quick reorder</b>Save this part in a build for repeat jobs</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <nav class="subnav" aria-label="Product sections"><div class="wrap">
+    <a href="#overview">Overview</a><a href="#specs">Specifications</a><a href="#fitment">Fitment</a><a href="#together">Build Together</a><a href="#related">Related Parts</a>
+  </div></nav>
+
+  <div class="wrap sections">
+    <section class="card" id="overview">
+      <h2>Why replace the factory cold side pipe</h2>
+      <p>On 2011–2016 6.7L Powerstrokes, the factory cold side charge pipe that runs from the intercooler to the intake is plastic. Heat cycles and boost pressure can crack it or push the coupler off. When that happens the truck loses boost, drops power and can go into limp mode.</p>
+      <p>This kit replaces the plastic pipe with mandrel-bent aluminum tubing. The 4-ply silicone couplers and heavy-duty spring clamps hold the joints tight under boost. It's a common fix for trucks that come in with a boost leak, and a good preventive upgrade when the truck is already apart for other intake work.</p>
+    </section>
+
+    <section class="card" id="specs">
+      <h2>Specifications</h2>
+      <div style="overflow-x:auto"><table class="specs">
+        <tr><th scope="row">Brand</th><td>Black Bandit</td></tr>
+        <tr><th scope="row">SKU</th><td>ICP-FOR-11-CS</td></tr>
+        <tr><th scope="row">Category</th><td>Intercooler Pipe</td></tr>
+        <tr><th scope="row">Position</th><td>Cold side (intercooler outlet to intake)</td></tr>
+        <tr><th scope="row">Tubing</th><td>Mandrel-bent aluminum</td></tr>
+        <tr><th scope="row">Couplers</th><td>4-ply silicone</td></tr>
+        <tr><th scope="row">Clamps</th><td>Heavy-duty spring clamps</td></tr>
+        <tr><th scope="row">Replaces</th><td>Factory plastic cold side pipe</td></tr>
+        <tr><th scope="row">Fitment</th><td>2011–2016 Ford 6.7L Powerstroke</td></tr>
+        <tr><th scope="row">List price</th><td>$396.00</td></tr>
+      </table></div>
+    </section>
+
+    <section class="card full" id="fitment">
+      <h2>Fitment</h2>
+      <ul class="fitlist">
+        <li><span class="y">✓</span><span><b>Fits:</b> Ford Super Duty with the 6.7L Powerstroke, model years 2011–2016.</span></li>
+        <li><span class="n">✕</span><span><b>2017–2019 6.7L Powerstroke:</b> the pipe changed for 2017. Use the <a href="#related">2017–2019 Cold Side Charge Pipe Kit (ICP-FOR-17-CS)</a>.</span></li>
+        <li><span class="n">✕</span><span><b>2020–2026 6.7L Powerstroke:</b> not compatible. No cold side kit for this generation is listed yet.</span></li>
+        <li><span class="n">✕</span><span><b>6.4L, 6.0L and 7.3L Powerstroke:</b> not compatible. Use the charge pipe kits listed for those engines.</span></li>
+      </ul>
+    </section>
+
+    <section class="card full" id="together">
+      <h2>Complete the charge-air system</h2>
+      <p>Intake, intercooler and cold side pipe for the same 2011–2016 truck. Untick anything your customer already has.</p>
+      <div class="combo" id="combo"></div>
+    </section>
+
+    <section class="card full" id="related">
+      <h2>Related parts for the 6.7L Powerstroke</h2>
+      <div class="rel" id="rel"></div>
+    </section>
+  </div>
+</main>
+
+<div class="mbar" aria-label="Quick buy"><span><b>$165.00</b><br><small style="color:var(--muted)">Dealer price</small></span><button type="button" class="btn" id="mAdd">Add to Build</button></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---------- Product data (titles, prices & images from tunerdepot.com, Oct 2026; same records as index.html) ---------- */
+const CDN="https://cdn.shopify.com/s/files/1/0712/1131/9389/files/";
+const ENGINES={
+  ford:{name:"Ford Powerstroke",list:[["ps67-20","6.7L Powerstroke (2020-2026)"],["ps67-11","6.7L Powerstroke (2011-2019)"],["ps30","3.0L Powerstroke (2018-2020)"],["ps64","6.4L Powerstroke (2008-2010)"],["ps60","6.0L Powerstroke (2003-2007)"],["ps73","7.3L Powerstroke (1999-2003)"]]},
+  ram:{name:"Ram Cummins",list:[["c67-13","6.7L Ram Cummins (2013-2025)"],["c67-10","6.7L Ram Cummins (2010-2012)"],["c67-07","6.7L Ram Cummins (2007.5-2009)"],["c50","5.0L Nissan Cummins (2016-2019)"]]},
+  gm:{name:"GM Duramax",list:[["l5p","6.6L Duramax L5P (2017-2026)"],["lml","6.6L Duramax LML (2011-2016)"],["lmm","6.6L Duramax LMM (2007.5-2010)"],["lb7","6.6L LB7/LLY/LBZ (2001-2007)"],["lm2","3.0L Duramax LM2/LZ0 (2020-2025)"]]},
+  eco:{name:"EcoDiesel",list:[["eco-ram","3.0L EcoDiesel RAM (2014-2023)"],["eco-jgc","Jeep Grand Cherokee (2014-2020)"],["eco-jw","Jeep Wrangler / Gladiator (2020-2023)"]]}
+};
+const P={
+ "ICP-FOR-11-CS":{t:"6.7L Powerstroke Intercooler Charge Pipe Kit | Cold Side Upgrade | FORD 2011–2016",p:165,img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2011-2016-44135034978555_cd28f7a5-e676-46e8-a184-ff8a8d01b0bd.webp?v=1775076734"},
+ "INT-FOR-11-B":{t:"6.7L Powerstroke Cold Air Intake Kit | FORD 2011-2016",p:99.99,img:"black-bandit-cold-air-intake-ford-powerstroke-6-7l-cold-air-intake-kit-2011-2016-ford-powerstroke-6-7l-cold-air-intake-kit-2011-2016-1174017547_d6a10171-7098-4e56-a335-2a2913903af0.png?v=1775076484"},
+ "AC-INTERCOOLER-FOR-11":{t:"Ford 6.7L Powerstroke Upgraded Intercooler 50% Larger Core | 2011–2026",p:1199.99,img:"AC-INTERCOOLER-FOR-11.png?v=1790268217"},
+ "ICP-FOR-11-CSK":{t:"6.7L Powerstroke Cold Side Intercooler Pipe Kit | FORD 2011-2015",p:247.5,was:330,img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-pipe-kit-2011-2015-ford-powerstroke-6-7l-cold-side-intercooler-pipe-kit-44135037042939_7ecadf79-c09b-4ba1-82fb-29aaa1bafc2c.webp?v=1775076666",why:"Alternative cold side kit for 2011–2015 trucks"},
+ "ICP-FOR-17-CS":{t:"6.7L Powerstroke Cold Side Intercooler Charge Pipe Kit (2017-2019)",p:275,was:330,img:"black-bandit-intercooler-pipe-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2017-2019-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-44135032062203_94d35b63-477f-459a-9d42-b7f824e82337.webp?v=1775076727",why:"The right cold side kit for 2017–2019 trucks"},
+ "INT-SB-FOR-20":{t:"Powerstroke S&B Cold Air Intake | FORD 1999-2026",p:399,img:"S_B-cold-air-intake-Powerstroke.png?v=1790370753",why:"Enclosed-airbox intake, fits every Powerstroke generation"}
+};
+const SKU="ICP-FOR-11-CS",FITS=["ps67-11"],DISC=5;
+const COMBO=[["INT-FOR-11-B","Intake"],["AC-INTERCOOLER-FOR-11","Intercooler"],[SKU,"Cold side pipe"]];
+const RELATED=["ICP-FOR-11-CSK","ICP-FOR-17-CS","INT-SB-FOR-20"];
+
+const $=s=>document.querySelector(s);
+const money=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const img=(s,w)=>CDN+P[s].img+"&width="+w;
+const net=n=>n-Math.round(n*DISC)/100;
+/* Photos load from the Shopify CDN; if one fails, the box shows the SKU instead of a broken icon. */
+const shot=(s,w)=>`<div class="shot" data-sku="${s}"><img loading="lazy" src="${img(s,w)}" alt="${esc(P[s].t)}" onerror="this.parentNode.classList.add('broken')"></div>`;
+
+/* ---------- Storage shared with index.html (same keys) ---------- */
+const store={get(k,d){try{const v=localStorage.getItem("drp_"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("drp_"+k,JSON.stringify(v))}catch(e){}}};
+function addTo(key,sku,q){const list=store.get(key,[]),it=list.find(x=>x.sku===sku);if(it)it.q+=q;else list.push({sku,q});store.set(key,list);return list;}
+function renderCart(){const n=store.get("cart",[]).reduce((s,i)=>s+i.q,0);$("#cartCount").textContent=n;$("#cartItems").textContent=n+" item(s)";}
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);}
+
+/* ---------- Gallery ---------- */
+const mi=$("#mainImg");mi.onerror=()=>mi.parentNode.classList.add("broken");mi.src=img(SKU,900);
+
+/* ---------- Quantity + totals ---------- */
+const qtyIn=$("#qty");
+const qty=()=>Math.max(1,parseInt(qtyIn.value)||1);
+function renderLine(){const q=qty();qtyIn.value=q;$("#lineLbl").textContent=`${q} × ${money(P[SKU].p)}, less ${DISC}% dealer discount`;$("#lineTot").textContent=money(net(P[SKU].p*q));}
+document.querySelector(".buyrow .qty").addEventListener("click",e=>{const d=e.target.dataset.d;if(!d)return;qtyIn.value=Math.max(1,qty()+(+d));renderLine();});
+qtyIn.addEventListener("change",renderLine);
+$("#discPct").textContent=DISC;$("#yourPrice").textContent=money(net(P[SKU].p));renderLine();
+const addBuild=()=>{addTo("build",SKU,qty());toast(`Added ${qty()} × ${SKU} to your build`);};
+$("#addBuild").onclick=addBuild;$("#mAdd").onclick=addBuild;
+$("#addCart").onclick=()=>{addTo("cart",SKU,qty());renderCart();toast(`Added ${qty()} × ${SKU} to cart`);};
+$("#copySku").onclick=()=>{navigator.clipboard.writeText(SKU).then(()=>toast("SKU copied"),()=>toast("SKU: "+SKU));};
+
+/* ---------- Fitment check ---------- */
+$("#fitSel").innerHTML+=Object.values(ENGINES).map(m=>`<optgroup label="${m.name}">${m.list.map(([id,n])=>`<option value="${id}">${n}</option>`).join("")}</optgroup>`).join("");
+$("#fitSel").onchange=e=>{const v=e.target.value,r=$("#fitRes");
+  if(!v){r.className="fitres";r.textContent="";return;}
+  if(v==="ps67-11"){r.className="fitres ok";r.innerHTML="✓ Fits 2011–2016 model years. For a 2017–2019 truck, use <a href=\"#related\">ICP-FOR-17-CS</a>.";}
+  else{r.className="fitres no";r.innerHTML=`✕ Doesn't fit this engine. <a href="index.html?engine=${v}&amp;type=Intercooler%20Pipe">See intercooler pipes that do</a>.`;}
+};
+
+/* ---------- Build together ---------- */
+function renderCombo(){
+  const box=$("#combo"),sel=[...box.querySelectorAll("input:checked")].map(i=>i.value);
+  const picked=box.childElementCount?sel:COMBO.map(c=>c[0]);
+  const sub=picked.reduce((s,k)=>s+P[k].p,0);
+  box.innerHTML=COMBO.map(([s,role])=>`<label class="ci"><input type="checkbox" value="${s}" ${picked.includes(s)?"checked":""} ${s===SKU?"disabled":""} aria-label="Include ${esc(P[s].t)}">${shot(s,320)}<div style="display:flex;flex-direction:column;gap:6px;min-width:0;flex:1"><span class="role">${role}${s===SKU?" · this part":""}</span><b>${esc(P[s].t)}</b><span class="pr">${money(P[s].p)}</span></div></label>`).join("")+
+    `<div class="ctot"><small>${picked.length} part${picked.length===1?"":"s"} · ${money(sub)} before discount</small><span class="big">${money(net(sub))}</span><small>With your ${DISC}% dealer discount</small><button type="button" class="btn" id="comboAdd">Add ${picked.length} to Build</button></div>`;
+}
+$("#combo").addEventListener("change",renderCombo);
+$("#combo").addEventListener("click",e=>{if(e.target.id!=="comboAdd")return;const s=[...$("#combo").querySelectorAll("input:checked")].map(i=>i.value);s.forEach(k=>addTo("build",k,1));toast(`Added ${s.length} part${s.length===1?"":"s"} to your build`);});
+renderCombo();
+
+/* ---------- Related ---------- */
+$("#rel").innerHTML=RELATED.map(s=>`<article class="rc">${shot(s,400)}<b>${esc(P[s].t)}</b><span class="why">${esc(P[s].why)} · SKU ${s}</span><div class="foot"><span>${P[s].was?`<s style="color:var(--muted);font-weight:400;font-size:12px">${money(P[s].was)}</s> `:""}${money(P[s].p)}</span><button type="button" class="btn lite" data-add="${s}">Add to Build</button></div></article>`).join("");
+$("#rel").addEventListener("click",e=>{const s=e.target.dataset.add;if(s){addTo("build",s,1);toast(`Added ${s} to your build`);}});
+
+/* ---------- Header + nav: menus send the shopper to the portal with the filter applied ---------- */
+const go=q=>{location.href="index.html"+(q?"?"+new URLSearchParams(q):"");};
+$("#topSearch").addEventListener("submit",e=>{e.preventDefault();go({q:$("#q").value.trim()});});
+$("#loginBtn").onclick=()=>toast("Dealer login – connect to your auth");
+$("#cartBtn").onclick=()=>go({cart:1});
+const SUPPORT=[["Fitment help","Fitment help – connect to your support desk"],["Order status","Order status – connect to your order API"],["Returns & warranty","Returns & warranty – connect to your RMA form"],["Contact your rep","Contact your rep – connect to your sales team"]];
+const nav=$("#mainNav"),panel=$("#navPanel");let openBtn=null;
+function panelHTML(m){
+  if(m==="vehicle")return `<div class="vgrid">${Object.entries(ENGINES).map(([k,mk])=>`<div><h4>${mk.name}</h4><ul><li><button class="all" data-make="${k}" data-engine="">Shop all ${mk.name}</button></li>${mk.list.map(([id,n])=>`<li><button data-make="${k}" data-engine="${id}">${n}</button></li>`).join("")}</ul></div>`).join("")}</div>`;
+  if(m==="support")return `<ul>${SUPPORT.map(([l],i)=>`<li><button data-support="${i}">${esc(l)}</button></li>`).join("")}</ul>`;
+  return `<h4>${esc(m)} by platform</h4><ul><li><button class="all" data-type="${esc(m)}" data-make="">Shop all ${esc(m)}</button></li>${Object.entries(ENGINES).map(([k,mk])=>`<li><button data-type="${esc(m)}" data-make="${k}">${mk.name}</button></li>`).join("")}</ul>`;
+}
+function closeMenu(){if(!openBtn)return;openBtn.setAttribute("aria-expanded","false");openBtn=null;panel.hidden=true;}
+function openMenu(b){closeMenu();openBtn=b;b.setAttribute("aria-expanded","true");
+  panel.className="navpanel"+(b.dataset.menu==="vehicle"?" wide":"");panel.innerHTML=panelHTML(b.dataset.menu);panel.hidden=false;
+  const nr=nav.getBoundingClientRect(),br=b.getBoundingClientRect();panel.style.left=Math.max(16,Math.min(br.left-nr.left,nr.width-panel.offsetWidth-16))+"px";}
+nav.addEventListener("click",e=>{
+  const b=e.target.closest(".ni");
+  if(b){if(b.dataset.menu){openBtn===b?closeMenu():openMenu(b);return;}closeMenu();
+    if(b.dataset.go==="quick")go({focus:"quick"});else if(b.dataset.go==="reorder")go({focus:"reorder"});else if(b.id==="applyBtn")toast("Dealer application – connect to your signup flow");return;}
+  const t=e.target.closest(".navpanel button");if(!t)return;
+  if(t.dataset.support!==undefined){toast(SUPPORT[+t.dataset.support][1]);closeMenu();return;}
+  go(t.dataset.type?{make:t.dataset.make,type:t.dataset.type}:{make:t.dataset.make,engine:t.dataset.engine});
+});
+document.addEventListener("click",e=>{if(openBtn&&!nav.contains(e.target))closeMenu();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&openBtn){const b=openBtn;closeMenu();b.focus();}});
+$("#mainNav .bar").addEventListener("scroll",closeMenu);addEventListener("resize",closeMenu);
+renderCart();
+</script>
+</body>
+</html>
