@@ -158,7 +158,9 @@
   document.addEventListener("DOMContentLoaded",initNav);
 
   /* Product photos come from the Shopify CDN; hide any that fail so the image well shows instead of a broken icon. */
-  addEventListener("error",e=>{if(e.target.tagName==="IMG")e.target.classList.add("noimg");},true);
+  addEventListener("error",e=>{const t=e.target;if(t.tagName!=="IMG")return;
+    if(t.classList.contains("logo-img")){t.outerHTML='<b>DRP</b><span><strong>B2B PARTS PORTAL</strong>FOR DEALERS, INSTALLERS &amp; FLEET BUYERS</span>';return;} /* logo fallback */
+    t.classList.add("noimg");},true);
 
   /* Signed-in header: dealer name, initials and sign out. */
   document.addEventListener("DOMContentLoaded",()=>{
