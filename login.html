@@ -55,7 +55,6 @@
 .newacct{text-align:center;font-size:14px;color:var(--ink-2)}
 .newacct a{color:var(--brand-dk);font-weight:600}
 .signin .msg:empty,.appform .msg:empty{display:none}
-.demo{font-size:12px;color:var(--ink-2);background:var(--sunk);border-radius:6px;padding:8px 10px}
 
 /* Sections */
 section.band{padding-block:48px}
@@ -148,7 +147,6 @@ footer.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space
         <button class="btn" type="submit">Sign in</button>
         <div class="or">or</div>
         <div class="newacct">New to DRP? <a href="#apply">Apply for dealer access</a></div>
-        <div class="demo">Design sample: any email and password signs you in.</div>
       </form>
     </div>
   </section>
@@ -207,13 +205,15 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
-/* ---------- Sign in (front-end mock: any email + password works; replace with your auth) ---------- */
+/* ---------- Sign in (front-end mock with one sample account; replace with your auth — never ship real credentials in page code) ---------- */
+const SAMPLE={email:"ayush@ayush.com",password:"1234"};
 $("#pwToggle").onclick=e=>{const pw=$("#pw"),show=pw.type==="password";pw.type=show?"text":"password";e.target.textContent=show?"Hide":"Show";e.target.setAttribute("aria-pressed",show);};
 $("#forgot").onclick=()=>{const m=$("#signMsg");m.className="msg ok";m.textContent="Password reset – connect to your auth to email a reset link.";};
 $("#signin").addEventListener("submit",e=>{
   e.preventDefault();const email=$("#email").value.trim(),pw=$("#pw").value,m=$("#signMsg");
   if(!validEmail(email)){m.className="msg err";m.textContent="Enter the email address on your dealer account.";$("#email").focus();return;}
   if(!pw){m.className="msg err";m.textContent="Enter your password.";$("#pw").focus();return;}
+  if(email.toLowerCase()!==SAMPLE.email||pw!==SAMPLE.password){m.className="msg err";m.textContent="That email and password don't match a dealer account. Check them and try again.";$("#pw").select();return;}
   /* Company name from the email domain, e.g. ops@acme-diesel.com → "Acme Diesel" */
   const dom=email.split("@")[1].split(".")[0];
   const company=/^(gmail|yahoo|outlook|hotmail|icloud|aol|proton)$/i.test(dom)?"Demo Diesel Shop":dom.split(/[-_]/).map(w=>w[0].toUpperCase()+w.slice(1)).join(" ");
