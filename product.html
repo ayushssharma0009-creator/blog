@@ -49,7 +49,7 @@
 .prices s{color:var(--muted)}
 .prices .save{color:var(--ok);font-weight:600;font-size:13px}
 .prices .yours{font-size:16px;font-weight:700;color:var(--ink)}
-.fitbox{border:1px solid var(--brand-line);border-radius:6px;padding:12px;background:var(--brand-tint)}
+.fitbox{border:1px solid var(--line);border-radius:6px;padding:12px;background:var(--paper)}
 .fitbox label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
 .fitbox select{width:100%}
 .fitres{margin-top:8px;font-size:13px;min-height:18px}
@@ -89,13 +89,13 @@
 /* Build together */
 .combo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(220px,.8fr);gap:12px;align-items:stretch}
 .ci{position:relative;display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line);border-radius:8px;cursor:pointer}
-.ci:has(input:checked){border-color:var(--brand-line);background:var(--brand-tint)}
+.ci:has(input:checked){border-color:var(--brand);background:var(--paper)}
 .ci input{position:absolute;top:12px;right:12px;width:18px;height:18px;accent-color:var(--brand)}
 .ci .shot{aspect-ratio:4/3}
 .ci b{font-size:13px;line-height:1.3;padding-right:24px}
 .ci .role{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .ci .pr{margin-top:auto;font-weight:700;font-variant-numeric:tabular-nums}
-.ctot{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px;border-radius:8px;background:var(--brand-tint);border:1px solid var(--brand-line);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.ctot{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px;border-radius:8px;background:var(--paper);border:1px solid var(--line);color:var(--ink-2);font-variant-numeric:tabular-nums}
 .ctot .big{font:700 26px var(--f-display);color:var(--ink)}
 .ctot small{color:var(--ink-2)}
 
@@ -348,11 +348,13 @@ $("#rel").addEventListener("click",e=>{const s=e.target.dataset.add;if(s){addTo(
 const go=q=>{location.href="index.html"+(q?"?"+new URLSearchParams(q):"");};
 $("#topSearch").addEventListener("submit",e=>{e.preventDefault();go({q:$("#q").value.trim()});});
 $("#cartBtn").onclick=()=>go({cart:1});
+const TUNING=["Tuners","HP Tunes","EFI Live Tunes","EZ Lynk Tunes","TCM Tunes","Custom Tuning Packages"];
 const SUPPORT=[["Fitment help","Fitment help – connect to your support desk"],["Order status","Order status – connect to your order API"],["Returns & warranty","Returns & warranty – connect to your RMA form"],["Contact your rep","Contact your rep – connect to your sales team"]];
 const nav=$("#mainNav"),panel=$("#navPanel");let openBtn=null;
 function panelHTML(m){
   if(m==="vehicle")return `<div class="vgrid">${Object.entries(ENGINES).map(([k,mk])=>`<div><h4>${mk.name}</h4><ul><li><button class="all" data-make="${k}" data-engine="">Shop all ${mk.name}</button></li>${mk.list.map(([id,n])=>`<li><button data-make="${k}" data-engine="${id}">${n}</button></li>`).join("")}</ul></div>`).join("")}</div>`;
   if(m==="support")return `<ul>${SUPPORT.map(([l],i)=>`<li><button data-support="${i}">${esc(l)}</button></li>`).join("")}</ul>`;
+  if(m==="Tuning")return `<div class="tgrid"><div><h4>Tuning categories</h4><ul><li><button class="all" data-type="Tuning" data-make="">Shop all Tuning</button></li>${TUNING.map(t=>`<li><button data-type="${esc(t)}" data-make="">${esc(t)}</button></li>`).join("")}</ul></div><div><h4>Tuning by platform</h4><ul>${Object.entries(ENGINES).map(([k,mk])=>`<li><button data-type="Tuning" data-make="${k}">${mk.name}</button></li>`).join("")}</ul></div></div>`;
   return `<h4>${esc(m)} by platform</h4><ul><li><button class="all" data-type="${esc(m)}" data-make="">Shop all ${esc(m)}</button></li>${Object.entries(ENGINES).map(([k,mk])=>`<li><button data-type="${esc(m)}" data-make="${k}">${mk.name}</button></li>`).join("")}</ul>`;
 }
 function closeMenu(){if(!openBtn)return;openBtn.setAttribute("aria-expanded","false");openBtn=null;panel.hidden=true;}

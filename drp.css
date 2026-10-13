@@ -6,7 +6,8 @@
   --brand:#c2410c;        /* buttons, links, key accents */
   --brand-dk:#9a3412;     /* hover/pressed, orange text on tints */
   --brand-tint:#fdf0e8;   /* pastel orange surface: nav bar, selected rows */
-  --brand-tint-2:#fbe3d4; /* hover on pastel surfaces */
+  --brand-tint-2:#fbe3d4; /* stronger pastel: sign-in page stripes only */
+  --paper:#fffbf8;        /* pastel white: nav bar and soft panels after sign-in */
   --brand-line:#f3c9b1;   /* borders on pastel surfaces */
   /* Neutrals (warm, biased toward the brand hue) */
   --ink:#24170f; --ink-2:#4f3f35; --muted:#74645a;
@@ -56,18 +57,18 @@ img.noimg{visibility:hidden}
 .cartbtn{position:relative}
 .cartbtn i{position:absolute;top:-6px;left:12px;background:var(--brand);color:#fff;font-style:normal;font-size:11px;border-radius:9px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
 
-/* Main nav: pastel orange bar; dropdown panel sits outside the scrolling bar so it never gets clipped */
-nav.main{position:relative;z-index:20;background:var(--brand-tint);color:var(--ink);border-bottom:1px solid var(--brand-line)}
+/* Main nav: pastel white bar; dropdown panel sits outside the scrolling bar so it never gets clipped */
+nav.main{position:relative;z-index:20;background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line)}
 nav.main .bar{display:flex;gap:2px;align-items:center;min-height:58px;overflow-x:auto;scrollbar-width:none}
 nav.main .bar::-webkit-scrollbar{display:none}
 .ni{display:inline-flex;flex:none;align-items:center;gap:8px;height:42px;padding:0 14px;background:none;border:1.5px solid transparent;border-radius:6px;color:inherit;font-size:15px;font-weight:500;white-space:nowrap}
-.ni:hover,.ni[aria-expanded=true]{background:var(--brand-tint-2);color:var(--brand-dk)}
+.ni:hover,.ni[aria-expanded=true]{background:var(--sunk);color:var(--brand-dk)}
 .ni .cv{width:12px;height:12px;opacity:.7;transition:transform .15s}
 .ni[aria-expanded=true] .cv{transform:rotate(180deg)}
 .ni.veh{height:46px;padding:0 18px;margin-right:12px;background:var(--brand);color:#fff;font-weight:600}
 .ni.veh:hover,.ni.veh[aria-expanded=true]{background:var(--brand-dk);color:#fff}
 .ni.acctnav{margin-left:auto;border-color:var(--brand);color:var(--brand-dk);font-weight:600;background:var(--card)}
-.ni.acctnav:hover{background:var(--brand-tint-2)}
+.ni.acctnav:hover{background:var(--brand-tint)}
 .navpanel{position:absolute;top:100%;min-width:250px;max-width:calc(100vw - 32px);padding:14px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:0 0 8px 8px;box-shadow:var(--shadow)}
 .navpanel.wide{width:min(1200px,calc(100vw - 32px))}
 .navpanel h4{margin:0 0 6px;padding:0 8px;font:600 11px/1.4 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -76,6 +77,8 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .navpanel li button:hover{background:var(--brand-tint);color:var(--brand-dk)}
 .navpanel li small{color:var(--muted);font-variant-numeric:tabular-nums}
 .navpanel .all{font-weight:600;color:var(--ink)}
+.tgrid{display:grid;grid-template-columns:repeat(2,minmax(220px,1fr));gap:10px 24px;width:min(560px,calc(100vw - 60px))}
+@media (max-width:640px){.tgrid{grid-template-columns:minmax(0,1fr)}}
 .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 24px}
 
 /* Controls */
