@@ -1,0 +1,109 @@
+/* DRP B2B Parts Portal — shared styles for login.html, index.html and product.html.
+   Palette: warm pastel white surfaces with a deep, accessible orange. Every text pairing
+   below meets WCAG AA (4.5:1); white on --brand is 5.2:1, --muted on --bg is 5.3:1. */
+:root{
+  /* Brand */
+  --brand:#c2410c;        /* buttons, links, key accents */
+  --brand-dk:#9a3412;     /* hover/pressed, orange text on tints */
+  --brand-tint:#fdf0e8;   /* pastel orange surface: nav bar, selected rows */
+  --brand-tint-2:#fbe3d4; /* hover on pastel surfaces */
+  --brand-line:#f3c9b1;   /* borders on pastel surfaces */
+  /* Neutrals (warm, biased toward the brand hue) */
+  --ink:#24170f; --ink-2:#4f3f35; --muted:#74645a;
+  --bg:#fbf7f3;           /* pastel white page */
+  --card:#ffffff;
+  --sunk:#f6f0eb;         /* image wells, quiet buttons */
+  --sunk-2:#eee5de;       /* hover on quiet surfaces */
+  --line:#eadfd6;         /* dividers and card edges */
+  --field:#a39183;        /* form field borders (3:1 on white) */
+  /* Status */
+  --ok:#157a3a; --ok-tint:#e7f4eb; --warn:#9a5b00; --warn-tint:#fdf3e1;
+  --shadow:0 14px 32px rgba(84,46,22,.14);
+  /* Type */
+  --f:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --f-display:"Archivo",var(--f);
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:14px/1.45 var(--f);color:var(--ink);background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.wrap{max-width:1600px;margin:0 auto;padding-inline:16px}
+h1,h2,h3,h4{font-family:var(--f-display);letter-spacing:-.01em}
+img.noimg{visibility:hidden}
+
+/* Header */
+.top{background:var(--card);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.logo b{font:italic 900 34px/1 var(--f-display);color:var(--brand);letter-spacing:-1.5px}
+.logo span{font-size:12px;line-height:1.3;color:var(--muted);letter-spacing:.02em}
+.logo span strong{display:block;font:700 15px/1.2 var(--f-display);color:var(--ink);letter-spacing:.04em}
+.search{flex:1;display:flex;min-width:240px;max-width:640px}
+.search input{flex:1;min-width:0;border:1px solid var(--field);border-right:0;border-radius:6px 0 0 6px;padding:10px 12px;background:var(--card)}
+.search button{border:0;background:var(--brand);color:#fff;border-radius:0 6px 6px 0;padding:0 18px}
+.search button:hover{background:var(--brand-dk)}
+.acct{display:flex;gap:18px;align-items:center;margin-left:auto}
+.acct>button{background:none;border:0;display:flex;gap:6px;align-items:center}
+.who{display:flex;gap:10px;align-items:center}
+.avatar{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--brand-tint);color:var(--brand-dk);font-weight:700;font-size:13px;border:1px solid var(--brand-line)}
+.who .lbl{display:flex;flex-direction:column;line-height:1.2}
+.who small{color:var(--muted);font-size:12px}
+.who .linkbtn{font-size:12px;text-align:left}
+.cartbtn{position:relative}
+.cartbtn i{position:absolute;top:-6px;left:12px;background:var(--brand);color:#fff;font-style:normal;font-size:11px;border-radius:9px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
+
+/* Main nav: pastel orange bar; dropdown panel sits outside the scrolling bar so it never gets clipped */
+nav.main{position:relative;z-index:20;background:var(--brand-tint);color:var(--ink);border-bottom:1px solid var(--brand-line)}
+nav.main .bar{display:flex;gap:2px;align-items:center;min-height:58px;overflow-x:auto;scrollbar-width:none}
+nav.main .bar::-webkit-scrollbar{display:none}
+.ni{display:inline-flex;flex:none;align-items:center;gap:8px;height:42px;padding:0 14px;background:none;border:1.5px solid transparent;border-radius:6px;color:inherit;font-size:15px;font-weight:500;white-space:nowrap}
+.ni:hover,.ni[aria-expanded=true]{background:var(--brand-tint-2);color:var(--brand-dk)}
+.ni .cv{width:12px;height:12px;opacity:.7;transition:transform .15s}
+.ni[aria-expanded=true] .cv{transform:rotate(180deg)}
+.ni.veh{height:46px;padding:0 18px;margin-right:12px;background:var(--brand);color:#fff;font-weight:600}
+.ni.veh:hover,.ni.veh[aria-expanded=true]{background:var(--brand-dk);color:#fff}
+.ni.acctnav{margin-left:auto;border-color:var(--brand);color:var(--brand-dk);font-weight:600;background:var(--card)}
+.ni.acctnav:hover{background:var(--brand-tint-2)}
+.navpanel{position:absolute;top:100%;min-width:250px;max-width:calc(100vw - 32px);padding:14px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:0 0 8px 8px;box-shadow:var(--shadow)}
+.navpanel.wide{width:min(1200px,calc(100vw - 32px))}
+.navpanel h4{margin:0 0 6px;padding:0 8px;font:600 11px/1.4 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.navpanel ul{list-style:none;margin:0;padding:0}
+.navpanel li button{display:flex;justify-content:space-between;gap:16px;width:100%;padding:7px 8px;background:none;border:0;border-radius:4px;text-align:left;color:var(--ink-2)}
+.navpanel li button:hover{background:var(--brand-tint);color:var(--brand-dk)}
+.navpanel li small{color:var(--muted);font-variant-numeric:tabular-nums}
+.navpanel .all{font-weight:600;color:var(--ink)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 24px}
+
+/* Controls */
+.row{display:flex;gap:8px;align-items:stretch}
+.in{border:1px solid var(--field);border-radius:6px;padding:8px 10px;background:var(--card);min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--brand);color:#fff;border:1.5px solid var(--brand);border-radius:6px;padding:8px 14px;font-weight:600;white-space:nowrap;text-decoration:none}
+.btn:hover{background:var(--brand-dk);border-color:var(--brand-dk)}
+.btn.ghost{background:var(--card);color:var(--brand-dk);border-color:var(--brand)}
+.btn.ghost:hover{background:var(--brand-tint)}
+.btn.lite{background:var(--sunk);color:var(--ink);border-color:var(--sunk);font-weight:500}
+.btn.lite:hover{background:var(--sunk-2);border-color:var(--sunk-2)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.linkbtn{background:none;border:0;color:var(--brand-dk);text-decoration:underline;text-underline-offset:2px;padding:0}
+.linkbtn:hover{color:var(--brand)}
+.msg{font-size:12px;min-height:16px;margin-top:4px}
+.msg.ok{color:var(--ok)} .msg.err{color:var(--brand-dk)}
+.qty{display:inline-flex;border:1px solid var(--field);border-radius:6px;overflow:hidden;background:var(--card)}
+.qty button{border:0;background:var(--card);width:30px;height:30px;font-size:16px}
+.qty button:hover{background:var(--brand-tint)}
+.qty input{width:40px;border:0;border-inline:1px solid var(--line);text-align:center;font-variant-numeric:tabular-nums}
+.badge{background:var(--brand-tint);color:var(--brand-dk);border:1px solid var(--brand-line);font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 8px;border-radius:4px}
+.sku{font-family:var(--f-mono)}
+
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
+.toast.on{opacity:1}
+dialog{border:0;border-radius:10px;padding:0;max-width:760px;width:calc(100% - 32px);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(36,23,15,.45)}
+
+@media (max-width:1000px){.acct .lbl{display:none}}
+@media (max-width:640px){.logo span{display:none}.ni.acctnav{margin-left:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}

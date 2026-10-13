@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en" data-page="login">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DRP Dealer Sign In</title>
+<script src="drp.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,800;1,900&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="drp.css">
+<style>
+/* Layout: pre-login page — slim header, pastel hero with the dealer pitch beside the sign-in card,
+   assurance tiles, the three steps to get access, and the dealer application form.
+   Nothing else on the site opens until the dealer signs in. Colours come from the tokens in drp.css. */
+.top .wrap{justify-content:space-between}
+.toplinks{display:flex;gap:18px;align-items:center;font-size:14px;color:var(--ink-2)}
+.toplinks a{color:var(--brand-dk);font-weight:600}
+.gate{background:var(--brand-tint);border-bottom:1px solid var(--brand-line);color:var(--ink-2);font-size:13px}
+.gate .wrap{display:flex;gap:8px;align-items:center;padding-block:9px}
+.gate svg{flex:none;color:var(--brand-dk)}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;background:var(--brand-tint);border-bottom:1px solid var(--brand-line)}
+.hero::before{content:"";position:absolute;inset:0 0 0 auto;width:48%;background:repeating-linear-gradient(-60deg,transparent 0 26px,var(--brand-tint-2) 26px 52px);clip-path:polygon(28% 0,100% 0,100% 100%,0 100%);pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,420px);gap:48px;align-items:center;padding-block:56px}
+.pitch{display:flex;flex-direction:column;align-items:flex-start;gap:16px;min-width:0}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-dk)}
+.pitch h1{margin:0;max-width:16ch;font:italic 900 clamp(34px,4.6vw,60px)/1.02 var(--f-display);letter-spacing:-.025em;color:var(--ink);text-wrap:balance}
+.pitch h1 em{font-style:inherit;color:var(--brand)}
+.pitch p{margin:0;max-width:52ch;font-size:17px;line-height:1.55;color:var(--ink-2)}
+.ctas{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:6px}
+.ctas .btn{padding:13px 22px;font-size:16px}
+.ctas .linkbtn{font-size:15px;font-weight:600;text-decoration:none}
+.ctas .linkbtn:hover{text-decoration:underline}
+.plats{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 0;padding:0;list-style:none;font-size:13px;color:var(--ink-2)}
+.plats li{padding:4px 10px;border-radius:14px;background:var(--card);border:1px solid var(--brand-line)}
+.plats li:first-child{padding-inline:0;background:none;border:0;color:var(--muted)}
+
+/* Sign-in card */
+.signin{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+.signin h2{margin:0;font-size:22px}
+.signin>p{margin:-8px 0 0;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.flabel{font-size:13px;font-weight:600;color:var(--ink)}
+.field .in{padding:11px 12px;font-size:15px}
+.pw{position:relative;display:flex}
+.pw .in{flex:1;padding-right:64px}
+.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--brand-dk);font-size:13px;font-weight:600;padding:6px}
+.opts{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px}
+.opts label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.opts input{width:16px;height:16px;accent-color:var(--brand)}
+.signin .btn{padding:13px;font-size:16px}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.newacct{text-align:center;font-size:14px;color:var(--ink-2)}
+.newacct a{color:var(--brand-dk);font-weight:600}
+.signin .msg:empty,.appform .msg:empty{display:none}
+.demo{font-size:12px;color:var(--ink-2);background:var(--sunk);border-radius:6px;padding:8px 10px}
+
+/* Sections */
+section.band{padding-block:48px}
+section.band.alt{background:var(--card);border-block:1px solid var(--line)}
+.shead{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
+.shead h2{margin:0;font-size:clamp(22px,2.4vw,30px);text-wrap:balance}
+.shead p{margin:0;max-width:60ch;color:var(--ink-2);font-size:15px}
+.assure{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0;padding:0;list-style:none}
+.as{display:flex;flex-direction:column;gap:10px;padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.as .ic{display:grid;place-items:center;width:44px;height:44px;border-radius:10px;background:var(--brand-tint);color:var(--brand-dk)}
+.as b{font:700 16px var(--f-display)}
+.as span{color:var(--ink-2)}
+
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{position:relative;padding:20px 20px 20px 72px;border-radius:8px;background:var(--bg);border:1px solid var(--line);counter-increment:s}
+.steps li::before{content:counter(s);position:absolute;left:20px;top:18px;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;font:700 16px var(--f-display)}
+.steps b{display:block;margin-bottom:4px;font:700 16px var(--f-display)}
+.steps span{color:var(--ink-2)}
+
+/* Application */
+.apply{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:36px;align-items:start}
+.apply aside{display:flex;flex-direction:column;gap:12px}
+.apply aside h2{margin:0;font-size:clamp(22px,2.4vw,30px)}
+.apply aside p{margin:0;color:var(--ink-2);font-size:15px;max-width:48ch}
+.who-list{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.who-list li{display:flex;gap:10px;align-items:center;color:var(--ink-2)}
+.who-list li::before{content:"✓";color:var(--ok);font-weight:700}
+.appform{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.appform .full{grid-column:1/-1}
+.appform textarea{min-height:84px;resize:vertical}
+.req{color:var(--brand-dk)}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:flex;gap:8px;align-items:center;padding:7px 12px;border:1px solid var(--field);border-radius:20px;cursor:pointer;font-size:13px;background:var(--card)}
+.checks label:has(input:checked){background:var(--brand-tint);border-color:var(--brand);color:var(--brand-dk);font-weight:600}
+.checks input{accent-color:var(--brand)}
+.appform .foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.appform .foot small{color:var(--muted)}
+.appform .btn{padding:12px 22px;font-size:15px}
+.done{grid-column:1/-1;display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding:8px 0}
+.done .tick{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--ok-tint);color:var(--ok);font-size:22px;font-weight:700}
+.done h3{margin:0;font-size:20px}
+.done p{margin:0;color:var(--ink-2);max-width:52ch}
+
+footer.foot{padding-block:22px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+footer.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+
+@media (max-width:1000px){
+  .hero .wrap{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:36px}
+  .hero::before{width:100%;clip-path:polygon(60% 0,100% 0,100% 100%,30% 100%);opacity:.7}
+  .assure{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps,.apply{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .toplinks .hide-sm{display:none}
+  .assure,.appform{grid-template-columns:minmax(0,1fr)}
+  .signin{padding:20px;order:-1}
+  .hero .wrap{gap:24px;padding-block:24px 36px}
+  section.band{padding-block:36px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="login.html"><b>DRP</b><span><strong>B2B PARTS PORTAL</strong>FOR DEALERS, INSTALLERS &amp; FLEET BUYERS</span></a>
+    <div class="toplinks"><span class="hide-sm">New to DRP?</span><a href="#apply">Apply for dealer access</a></div>
+  </div>
+</header>
+<div class="gate"><div class="wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Wholesale portal for approved dealers. Prices, products and ordering open after you sign in.</div></div>
+
+<main>
+  <section class="hero" aria-label="Dealer sign in">
+    <div class="wrap">
+      <div class="pitch">
+        <span class="eyebrow">DRP Dealer Program</span>
+        <h1>Build it, check fitment, order at <em>dealer pricing.</em></h1>
+        <p>Made for shops, installers and fleet buyers. Pick an engine, add parts by SKU, save builds for repeat jobs, and your dealer discount applies automatically.</p>
+        <div class="ctas"><a class="btn" href="#apply">Apply for Dealer Access</a><a class="linkbtn" href="#how">How access works ↓</a></div>
+        <ul class="plats" aria-label="Platforms covered"><li>Platforms:</li><li>Ford Powerstroke</li><li>Ram Cummins</li><li>GM Duramax</li><li>EcoDiesel</li></ul>
+      </div>
+
+      <form class="signin" id="signin" novalidate>
+        <h2>Dealer sign in</h2>
+        <p>Use the email on your dealer account.</p>
+        <div class="field"><label for="email">Work email</label><input class="in" id="email" type="email" autocomplete="username" placeholder="you@yourshop.com" required></div>
+        <div class="field"><label for="pw">Password</label><div class="pw"><input class="in" id="pw" type="password" autocomplete="current-password" required><button type="button" id="pwToggle" aria-controls="pw" aria-pressed="false">Show</button></div></div>
+        <div class="opts"><label><input type="checkbox" id="remember"> Keep me signed in</label><button type="button" class="linkbtn" id="forgot">Forgot password?</button></div>
+        <div class="msg" id="signMsg" role="alert"></div>
+        <button class="btn" type="submit">Sign in</button>
+        <div class="or">or</div>
+        <div class="newacct">New to DRP? <a href="#apply">Apply for dealer access</a></div>
+        <div class="demo">Design sample: any email and password signs you in.</div>
+      </form>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="shead"><h2>Why dealers order through DRP</h2><p>One portal for the diesel parts your shop installs every week.</p></div>
+      <ul class="assure">
+        <li class="as"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></span><b>Fitment matched</b><span>Every part is checked against the engine you select.</span></li>
+        <li class="as"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></span><b>Dealer pricing</b><span>Your discount is applied to every build and order.</span></li>
+        <li class="as"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M1 4h14v12H1zM15 8h4l4 4v4h-8"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg></span><b>Fast dispatch</b><span>In-stock parts ship the same business day.</span></li>
+        <li class="as"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><b>Trusted brands</b><span>S&amp;B Filters, Black Bandit and Tuner Depot.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band alt" id="how">
+    <div class="wrap">
+      <div class="shead"><h2>How to get dealer access</h2><p>Accounts are for businesses that buy and install diesel performance parts.</p></div>
+      <ol class="steps">
+        <li><b>Apply</b><span>Tell us about your business and the platforms you work on.</span></li>
+        <li><b>Account review</b><span>We check your business details and set up your dealer pricing.</span></li>
+        <li><b>Sign in and order</b><span>See dealer prices, build orders by engine and reorder saved builds.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="apply">
+    <div class="wrap apply">
+      <aside>
+        <span class="eyebrow">Dealer application</span>
+        <h2>Apply for dealer access</h2>
+        <p>Send your details and we'll email you once your account is reviewed.</p>
+        <ul class="who-list"><li>Repair and diesel performance shops</li><li>Installers and tuners</li><li>Fleet operators</li><li>Parts retailers</li></ul>
+      </aside>
+      <form class="appform" id="appForm" novalidate>
+        <div class="field"><label for="aBiz">Business name <span class="req">*</span></label><input class="in" id="aBiz" autocomplete="organization" required></div>
+        <div class="field"><label for="aName">Contact name <span class="req">*</span></label><input class="in" id="aName" autocomplete="name" required></div>
+        <div class="field"><label for="aEmail">Work email <span class="req">*</span></label><input class="in" id="aEmail" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="aPhone">Phone</label><input class="in" id="aPhone" type="tel" autocomplete="tel"></div>
+        <div class="field"><label for="aType">Business type <span class="req">*</span></label><select class="in" id="aType" required><option value="">Select…</option><option>Repair / performance shop</option><option>Installer / tuner</option><option>Fleet operator</option><option>Parts retailer</option><option>Other</option></select></div>
+        <div class="field"><label for="aLoc">City and state</label><input class="in" id="aLoc" autocomplete="address-level2"></div>
+        <div class="field full"><span class="flabel" id="platLbl">Platforms you work on</span><div class="checks" role="group" aria-labelledby="platLbl"><label><input type="checkbox" value="Ford Powerstroke"> Ford Powerstroke</label><label><input type="checkbox" value="Ram Cummins"> Ram Cummins</label><label><input type="checkbox" value="GM Duramax"> GM Duramax</label><label><input type="checkbox" value="EcoDiesel"> EcoDiesel</label></div></div>
+        <div class="field full"><label for="aNotes">Anything else we should know?</label><textarea class="in" id="aNotes" placeholder="Monthly volume, brands you carry, how you heard about us"></textarea></div>
+        <div class="msg full" id="appMsg" role="alert"></div>
+        <div class="foot full"><small>Fields marked * are required.</small><button class="btn" type="submit">Submit application</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap"><span>© 2026 DRP Parts</span><span>Dealer pricing and ordering are available to approved accounts only.</span></div></footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+/* ---------- Sign in (front-end mock: any email + password works; replace with your auth) ---------- */
+$("#pwToggle").onclick=e=>{const pw=$("#pw"),show=pw.type==="password";pw.type=show?"text":"password";e.target.textContent=show?"Hide":"Show";e.target.setAttribute("aria-pressed",show);};
+$("#forgot").onclick=()=>{const m=$("#signMsg");m.className="msg ok";m.textContent="Password reset – connect to your auth to email a reset link.";};
+$("#signin").addEventListener("submit",e=>{
+  e.preventDefault();const email=$("#email").value.trim(),pw=$("#pw").value,m=$("#signMsg");
+  if(!validEmail(email)){m.className="msg err";m.textContent="Enter the email address on your dealer account.";$("#email").focus();return;}
+  if(!pw){m.className="msg err";m.textContent="Enter your password.";$("#pw").focus();return;}
+  /* Company name from the email domain, e.g. ops@acme-diesel.com → "Acme Diesel" */
+  const dom=email.split("@")[1].split(".")[0];
+  const company=/^(gmail|yahoo|outlook|hotmail|icloud|aol|proton)$/i.test(dom)?"Demo Diesel Shop":dom.split(/[-_]/).map(w=>w[0].toUpperCase()+w.slice(1)).join(" ");
+  DRP.signIn({email,company},$("#remember").checked);
+});
+
+/* ---------- Dealer application (front-end only; connect to your signup flow) ---------- */
+$("#appForm").addEventListener("submit",e=>{
+  e.preventDefault();const f=e.target,m=$("#appMsg");
+  const miss=[["#aBiz","business name"],["#aName","contact name"],["#aType","business type"]].filter(([s])=>!$(s).value.trim());
+  if(miss.length){m.className="msg err full";m.textContent="Add your "+miss.map(x=>x[1]).join(", ")+".";$(miss[0][0]).focus();return;}
+  if(!validEmail($("#aEmail").value.trim())){m.className="msg err full";m.textContent="Enter a valid work email so we can reply.";$("#aEmail").focus();return;}
+  f.innerHTML=`<div class="done" role="status"><span class="tick">✓</span><h3>Application received</h3><p>Thanks, ${esc($("#aName").value.trim())}. We'll email <b>${esc($("#aEmail").value.trim())}</b> once ${esc($("#aBiz").value.trim())} has been reviewed.</p><p style="font-size:13px;color:var(--muted)">Design sample: nothing was sent. Connect this form to your signup flow.</p><a class="btn ghost" href="#signin">Back to sign in</a></div>`;
+  f.scrollIntoView({behavior:"smooth",block:"center"});
+});
+</script>
+</body>
+</html>

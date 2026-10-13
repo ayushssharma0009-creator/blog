@@ -1,132 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page="portal">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DRP B2B Parts Portal</title>
+<script src="drp.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,800;1,900&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="drp.css">
 <style>
-/* Layout: 4-column B2B build workspace — engine | product type | results | build. Stacks on narrow screens. */
-:root{
-  --brand:#e8401c; --brand-dk:#c73312; --ink:#16181d; --ink-2:#4a4f5a; --muted:#80858f;
-  --line:#e3e5e9; --bg:#f4f5f7; --card:#fff; --ok:#16a34a; --warn:#b45309;
-  --nav:#1b1e24;
-  --f:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  color-scheme:light;
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{font:14px/1.4 var(--f);color:var(--ink);background:var(--bg)}
-button,input,select,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
-:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
-.wrap{max-width:1600px;margin:0 auto;padding-inline:16px}
-
-/* Header */
-.top{background:#fff;border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
-.logo b{font:italic 900 34px/1 var(--f);color:var(--brand);letter-spacing:-2px}
-.logo span{font-size:13px;line-height:1.25;color:var(--ink-2)}
-.logo span strong{display:block;font-size:15px;color:var(--ink)}
-.search{flex:1;display:flex;min-width:240px;max-width:640px}
-.search input{flex:1;min-width:0;border:1px solid var(--line);border-right:0;border-radius:6px 0 0 6px;padding:10px 12px}
-.search button{border:0;background:var(--brand);color:#fff;border-radius:0 6px 6px 0;padding:0 18px}
-.acct{display:flex;gap:18px;align-items:center;margin-left:auto}
-.acct button{background:none;border:0;display:flex;gap:6px;align-items:center}
-.cartbtn{position:relative}
-.cartbtn i{position:absolute;top:-6px;left:12px;background:var(--brand);color:#fff;font-style:normal;font-size:11px;border-radius:9px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
-nav.main{background:var(--nav);color:#e9eaee;position:relative;z-index:20}
-nav.main .bar{display:flex;gap:2px;align-items:center;min-height:58px;overflow-x:auto;scrollbar-width:none}
-nav.main .bar::-webkit-scrollbar{display:none}
-.ni{display:inline-flex;flex:none;align-items:center;gap:8px;height:42px;padding:0 14px;background:none;border:1.5px solid transparent;border-radius:6px;color:inherit;font-size:15px;font-weight:500;white-space:nowrap}
-.ni:hover,.ni[aria-expanded=true]{background:#2a2e36;color:#fff}
-.ni .cv{width:12px;height:12px;opacity:.75;transition:transform .15s}
-.ni[aria-expanded=true] .cv{transform:rotate(180deg)}
-.ni.veh{height:46px;padding:0 18px;margin-right:12px;background:var(--brand);color:#fff;font-weight:700}
-.ni.veh:hover,.ni.veh[aria-expanded=true]{background:var(--brand-dk)}
-.ni.dealer{margin-left:auto;border-color:var(--brand);font-weight:600}
-.ni.dealer svg{color:var(--brand)}
-.ni.dealer:hover{background:#2a2e36;border-color:var(--brand)}
-.navpanel{position:absolute;top:100%;min-width:250px;max-width:calc(100vw - 32px);padding:14px;background:#fff;color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:0 0 8px 8px;box-shadow:0 14px 30px rgba(22,24,29,.2)}
-.navpanel.wide{width:min(1200px,calc(100vw - 32px))}
-.navpanel h4{margin:0 0 6px;padding:0 8px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
-.navpanel ul{list-style:none;margin:0;padding:0}
-.navpanel li button{display:flex;justify-content:space-between;gap:16px;width:100%;padding:7px 8px;background:none;border:0;border-radius:4px;text-align:left;color:var(--ink-2)}
-.navpanel li button:hover{background:#fdece7;color:var(--brand-dk)}
-.navpanel li small{color:var(--muted);font-variant-numeric:tabular-nums}
-.navpanel .all{font-weight:600;color:var(--ink)}
-.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 24px}
-
-/* Marketing strip: dealer-program banner + assurance tiles */
-.promo{background:#fff;border-bottom:1px solid var(--line)}
-.promo .wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:14px;padding-block:14px}
-.hero{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:10px;padding:24px 28px;border-radius:8px;background:var(--nav);color:#e9eaee}
-.hero::after{content:"";position:absolute;inset:0 0 0 auto;width:40%;background:repeating-linear-gradient(-60deg,transparent 0 22px,rgba(232,64,28,.12) 22px 44px);clip-path:polygon(30% 0,100% 0,100% 100%,0 100%);pointer-events:none}
-.hero>*{position:relative;z-index:1}
-.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
-.hero h2{margin:0;max-width:22ch;font:italic 900 clamp(24px,2.5vw,34px)/1.08 var(--f);letter-spacing:-.5px;color:#fff;text-wrap:balance}
-.hero h2 em{color:var(--brand);font-style:inherit}
-.hero p{margin:0;max-width:52ch;color:#b9bdc6}
-.hero .ctas{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:4px}
-.hero .btn{padding:10px 18px}
-.hero .linkbtn{color:#e9eaee;font-weight:600;text-decoration:none}
-.hero .linkbtn:hover{color:#fff;text-decoration:underline}
-.assure{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
-.as{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
-.as svg{flex:none;color:var(--brand)}
-.as b{display:block;margin-bottom:2px;font-size:14px}
-.as span{font-size:12px;color:var(--ink-2)}
-.row{display:flex;gap:8px;align-items:stretch}
-.in{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:#fff;min-width:0}
-.btn{background:var(--brand);color:#fff;border:0;border-radius:6px;padding:8px 14px;font-weight:600;white-space:nowrap}
-.btn:hover{background:var(--brand-dk)}
-.btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--brand)}
-.btn.lite{background:#f1f2f4;color:var(--ink);font-weight:500}
-.btn.lite:hover{background:#e6e8eb}
-.msg{font-size:12px;min-height:16px;margin-top:4px}
-.msg.ok{color:var(--ok)} .msg.err{color:var(--brand-dk)}
-
-/* Workspace */
-.ws{display:grid;grid-template-columns:240px 240px minmax(0,1fr) 340px;gap:14px;padding-block:14px}
+/* Layout: 4-column B2B build workspace — engine | product type | results | build. Stacks on narrow screens.
+   Colours come from the tokens in drp.css. */
+.ws{display:grid;grid-template-columns:240px 240px minmax(0,1fr) 340px;gap:14px;padding-block:16px}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;align-self:start}
 .step{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
-.step em{font-style:normal;background:var(--brand);color:#fff;border-radius:50%;width:24px;height:24px;flex:none;display:grid;place-items:center;font-weight:700;font-size:13px}
+.step em{font-style:normal;background:var(--brand-tint);color:var(--brand-dk);border:1px solid var(--brand-line);border-radius:50%;width:26px;height:26px;flex:none;display:grid;place-items:center;font-weight:700;font-size:13px}
 .step h2{margin:0;font-size:16px}
 .step p{margin:2px 0 0;color:var(--muted);font-size:12px}
 .make{border-top:1px solid var(--line)}
 .make>button{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;padding:12px 4px;font-weight:700;font-size:15px;text-align:left}
-.make.open>button{color:var(--brand)}
+.make.open>button{color:var(--brand-dk)}
 .make ul{list-style:none;margin:0 0 8px;padding:0}
 .make li button{width:100%;text-align:left;background:none;border:0;padding:7px 10px;border-radius:4px;color:var(--ink-2)}
-.make li button:hover{background:#f6f7f8}
-.make li button[aria-pressed=true]{background:#fdece7;color:var(--brand-dk);font-weight:600}
+.make li button:hover{background:var(--sunk)}
+.make li button[aria-pressed=true]{background:var(--brand-tint);color:var(--brand-dk);font-weight:600;box-shadow:inset 3px 0 0 var(--brand)}
 .make li small{color:var(--muted);float:right}
 .chev{transition:transform .15s}
 .make.open .chev{transform:rotate(90deg)}
 
 .types label{display:flex;align-items:center;gap:10px;padding:7px 6px;border-radius:4px;cursor:pointer}
-.types label:hover{background:#f6f7f8}
+.types label:hover{background:var(--sunk)}
 .types label span{flex:1}
 .types label small{color:var(--muted);font-variant-numeric:tabular-nums}
 .types input{width:16px;height:16px;accent-color:var(--brand)}
 .tsearch{width:100%;margin-bottom:8px}
 
 .reshead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
-.reshead .crumb{flex-basis:100%;color:var(--muted);font-size:12px;margin-top:-6px;padding-left:34px}
+.reshead .crumb{flex-basis:100%;color:var(--muted);font-size:12px;margin-top:-6px;padding-left:36px}
 .reshead .grow{flex:1}
 .count{color:var(--ink-2);font-variant-numeric:tabular-nums}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 10px 34px}
-.chip{background:#f1f2f4;border:0;border-radius:12px;padding:3px 10px;font-size:12px}
-.chip:hover{background:#e6e8eb}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 10px 36px}
+.chip{background:var(--brand-tint);color:var(--brand-dk);border:1px solid var(--brand-line);border-radius:12px;padding:3px 10px;font-size:12px}
+.chip:hover{background:var(--brand-tint-2)}
 
-.prod{display:grid;grid-template-columns:150px minmax(0,1fr) 170px;gap:14px;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;background:#fff;position:relative}
-.prod.hl{border-color:var(--brand)}
-.prod .badge{position:absolute;top:10px;left:10px;background:var(--brand);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:3px;z-index:1}
-.thumb{width:150px;height:150px;background:#fafafa;border-radius:6px;display:grid;place-items:center;overflow:hidden}
+.prod{display:grid;grid-template-columns:150px minmax(0,1fr) 170px;gap:14px;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;background:var(--card);position:relative}
+.prod:hover{border-color:var(--brand-line)}
+.prod.hl{border-color:var(--brand-line);background:linear-gradient(90deg,var(--brand-tint),var(--card) 40%)}
+.prod .badge{position:absolute;top:10px;left:10px;z-index:1}
+.thumb{width:150px;height:150px;background:var(--sunk);border-radius:6px;display:grid;place-items:center;overflow:hidden}
 .thumb img{width:100%;height:100%;object-fit:contain}
 .prod h3{margin:0 0 4px;font-size:15px;line-height:1.3}
 .prod h3 a{color:inherit;text-decoration:none}
-.prod h3 a:hover{color:var(--brand);text-decoration:underline}
+.prod h3 a:hover{color:var(--brand-dk);text-decoration:underline}
 .meta{color:var(--muted);font-size:12px;margin-bottom:6px}
 .meta b{color:var(--ink-2);font-weight:600}
 .stock{font-size:12px;font-weight:600;color:var(--ok)}
@@ -136,13 +61,9 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .feat li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
 .fit{font-size:12px;margin-top:4px;color:var(--ok)} .fit.no{color:var(--muted)}
 .buy{display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right}
-.price{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
-.price small{display:block;font-size:11px;font-weight:400;color:var(--muted)}
-.price s{font-size:12px;font-weight:400;color:var(--muted)}
-.qty{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
-.qty button{border:0;background:#fff;width:30px;height:30px;font-size:16px}
-.qty button:hover{background:#f1f2f4}
-.qty input{width:40px;border:0;border-inline:1px solid var(--line);text-align:center;font-variant-numeric:tabular-nums}
+.price{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--f-display)}
+.price small{display:block;font:400 11px var(--f);color:var(--muted)}
+.price s{font:400 12px var(--f);color:var(--muted)}
 .buy .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:auto}
 .empty{padding:40px 10px;text-align:center;color:var(--muted)}
 
@@ -150,96 +71,75 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .build{position:sticky;top:10px}
 .build header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .build header h2{margin:0;font-size:17px}
-.qadd{padding:10px 12px 6px;margin-bottom:4px;background:#f8f9fa;border:1px solid var(--line);border-radius:6px}
+.qadd{padding:10px 12px 6px;margin-bottom:4px;background:var(--brand-tint);border:1px solid var(--brand-line);border-radius:6px}
 .qadd h3{margin:0 0 6px;font-size:13px}
 .qadd .msg{margin-top:2px}
-.linkbtn{background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0}
 .bi{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
-.bi img{width:64px;height:64px;object-fit:contain;background:#fafafa;border-radius:4px}
-.bi h4{margin:0;font-size:13px;line-height:1.25}
+.bi img{width:64px;height:64px;object-fit:contain;background:var(--sunk);border-radius:4px}
+.bi h4{margin:0;font:600 13px/1.25 var(--f)}
 .bi .sku{font-size:11px;color:var(--muted);margin:2px 0 6px}
 .bi .r{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between}
 .bi .x{background:none;border:0;color:var(--muted);font-size:16px;line-height:1;padding:0}
+.bi .x:hover{color:var(--brand-dk)}
 .bi .lt{font-weight:700;font-variant-numeric:tabular-nums}
 .bi .qty button{width:26px;height:26px}
 .bi .qty input{width:34px}
 .tot{margin-top:10px;font-variant-numeric:tabular-nums}
 .tot div{display:flex;justify-content:space-between;padding:3px 0}
 .tot .disc{color:var(--ok)}
-.tot .grand{font-size:20px;font-weight:800;border-top:1px solid var(--line);margin-top:6px;padding-top:8px}
-.bigbtn{width:100%;margin-top:12px;padding:13px;font-size:16px;letter-spacing:.04em;text-transform:uppercase}
+.tot .grand{font:700 20px var(--f-display);border-top:1px solid var(--line);margin-top:6px;padding-top:8px}
+.bigbtn{width:100%;margin-top:12px;padding:13px;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
 .saverow{display:flex;gap:6px;margin-top:8px}
 .saverow input{flex:1}
 .reorder{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 .reorder label{display:block;margin-bottom:6px;font-size:13px;font-weight:600}
 .bempty{color:var(--muted);padding:18px 0;text-align:center;font-size:13px}
 
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
-.toast.on{opacity:1}
-dialog{border:0;border-radius:10px;padding:0;max-width:760px;width:calc(100% - 32px);background:var(--card);color:var(--ink)}
 .dacts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-a.btn{display:inline-flex;align-items:center;text-decoration:none}
-dialog::backdrop{background:rgba(0,0,0,.45)}
 .dlg{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18px}
-.dlg img{width:100%;aspect-ratio:1;object-fit:contain;background:#fafafa;border-radius:6px}
-.dlg h3{margin:0 0 6px}
+.dlg img{width:100%;aspect-ratio:1;object-fit:contain;background:var(--sunk);border-radius:6px}
+.dlg h3{margin:0 0 6px;padding-right:24px}
 .dlg table{border-collapse:collapse;font-size:13px;width:100%;margin-top:8px}
 .dlg td{border-bottom:1px solid var(--line);padding:5px 4px;vertical-align:top}
 .dlg td:first-child{color:var(--muted);width:110px}
-.dlgx{position:absolute;right:10px;top:8px;background:none;border:0;font-size:22px}
+.dlgx{position:absolute;right:10px;top:8px;background:none;border:0;font-size:22px;color:var(--ink-2)}
 
 /* Responsive */
-@media (max-width:1300px){.ws{grid-template-columns:220px minmax(0,1fr) 320px}.ws .ptype{grid-column:1;grid-row:2}.ws .results{grid-row:1/3;grid-column:2}.ws .build{grid-row:1/3;grid-column:3}}
-@media (max-width:1000px){.promo .wrap{grid-template-columns:minmax(0,1fr)}.ws{grid-template-columns:minmax(0,1fr)}.ws>*{grid-column:auto!important;grid-row:auto!important}.build{position:static}.acct span.lbl{display:none}}
-@media (max-width:640px){.prod{grid-template-columns:96px minmax(0,1fr)}.thumb{width:96px;height:96px}.buy{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;text-align:left}.buy .acts{margin-top:0}.dlg{grid-template-columns:1fr}.logo span{display:none}.ni.dealer{margin-left:0}.as{flex-direction:column;align-items:flex-start;gap:8px}.hero{padding:20px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:1500px){.ws{grid-template-columns:220px minmax(0,1fr) 320px}.ws .ptype{grid-column:1;grid-row:2}.ws .results{grid-row:1/3;grid-column:2}.ws .build{grid-row:1/3;grid-column:3}}
+@media (max-width:1000px){.ws{grid-template-columns:minmax(0,1fr)}.ws>*{grid-column:auto!important;grid-row:auto!important}.build{position:static}}
+@media (max-width:640px){.prod{grid-template-columns:96px minmax(0,1fr)}.thumb{width:96px;height:96px}.buy{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;text-align:left}.buy .acts{margin-top:0}.dlg{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#"><b>DRP</b><span><strong>B2B PARTS PORTAL</strong>FOR DEALERS, INSTALLERS &amp; FLEET BUYERS</span></a>
+    <a class="logo" href="index.html"><b>DRP</b><span><strong>B2B PARTS PORTAL</strong>FOR DEALERS, INSTALLERS &amp; FLEET BUYERS</span></a>
     <form class="search" id="topSearch" role="search">
       <input id="q" type="search" placeholder="Search by SKU, part number or keyword…" aria-label="Search parts">
-      <button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+      <button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
     </form>
     <div class="acct">
-      <button type="button" id="loginBtn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="lbl">Login</span></button>
-      <button type="button" class="cartbtn" id="cartBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 11h11l2-8H6.2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg><i id="cartCount">0</i><span class="lbl" style="text-align:left;line-height:1.2"><b>Your Cart</b><br><small id="cartItems">0 item(s)</small></span></button>
+      <div class="who"><span class="avatar" id="avatar" aria-hidden="true">DD</span><span class="lbl"><b id="dealerName">Dealer</b><button type="button" class="linkbtn" id="signOut">Sign out</button></span></div>
+      <button type="button" class="cartbtn" id="cartBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h2l2.4 11h11l2-8H6.2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg><i id="cartCount">0</i><span class="lbl" style="text-align:left;line-height:1.2"><b>Your Cart</b><br><small id="cartItems">0 item(s)</small></span></button>
     </div>
   </div>
 </header>
 
 <nav class="main" id="mainNav" aria-label="Main">
   <div class="wrap bar">
-    <button type="button" class="ni veh" data-menu="vehicle" aria-haspopup="true" aria-expanded="false"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 3.5h13v10h-13zM14.5 7h5l4 4v2.5h-9"/><circle cx="6" cy="15.5" r="2.2" fill="var(--brand)"/><circle cx="19" cy="15.5" r="2.2" fill="var(--brand)"/></svg>Shop by Vehicle<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni veh" data-menu="vehicle" aria-haspopup="true" aria-expanded="false"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 3.5h13v10h-13zM14.5 7h5l4 4v2.5h-9"/><circle cx="6" cy="15.5" r="2.2"/><circle cx="19" cy="15.5" r="2.2"/></svg>Shop by Vehicle<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-menu="Tuners" aria-haspopup="true" aria-expanded="false">Tuners<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-menu="Exhaust" aria-haspopup="true" aria-expanded="false">Exhaust<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-menu="Delete Kits" aria-haspopup="true" aria-expanded="false">Delete Kits<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-menu="Tuning" aria-haspopup="true" aria-expanded="false">Tuning<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-go="quick">Quick Order</button>
     <button type="button" class="ni" data-go="reorder">Reorders</button>
-    <button type="button" class="ni dealer" id="applyBtn"><svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="1.5" y="7.5" width="13" height="9" rx="1.5"/><path d="M4.5 7.5V5a3.5 3.5 0 0 1 7 0v2.5"/><path d="M8 11.5v1.5"/></svg>Dealer Access</button>
+    <button type="button" class="ni acctnav" id="acctNav"><svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>My Account</button>
     <button type="button" class="ni" data-menu="support" aria-haspopup="true" aria-expanded="false">Support<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
   <div class="navpanel" id="navPanel" hidden></div>
 </nav>
-
-<section class="promo" aria-label="DRP Dealer Program"><div class="wrap">
-  <div class="hero">
-    <span class="eyebrow">DRP Dealer Program</span>
-    <h2>Build it, check fitment, order at <em>dealer pricing.</em></h2>
-    <p>Made for shops, installers and fleet buyers. Pick an engine, add parts by SKU, save builds for repeat jobs, and your dealer discount applies automatically.</p>
-    <div class="ctas"><button type="button" class="btn" id="heroApply">Apply for Dealer Access</button><button type="button" class="linkbtn" id="heroShop">Browse by vehicle →</button></div>
-  </div>
-  <ul class="assure">
-    <li class="as"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><div><b>Fitment matched</b><span>Every part is checked against the engine you select.</span></div></li>
-    <li class="as"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><div><b>Dealer pricing</b><span>Your discount is applied to every build and order.</span></div></li>
-    <li class="as"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4h14v12H1zM15 8h4l4 4v4h-8"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg><div><b>Fast dispatch</b><span>In-stock parts ship the same business day.</span></div></li>
-    <li class="as"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><div><b>Trusted brands</b><span>S&amp;B Filters, Black Bandit and Tuner Depot.</span></div></li>
-  </ul>
-</div></section>
 
 <main class="wrap ws">
   <aside class="panel engine">
@@ -317,7 +217,7 @@ const ENG_NAME={};for(const m in ENGINES)for(const[id,n]of ENGINES[m].list)ENG_N
 const P=[
  {sku:"INT-SB-FOR-20",t:"Powerstroke S&B Cold Air Intake | FORD 1999-2026",b:"S&B Filters",p:399,ty:"Cold Air Intake",e:["ps73","ps60","ps64","ps67-11","ps67-20"],img:"S_B-cold-air-intake-Powerstroke.png?v=1790370753",f:["Fully enclosed airbox, clear sealed lid","Cotton cleanable or dry extendable filter","MAF calibrated – no check engine light","Million Mile limited warranty"],best:1,note:"Ships from manufacturer in 1–2 weeks"},
  {sku:"AC-INTERCOOLER-FOR-11",t:"Ford 6.7L Powerstroke Upgraded Intercooler 50% Larger Core | 2011–2026",b:"Tuner Depot",p:1199.99,ty:"Intercooler",e:["ps67-11","ps67-20"],img:"AC-INTERCOOLER-FOR-11.png?v=1790268217",f:["All-aluminum bar-and-plate core","Core ~50% larger than factory","Lower intake-air temps and EGTs","Generation-specific 2011–16 / 2017–26"]},
- {sku:"ICP-FOR-11-CS",page:"product.html",t:"6.7L Powerstroke Intercooler Charge Pipe Kit | Cold Side Upgrade | FORD 2011–2016",b:"Black Bandit",p:165,was:396,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2011-2016-44135034978555_cd28f7a5-e676-46e8-a184-ff8a8d01b0bd.webp?v=1775076734",f:["Mandrel-bent aluminum tubing","4-ply silicone couplers","Heavy-duty spring clamps","Replaces crack-prone OEM plastic pipe"],best:1},
+ {sku:"ICP-FOR-11-CS",t:"6.7L Powerstroke Intercooler Charge Pipe Kit | Cold Side Upgrade | FORD 2011–2016",b:"Black Bandit",p:165,was:396,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2011-2016-44135034978555_cd28f7a5-e676-46e8-a184-ff8a8d01b0bd.webp?v=1775076734",f:["Mandrel-bent aluminum tubing","4-ply silicone couplers","Heavy-duty spring clamps","Replaces crack-prone OEM plastic pipe"],best:1},
  {sku:"ICP-FOR-17-CS",t:"6.7L Powerstroke Cold Side Intercooler Charge Pipe Kit (2017-2019)",b:"Black Bandit",p:275,was:330,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-intercooler-pipe-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-2017-2019-ford-powerstroke-6-7l-cold-side-intercooler-charge-pipe-kit-44135032062203_94d35b63-477f-459a-9d42-b7f824e82337.webp?v=1775076727",f:["Quick-disconnect flange","Retains factory IAT sensor","Spring-loaded clamps","Direct OEM replacement"]},
  {sku:"ICP-FOR-11-CSK",t:"6.7L Powerstroke Cold Side Intercooler Pipe Kit | FORD 2011-2015",b:"Black Bandit",p:247.5,was:330,ty:"Intercooler Pipe",e:["ps67-11"],img:"black-bandit-egr-ford-powerstroke-6-7l-cold-side-intercooler-pipe-kit-2011-2015-ford-powerstroke-6-7l-cold-side-intercooler-pipe-kit-44135037042939_7ecadf79-c09b-4ba1-82fb-29aaa1bafc2c.webp?v=1775076666",f:["Mandrel-bent aluminum","4-ply silicone couplers","All hardware included"]},
  {sku:"INT-FOR-11-B",t:"6.7L Powerstroke Cold Air Intake Kit | FORD 2011-2016",b:"Black Bandit",p:99.99,ty:"Cold Air Intake",e:["ps67-11"],img:"black-bandit-cold-air-intake-ford-powerstroke-6-7l-cold-air-intake-kit-2011-2016-ford-powerstroke-6-7l-cold-air-intake-kit-2011-2016-1174017547_d6a10171-7098-4e56-a335-2a2913903af0.png?v=1775076484",f:["4\" aluminum piping, gloss black","Washable micro cotton filter","Bolt-on, all hardware included"]},
@@ -413,9 +313,9 @@ function renderList(){
     const q=S.qty[p.sku]||1,fit=S.engine?`<div class="fit">✓ Fitment matched for ${esc(ENG_NAME[S.engine])}</div>`:`<div class="fit no">Fits: ${p.e.map(e=>esc(ENG_NAME[e])).join(" · ")}</div>`;
     return `<article class="prod${p.best?" hl":""}">
       ${p.best?'<span class="badge" title="Core part we recommend for most builds on this platform">Essential</span>':""}
-      <div class="thumb"><img loading="lazy" src="${img(p,320)}" alt="${esc(p.t)}"></div>
+      <a class="thumb" href="product.html" tabindex="-1"><img loading="lazy" src="${img(p,320)}" alt="${esc(p.t)}"></a>
       <div style="min-width:0">
-        <h3>${p.page?`<a href="${p.page}">${esc(p.t)}</a>`:esc(p.t)}</h3>
+        <h3><a href="product.html">${esc(p.t)}</a></h3>
         <div class="meta"><b>${esc(p.b)}</b> · ${esc(p.ty)} · SKU: ${esc(p.sku)}</div>
         <div class="stock${p.out?" out":""}">${p.out?"● Backordered":"● In Stock"}${p.note?` <span style="color:var(--muted);font-weight:400">– ${esc(p.note)}</span>`:""}</div>
         <ul class="feat">${p.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${fit}
@@ -530,7 +430,7 @@ nav.addEventListener("click",e=>{
     closeMenu();
     if(b.dataset.go==="quick"){$("#buildPanel").scrollIntoView({behavior:"smooth",block:"start"});$("#qaSku").focus({preventScroll:true});}
     else if(b.dataset.go==="reorder"){$("#buildPanel").scrollIntoView({behavior:"smooth",block:"start"});$("#prevSel").focus({preventScroll:true});}
-    else if(b.id==="applyBtn")toast("Dealer application – connect to your signup flow");
+    else if(b.id==="acctNav")toast("My Account – connect to your account pages");
     return;
   }
   const t=e.target.closest(".navpanel button");if(!t)return;
@@ -542,9 +442,7 @@ nav.addEventListener("click",e=>{
 document.addEventListener("click",e=>{if(openBtn&&!nav.contains(e.target))closeMenu();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&openBtn){const b=openBtn;closeMenu();b.focus();}});
 $("#mainNav .bar").addEventListener("scroll",closeMenu);
-$("#heroApply").onclick=()=>toast("Dealer application – connect to your signup flow");
-$("#heroShop").onclick=e=>{e.stopPropagation();scrollTo({top:0,behavior:"smooth"});openMenu($('[data-menu="vehicle"]'));};addEventListener("resize",closeMenu);
-$("#loginBtn").onclick=()=>toast("Dealer login – connect to your auth");
+addEventListener("resize",closeMenu);
 
 let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);}
 function renderAll(){renderMakes();renderTypes();renderList();renderBuild();}

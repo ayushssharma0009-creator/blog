@@ -1,97 +1,42 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page="product">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cold Side Charge Pipe Kit</title>
+<script src="drp.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,800;1,900&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="drp.css">
 <style>
-/* Layout: product page — gallery | details + buy box, then overview, specs, fitment, build-together and related parts. Shares tokens, header and nav with index.html. */
-:root{
-  --brand:#e8401c; --brand-dk:#c73312; --ink:#16181d; --ink-2:#4a4f5a; --muted:#80858f;
-  --line:#e3e5e9; --bg:#f4f5f7; --card:#fff; --ok:#16a34a; --warn:#b45309;
-  --nav:#1b1e24;
-  --f:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  color-scheme:light;
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{font:14px/1.4 var(--f);color:var(--ink);background:var(--bg)}
-button,input,select,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
-:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
-.wrap{max-width:1600px;margin:0 auto;padding-inline:16px}
-
-/* Header */
-.top{background:#fff;border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
-.logo b{font:italic 900 34px/1 var(--f);color:var(--brand);letter-spacing:-2px}
-.logo span{font-size:13px;line-height:1.25;color:var(--ink-2)}
-.logo span strong{display:block;font-size:15px;color:var(--ink)}
-.search{flex:1;display:flex;min-width:240px;max-width:640px}
-.search input{flex:1;min-width:0;border:1px solid var(--line);border-right:0;border-radius:6px 0 0 6px;padding:10px 12px}
-.search button{border:0;background:var(--brand);color:#fff;border-radius:0 6px 6px 0;padding:0 18px}
-.acct{display:flex;gap:18px;align-items:center;margin-left:auto}
-.acct button{background:none;border:0;display:flex;gap:6px;align-items:center}
-.cartbtn{position:relative}
-.cartbtn i{position:absolute;top:-6px;left:12px;background:var(--brand);color:#fff;font-style:normal;font-size:11px;border-radius:9px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
-nav.main{background:var(--nav);color:#e9eaee;position:relative;z-index:20}
-nav.main .bar{display:flex;gap:2px;align-items:center;min-height:58px;overflow-x:auto;scrollbar-width:none}
-nav.main .bar::-webkit-scrollbar{display:none}
-.ni{display:inline-flex;flex:none;align-items:center;gap:8px;height:42px;padding:0 14px;background:none;border:1.5px solid transparent;border-radius:6px;color:inherit;font-size:15px;font-weight:500;white-space:nowrap}
-.ni:hover,.ni[aria-expanded=true]{background:#2a2e36;color:#fff}
-.ni .cv{width:12px;height:12px;opacity:.75;transition:transform .15s}
-.ni[aria-expanded=true] .cv{transform:rotate(180deg)}
-.ni.veh{height:46px;padding:0 18px;margin-right:12px;background:var(--brand);color:#fff;font-weight:700}
-.ni.veh:hover,.ni.veh[aria-expanded=true]{background:var(--brand-dk)}
-.ni.dealer{margin-left:auto;border-color:var(--brand);font-weight:600}
-.ni.dealer svg{color:var(--brand)}
-.ni.dealer:hover{background:#2a2e36;border-color:var(--brand)}
-.navpanel{position:absolute;top:100%;min-width:250px;max-width:calc(100vw - 32px);padding:14px;background:#fff;color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:0 0 8px 8px;box-shadow:0 14px 30px rgba(22,24,29,.2)}
-.navpanel.wide{width:min(1200px,calc(100vw - 32px))}
-.navpanel h4{margin:0 0 6px;padding:0 8px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
-.navpanel ul{list-style:none;margin:0;padding:0}
-.navpanel li button{display:flex;justify-content:space-between;gap:16px;width:100%;padding:7px 8px;background:none;border:0;border-radius:4px;text-align:left;color:var(--ink-2)}
-.navpanel li button:hover{background:#fdece7;color:var(--brand-dk)}
-.navpanel li small{color:var(--muted);font-variant-numeric:tabular-nums}
-.navpanel .all{font-weight:600;color:var(--ink)}
-.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 24px}
-.row{display:flex;gap:8px;align-items:stretch}
-.in{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:#fff;min-width:0}
-.btn{background:var(--brand);color:#fff;border:0;border-radius:6px;padding:8px 14px;font-weight:600;white-space:nowrap}
-.btn:hover{background:var(--brand-dk)}
-.btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--brand)}
-.btn.lite{background:#f1f2f4;color:var(--ink);font-weight:500}
-.btn.lite:hover{background:#e6e8eb}
-.msg{font-size:12px;min-height:16px;margin-top:4px}
-.msg.ok{color:var(--ok)} .msg.err{color:var(--brand-dk)}
-
+/* Layout: product page — gallery | details + buy box, then overview, specs, fitment, build-together and related parts.
+   Every product in the portal opens this one sample page. Colours come from the tokens in drp.css. */
 /* Breadcrumb */
 .crumbs{display:flex;flex-wrap:wrap;gap:6px;padding:14px 0 4px;margin:0;list-style:none;font-size:12px;color:var(--muted)}
 .crumbs li+li::before{content:"›";margin-right:6px}
 .crumbs a{color:var(--ink-2);text-decoration:none}
-.crumbs a:hover{color:var(--brand);text-decoration:underline}
+.crumbs a:hover{color:var(--brand-dk);text-decoration:underline}
 
 /* Product hero */
 .pdp{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;padding-block:10px 24px;align-items:start}
 .gallery{position:sticky;top:12px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
-.shot{position:relative;aspect-ratio:1;max-width:100%;display:grid;place-items:center;background:#fafafa;border-radius:6px;overflow:hidden}
+.shot{position:relative;aspect-ratio:1;max-width:100%;display:grid;place-items:center;background:var(--sunk);border-radius:6px;overflow:hidden}
 .shot img{width:100%;height:100%;object-fit:contain}
-.shot.broken img{display:none}
-.shot.broken::after{content:attr(data-sku);font:600 13px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--muted)}
-.badge{position:absolute;top:12px;left:12px;z-index:1;background:var(--brand);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;border-radius:3px}
-.sale{position:absolute;top:12px;right:12px;z-index:1;background:var(--ink);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;border-radius:3px}
+.shot.broken img,.shot img.noimg{display:none}
+.shot.broken::after,.shot:has(img.noimg)::after{content:attr(data-sku);font:500 13px/1 var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.shot .badge{position:absolute;top:12px;left:12px;z-index:1}
+.sale{position:absolute;top:12px;right:12px;z-index:1;background:var(--ok-tint);color:var(--ok);border:1px solid #b9dfc5;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px}
 .gnote{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink-2)}
 .gnote span{display:flex;gap:6px;align-items:center}
 .gnote svg{color:var(--ok)}
 
 .info{display:flex;flex-direction:column;gap:14px;min-width:0}
-.brand{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}
+.brand{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand-dk)}
 .info h1{margin:0;font-size:clamp(22px,2.2vw,28px);line-height:1.2;text-wrap:balance}
 .ids{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted)}
 .ids b{color:var(--ink-2);font-weight:600}
-.copy{display:inline-flex;align-items:center;gap:4px;background:none;border:0;padding:0;color:var(--ink-2);font:600 12px/1 ui-monospace,Menlo,Consolas,monospace}
-.copy:hover{color:var(--brand)}
+.copy{display:inline-flex;align-items:center;gap:4px;background:none;border:0;padding:0;color:var(--ink-2);font:500 12px/1 var(--f-mono)}
+.copy:hover{color:var(--brand-dk)}
 .stock{font-size:13px;font-weight:600;color:var(--ok)}
 .feat{list-style:none;padding:0;margin:0;font-size:14px;color:var(--ink-2)}
 .feat li{padding-left:22px;position:relative;margin:5px 0}
@@ -100,21 +45,19 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .buybox{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px}
 .prices{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;font-variant-numeric:tabular-nums}
 .prices .lbl{font-size:12px;color:var(--muted)}
-.prices .now{font-size:30px;font-weight:800}
+.prices .now{font:700 30px var(--f-display)}
 .prices s{color:var(--muted)}
 .prices .save{color:var(--ok);font-weight:600;font-size:13px}
 .prices .yours{font-size:16px;font-weight:700;color:var(--ink)}
-.fitbox{border:1px solid var(--line);border-radius:6px;padding:12px;background:var(--bg)}
+.fitbox{border:1px solid var(--brand-line);border-radius:6px;padding:12px;background:var(--brand-tint)}
 .fitbox label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
 .fitbox select{width:100%}
 .fitres{margin-top:8px;font-size:13px;min-height:18px}
 .fitres.ok{color:var(--ok)} .fitres.no{color:var(--warn)}
 .fitres a{color:inherit;font-weight:600}
 .buyrow{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
-.qty{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff}
-.qty button{border:0;background:#fff;width:38px;font-size:18px}
-.qty button:hover{background:#f1f2f4}
-.qty input{width:52px;border:0;border-inline:1px solid var(--line);text-align:center;font-variant-numeric:tabular-nums}
+.buyrow .qty button{width:38px;height:auto;font-size:18px}
+.buyrow .qty input{width:52px}
 .buyrow .btn{flex:1;padding:12px 16px;font-size:15px}
 .line{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .line b{color:var(--ink)}
@@ -127,7 +70,7 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .subnav{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
 .subnav .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .subnav a{padding:12px;white-space:nowrap;color:var(--ink-2);text-decoration:none;font-weight:600;border-bottom:2px solid transparent}
-.subnav a:hover{color:var(--brand);border-bottom-color:var(--brand)}
+.subnav a:hover{color:var(--brand-dk);border-bottom-color:var(--brand)}
 .sections{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;padding-block:18px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px;min-width:0;scroll-margin-top:56px}
 .card h2{margin:0 0 10px;font-size:18px}
@@ -137,7 +80,8 @@ nav.main .bar::-webkit-scrollbar{display:none}
 .specs th,.specs td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
 .specs th{width:40%;color:var(--muted);font-weight:500}
 .fitlist{display:grid;gap:8px;margin:0;padding:0;list-style:none}
-.fitlist li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:6px;background:var(--bg);font-size:13px}
+.fitlist li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:6px;background:var(--sunk);font-size:13px}
+.fitlist li:first-child{background:var(--ok-tint)}
 .fitlist .y{color:var(--ok);font-weight:700}
 .fitlist .n{color:var(--warn);font-weight:700}
 .fitlist a{color:var(--ink);font-weight:600}
@@ -145,69 +89,65 @@ nav.main .bar::-webkit-scrollbar{display:none}
 /* Build together */
 .combo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(220px,.8fr);gap:12px;align-items:stretch}
 .ci{position:relative;display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line);border-radius:8px;cursor:pointer}
-.ci:has(input:checked){border-color:var(--brand);background:#fdf6f4}
+.ci:has(input:checked){border-color:var(--brand-line);background:var(--brand-tint)}
 .ci input{position:absolute;top:12px;right:12px;width:18px;height:18px;accent-color:var(--brand)}
 .ci .shot{aspect-ratio:4/3}
 .ci b{font-size:13px;line-height:1.3;padding-right:24px}
 .ci .role{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .ci .pr{margin-top:auto;font-weight:700;font-variant-numeric:tabular-nums}
-.ctot{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px;border-radius:8px;background:var(--nav);color:#e9eaee;font-variant-numeric:tabular-nums}
-.ctot .big{font-size:26px;font-weight:800;color:#fff}
-.ctot small{color:#b9bdc6}
+.ctot{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px;border-radius:8px;background:var(--brand-tint);border:1px solid var(--brand-line);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.ctot .big{font:700 26px var(--f-display);color:var(--ink)}
+.ctot small{color:var(--ink-2)}
 
 /* Related */
 .rel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .rc{display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line);border-radius:8px}
 .rc .shot{aspect-ratio:4/3}
-.rc b{font-size:13px;line-height:1.3}
+.rc b,.ci b{font-size:13px;line-height:1.3}
+.rc b a,.ci b a{color:inherit;text-decoration:none}
+.rc b a:hover,.ci b a:hover{color:var(--brand-dk);text-decoration:underline}
 .rc .why{font-size:12px;color:var(--muted)}
 .rc .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto;font-weight:700;font-variant-numeric:tabular-nums}
 
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
-.toast.on{opacity:1}
-.linkbtn{background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0}
 .mbar{display:none}
 
-@media (max-width:1000px){.pdp{grid-template-columns:minmax(0,1fr)}.gallery{position:static}.sections{grid-template-columns:minmax(0,1fr)}.combo{grid-template-columns:repeat(3,minmax(0,1fr))}.ctot{grid-column:1/-1}.acct span.lbl{display:none}}
+@media (max-width:1000px){.pdp{grid-template-columns:minmax(0,1fr)}.gallery{position:static}.sections{grid-template-columns:minmax(0,1fr)}.combo{grid-template-columns:repeat(3,minmax(0,1fr))}.ctot{grid-column:1/-1}}
 @media (max-width:640px){
-  .logo span{display:none}.ni.dealer{margin-left:0}
   .combo,.rel{grid-template-columns:minmax(0,1fr)}
   .ci{flex-direction:row;align-items:center}.ci .shot{width:72px;flex:none;aspect-ratio:1}
   .minis{grid-template-columns:minmax(0,1fr)}.minis li{flex-direction:row;align-items:center;gap:8px}
-  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(22,24,29,.08);font-variant-numeric:tabular-nums}
-  .mbar b{font-size:18px}.mbar .btn{padding:11px 18px}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(84,46,22,.1);font-variant-numeric:tabular-nums}
+  .mbar b{font:700 18px var(--f-display)}.mbar .btn{padding:11px 18px}
   body{padding-bottom:72px}
   .toast{bottom:84px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-
 <header class="top">
   <div class="wrap">
     <a class="logo" href="index.html"><b>DRP</b><span><strong>B2B PARTS PORTAL</strong>FOR DEALERS, INSTALLERS &amp; FLEET BUYERS</span></a>
     <form class="search" id="topSearch" role="search">
       <input id="q" type="search" placeholder="Search by SKU, part number or keyword…" aria-label="Search parts">
-      <button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+      <button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
     </form>
     <div class="acct">
-      <button type="button" id="loginBtn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="lbl">Login</span></button>
-      <button type="button" class="cartbtn" id="cartBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 11h11l2-8H6.2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg><i id="cartCount">0</i><span class="lbl" style="text-align:left;line-height:1.2"><b>Your Cart</b><br><small id="cartItems">0 item(s)</small></span></button>
+      <div class="who"><span class="avatar" id="avatar" aria-hidden="true">DD</span><span class="lbl"><b id="dealerName">Dealer</b><button type="button" class="linkbtn" id="signOut">Sign out</button></span></div>
+      <button type="button" class="cartbtn" id="cartBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h2l2.4 11h11l2-8H6.2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg><i id="cartCount">0</i><span class="lbl" style="text-align:left;line-height:1.2"><b>Your Cart</b><br><small id="cartItems">0 item(s)</small></span></button>
     </div>
   </div>
 </header>
 
 <nav class="main" id="mainNav" aria-label="Main">
   <div class="wrap bar">
-    <button type="button" class="ni veh" data-menu="vehicle" aria-haspopup="true" aria-expanded="false"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 3.5h13v10h-13zM14.5 7h5l4 4v2.5h-9"/><circle cx="6" cy="15.5" r="2.2" fill="var(--brand)"/><circle cx="19" cy="15.5" r="2.2" fill="var(--brand)"/></svg>Shop by Vehicle<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button type="button" class="ni veh" data-menu="vehicle" aria-haspopup="true" aria-expanded="false"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 3.5h13v10h-13zM14.5 7h5l4 4v2.5h-9"/><circle cx="6" cy="15.5" r="2.2"/><circle cx="19" cy="15.5" r="2.2"/></svg>Shop by Vehicle<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-menu="Tuners" aria-haspopup="true" aria-expanded="false">Tuners<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-menu="Exhaust" aria-haspopup="true" aria-expanded="false">Exhaust<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-menu="Delete Kits" aria-haspopup="true" aria-expanded="false">Delete Kits<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-menu="Tuning" aria-haspopup="true" aria-expanded="false">Tuning<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
     <button type="button" class="ni" data-go="quick">Quick Order</button>
     <button type="button" class="ni" data-go="reorder">Reorders</button>
-    <button type="button" class="ni dealer" id="applyBtn"><svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="1.5" y="7.5" width="13" height="9" rx="1.5"/><path d="M4.5 7.5V5a3.5 3.5 0 0 1 7 0v2.5"/><path d="M8 11.5v1.5"/></svg>Dealer Access</button>
+    <button type="button" class="ni acctnav" id="acctNav"><svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>My Account</button>
     <button type="button" class="ni" data-menu="support" aria-haspopup="true" aria-expanded="false">Support<svg class="cv" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
   <div class="navpanel" id="navPanel" hidden></div>
@@ -401,13 +341,12 @@ $("#combo").addEventListener("click",e=>{if(e.target.id!=="comboAdd")return;cons
 renderCombo();
 
 /* ---------- Related ---------- */
-$("#rel").innerHTML=RELATED.map(s=>`<article class="rc">${shot(s,400)}<b>${esc(P[s].t)}</b><span class="why">${esc(P[s].why)} · SKU ${s}</span><div class="foot"><span>${P[s].was?`<s style="color:var(--muted);font-weight:400;font-size:12px">${money(P[s].was)}</s> `:""}${money(P[s].p)}</span><button type="button" class="btn lite" data-add="${s}">Add to Build</button></div></article>`).join("");
+$("#rel").innerHTML=RELATED.map(s=>`<article class="rc">${shot(s,400)}<b><a href="product.html">${esc(P[s].t)}</a></b><span class="why">${esc(P[s].why)} · SKU ${s}</span><div class="foot"><span>${P[s].was?`<s style="color:var(--muted);font-weight:400;font-size:12px">${money(P[s].was)}</s> `:""}${money(P[s].p)}</span><button type="button" class="btn lite" data-add="${s}">Add to Build</button></div></article>`).join("");
 $("#rel").addEventListener("click",e=>{const s=e.target.dataset.add;if(s){addTo("build",s,1);toast(`Added ${s} to your build`);}});
 
 /* ---------- Header + nav: menus send the shopper to the portal with the filter applied ---------- */
 const go=q=>{location.href="index.html"+(q?"?"+new URLSearchParams(q):"");};
 $("#topSearch").addEventListener("submit",e=>{e.preventDefault();go({q:$("#q").value.trim()});});
-$("#loginBtn").onclick=()=>toast("Dealer login – connect to your auth");
 $("#cartBtn").onclick=()=>go({cart:1});
 const SUPPORT=[["Fitment help","Fitment help – connect to your support desk"],["Order status","Order status – connect to your order API"],["Returns & warranty","Returns & warranty – connect to your RMA form"],["Contact your rep","Contact your rep – connect to your sales team"]];
 const nav=$("#mainNav"),panel=$("#navPanel");let openBtn=null;
@@ -423,7 +362,7 @@ function openMenu(b){closeMenu();openBtn=b;b.setAttribute("aria-expanded","true"
 nav.addEventListener("click",e=>{
   const b=e.target.closest(".ni");
   if(b){if(b.dataset.menu){openBtn===b?closeMenu():openMenu(b);return;}closeMenu();
-    if(b.dataset.go==="quick")go({focus:"quick"});else if(b.dataset.go==="reorder")go({focus:"reorder"});else if(b.id==="applyBtn")toast("Dealer application – connect to your signup flow");return;}
+    if(b.dataset.go==="quick")go({focus:"quick"});else if(b.dataset.go==="reorder")go({focus:"reorder"});else if(b.id==="acctNav")toast("My Account – connect to your account pages");return;}
   const t=e.target.closest(".navpanel button");if(!t)return;
   if(t.dataset.support!==undefined){toast(SUPPORT[+t.dataset.support][1]);closeMenu();return;}
   go(t.dataset.type?{make:t.dataset.make,type:t.dataset.type}:{make:t.dataset.make,engine:t.dataset.engine});
