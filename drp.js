@@ -37,7 +37,7 @@
       d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-vclose]"))d.close();});
     }
     d.innerHTML=`<form class="vform" novalidate>
-      <header><h2 id="vehTitle">Submit vehicle info</h2><button type="button" class="vx" data-vclose aria-label="Close">×</button></header>
+      <header><h2 id="vehTitle">Submit Vehicle Info</h2><button type="button" class="vx" data-vclose aria-label="Close">×</button></header>
       <p class="vlead">Send your customer's truck details for a custom tune, a fitment check or a parts quote.</p>
       <div class="vgrid2">
         <div class="vf full"><label for="vVin">VIN</label><input class="in" id="vVin" maxlength="17" autocomplete="off" spellcheck="false" placeholder="17 characters"><small>Or fill in the year, make and engine instead.</small></div>
@@ -62,7 +62,7 @@
       if(!vin&&!(year&&make&&eng))return fail("Enter the VIN, or the year, make and engine.",vin?"vVin":!year?"vYear":!make?"vMake":"vEngine");
       if(!need)return fail("Choose what you need for this vehicle.","vNeed");
       const veh=vin?"VIN "+vin:`${year} ${make} ${eng}`,n=v("vPhotos").files.length;
-      f.innerHTML=`<header><h2 id="vehTitle">Vehicle info received</h2><button type="button" class="vx" data-vclose aria-label="Close">×</button></header>
+      f.innerHTML=`<header><h2 id="vehTitle">Vehicle Info Received</h2><button type="button" class="vx" data-vclose aria-label="Close">×</button></header>
         <div class="vdone"><span class="tick" aria-hidden="true">✓</span><p>We have the <b>${esc(veh)}</b> for a <b>${esc(need.toLowerCase())}</b>${n?` with ${n} photo${n===1?"":"s"}`:""}. Our team will follow up at <b>${esc((session&&session.email)||"your account email")}</b>.</p>
         <p class="vnote">Design sample: nothing was sent. Connect this form to your backend.</p></div>
         <footer><button type="button" class="btn" data-vclose>Done</button></footer>`;
@@ -112,12 +112,12 @@
   function panelHTML(m){
     if(m==="vehicle")return [`<div class="vgrid">`,...Object.entries(DRP.ENGINES).map(([k,mk])=>`<div><h4>${mk.name}</h4><ul>${item("Shop all "+mk.name,{make:k,engine:""},"all")}${mk.list.map(([id,n])=>item(n,{make:k,engine:id})).join("")}</ul></div>`),`</div>`].join("");
     if(m==="parts"||m==="tuning"){const g=m==="parts"?"Parts":"Tuning",list=m==="parts"?DRP.PARTS:DRP.TUNING;
-      return `<div class="pgrid"><div><h4>${g} categories</h4><ul class="${m==="parts"?"cols2":""}">${item("Shop all "+g,{make:"",type:g},"all")}${list.map(t=>item(t,{make:"",type:t})).join("")}</ul></div><div><h4>${g} by platform</h4><ul>${platforms(g)}</ul></div></div>`;}
-    if(m==="quick")return `<form class="qo" id="navQo" novalidate><h4>Quick order by SKU</h4><p>Type or paste a part number from your PO.</p>
+      return `<div class="pgrid"><div><h4>${g} Categories</h4><ul class="${m==="parts"?"cols2":""}">${item("Shop all "+g,{make:"",type:g},"all")}${list.map(t=>item(t,{make:"",type:t})).join("")}</ul></div><div><h4>${g} By Platform</h4><ul>${platforms(g)}</ul></div></div>`;}
+    if(m==="quick")return `<form class="qo" id="navQo" novalidate><h4>Quick Order By SKU</h4><p>Type or paste a part number from your PO.</p>
       <div class="row"><input class="in" id="navSku" list="skuList" placeholder="Enter SKU" aria-label="SKU" autocomplete="off"><input class="in" id="navQty" type="number" min="1" value="1" aria-label="Quantity"><button class="btn">Add to Build</button></div>
       <div class="msg" id="navQoMsg" role="status"></div><button type="button" class="linkbtn" data-focus="quick">Open Your Build →</button></form>`;
     if(m==="reorder"){const s=savedBuilds();
-      return `<div class="ro"><h4>Reorder a saved build</h4>${s.length?`<ul>${s.slice(0,6).map((b,i)=>{const n=b.items.reduce((a,x)=>a+x.q,0),t=DRP.hooks.total&&DRP.hooks.total(b.items);
+      return `<div class="ro"><h4>Reorder A Saved Build</h4>${s.length?`<ul>${s.slice(0,6).map((b,i)=>{const n=b.items.reduce((a,x)=>a+x.q,0),t=DRP.hooks.total&&DRP.hooks.total(b.items);
         return `<li><span><b>${esc(b.name)}</b><small>${n} part${n===1?"":"s"}${t?" · "+t:""}${b.date?" · Saved "+esc(b.date):""}</small></span><button type="button" class="btn ghost" data-load="${i}">Load</button></li>`;}).join("")}</ul>`
         :`<p>No saved builds yet. Name and save a build in Your Build to reorder it here.</p>`}<button type="button" class="linkbtn" data-focus="reorder">Manage saved builds →</button></div>`;}
     if(m==="support")return `<ul>${SUPPORT.map(([l],i)=>`<li><button type="button" data-support="${i}">${esc(l)}</button></li>`).join("")}</ul>`;
