@@ -1,17 +1,16 @@
 /* DRP B2B Parts Portal — shared styles for login.html, index.html and product.html.
    Palette: warm pastel white surfaces with a deep, accessible orange. Every text pairing
-   below meets WCAG AA (4.5:1); white on --brand is 5.2:1, --muted on --bg is 5.3:1. */
+   below meets WCAG AA (4.5:1); white on --brand is 5.2:1, --muted on --paper is 5.6:1. */
 :root{
   /* Brand */
   --brand:#c2410c;        /* buttons, links, key accents */
   --brand-dk:#9a3412;     /* hover/pressed, orange text on tints */
   --brand-tint:#fdf0e8;   /* pastel orange surface: nav bar, selected rows */
   --brand-tint-2:#fbe3d4; /* stronger pastel: sign-in page stripes only */
-  --paper:#fffbf8;        /* pastel white: nav bar and soft panels after sign-in */
+  --paper:#fffbf8;        /* pastel white: page background, nav bar and soft panels */
   --brand-line:#f3c9b1;   /* borders on pastel surfaces */
   /* Neutrals (warm, biased toward the brand hue) */
   --ink:#24170f; --ink-2:#4f3f35; --muted:#74645a;
-  --bg:#fbf7f3;           /* pastel white page */
   --card:#ffffff;
   --sunk:#f6f0eb;         /* image wells, quiet buttons */
   --sunk-2:#eee5de;       /* hover on quiet surfaces */
@@ -28,7 +27,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{font:14px/1.45 var(--f);color:var(--ink);background:var(--bg)}
+body{font:14px/1.45 var(--f);color:var(--ink);background:var(--paper)}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
