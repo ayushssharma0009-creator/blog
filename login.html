@@ -12,8 +12,11 @@
 /* Layout: pre-login page — slim header, pastel hero with the dealer pitch beside the sign-in card,
    assurance tiles, the three steps to get access, and the dealer application form.
    Nothing else on the site opens until the dealer signs in. Colours come from the tokens in drp.css. */
+/* This page has no 4-column workspace, so keep content tighter than the portal on wide screens */
+.wrap{max-width:1320px}
 .top .wrap{justify-content:space-between}
-.toplinks{display:flex;gap:18px;align-items:center;font-size:14px;color:var(--ink-2)}
+.toplinks{display:flex;gap:24px;align-items:center;font-size:14px;color:var(--ink-2)}
+.toplinks .sep{width:1px;height:28px;background:var(--line)}
 .toplinks a{color:var(--brand-dk);font-weight:600}
 .gate{background:var(--brand-tint);border-bottom:1px solid var(--brand-line);color:var(--ink-2);font-size:13px}
 .gate .wrap{display:flex;gap:8px;align-items:center;padding-block:9px}
@@ -131,7 +134,11 @@ footer.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space
 <header class="top">
   <div class="wrap">
     <a class="logo" href="login.html"><img class="logo-img" src="https://cdn.shopify.com/s/files/1/0900/4122/1424/files/DRP-logo.png?v=1773425897" alt="DRP B2B Parts Portal" height="64" fetchpriority="high"></a>
-    <div class="toplinks"><span class="hide-sm">New to DRP?</span><a href="#apply">Apply for dealer access</a></div>
+    <div class="toplinks">
+      <a class="phone" href="tel:+18005550199" aria-label="Call dealer support at (800) 555-0199"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2"/></svg><span><small>Dealer support</small><b>(800) 555-0199</b></span></a>
+      <span class="sep hide-sm" aria-hidden="true"></span>
+      <span><span class="hide-sm">New to DRP? </span><a href="#apply">Apply for dealer access</a></span>
+    </div>
   </div>
 </header>
 <div class="gate"><div class="wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Wholesale portal for approved dealers. Prices, products and ordering open after you sign in.</div></div>
