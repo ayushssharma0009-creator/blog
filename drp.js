@@ -96,11 +96,18 @@
     focus:where=>go({focus:where})      // "quick" | "reorder": open the full tool in Your Build
   };
   const SUPPORT=[["Fitment help","Fitment help – connect to your support desk"],["Order status","Order status – connect to your order API"],["Returns & warranty","Returns & warranty – connect to your RMA form"],["Contact your rep","Contact your rep – connect to your sales team"]];
-  let tt;DRP.toast=m=>{const t=document.getElementById("toast");if(!t)return;t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);};
+  /* Toast; pass {label, fn} to add an action such as Undo (stays up longer so it can be reached). */
+  let tt;DRP.toast=(m,action)=>{const t=document.getElementById("toast");if(!t)return;t.textContent=m;
+    if(action){const b=document.createElement("button");b.type="button";b.textContent=action.label;b.onclick=()=>{t.classList.remove("on","act");action.fn();};t.append(b);}
+    t.classList.toggle("act",!!action);t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on","act"),action?6000:2200);};
+  /* Press / anywhere to jump to search, as in most ordering tools. */
+  document.addEventListener("keydown",e=>{if(e.key!=="/"||e.metaKey||e.ctrlKey||e.altKey)return;const a=document.activeElement;
+    if(a&&(/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)||a.isContentEditable))return;const q=document.getElementById("q");if(q){e.preventDefault();q.focus();q.select();}});
   const savedBuilds=()=>{try{return JSON.parse(localStorage.getItem("drp_saved"))||[];}catch(e){return [];}};
-  const cnt=(make,type,engine)=>{const n=DRP.hooks.count&&DRP.hooks.count(make,type,engine);return n==null?"":`<small>${n}</small>`;};
+  const count=(make,type,engine)=>DRP.hooks.count?DRP.hooks.count(make,type,engine):null;
   /* One menu link; a = {make, type} or {make, engine} becomes data-* attributes and drives the count. */
-  const item=(label,a,cls)=>`<li><button type="button"${cls?` class="${cls}"`:""} ${Object.entries(a).map(([k,v])=>`data-${k}="${esc(v)}"`).join(" ")}>${esc(label)}${cnt(a.make||"",a.type||"",a.engine||"")}</button></li>`;
+  const item=(label,a,cls)=>{const n=count(a.make||"",a.type||"",a.engine||""),c=[cls,n===0&&"zero"].filter(Boolean).join(" ");
+    return `<li><button type="button"${c?` class="${c}"`:""} ${Object.entries(a).map(([k,v])=>`data-${k}="${esc(v)}"`).join(" ")}>${esc(label)}${n==null?"":`<small>${n}</small>`}</button></li>`;};
   const platforms=type=>Object.entries(DRP.ENGINES).map(([k,m])=>item(m.name,{make:k,type})).join("");
   function panelHTML(m){
     if(m==="vehicle")return [`<div class="vgrid">`,...Object.entries(DRP.ENGINES).map(([k,mk])=>`<div><h4>${mk.name}</h4><ul>${item("Shop all "+mk.name,{make:k,engine:""},"all")}${mk.list.map(([id,n])=>item(n,{make:k,engine:id})).join("")}</ul></div>`),`</div>`].join("");

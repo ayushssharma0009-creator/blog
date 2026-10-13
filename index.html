@@ -6,7 +6,7 @@
 <title>DRP B2B Parts Portal</title>
 <script src="drp.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,800;1,900&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,700;1,900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="drp.css">
 <style>
 /* Layout: 4-column B2B build workspace — engine | product type | results | build. Stacks on narrow screens.
@@ -25,6 +25,7 @@
 .make li button:hover{background:var(--sunk)}
 .make li button[aria-pressed=true]{background:var(--brand-tint);color:var(--brand-dk);font-weight:600;box-shadow:inset 3px 0 0 var(--brand)}
 .make li small{color:var(--muted);float:right}
+.make li button.zero{color:var(--muted)}
 .chev{transition:transform .15s}
 .make.open .chev{transform:rotate(90deg)}
 
@@ -34,6 +35,7 @@
 .types label small{color:var(--muted);font-variant-numeric:tabular-nums}
 .types input{width:16px;height:16px;accent-color:var(--brand)}
 .tsearch{width:100%;margin-bottom:8px}
+.tmore{margin:10px 6px 2px;font-size:13px}
 .tgroup{margin:12px 6px 4px;font:600 11px/1.4 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
 .reshead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
@@ -65,6 +67,8 @@
 .price{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--f-display)}
 .price small{display:block;font:400 11px var(--f);color:var(--muted)}
 .price s{font:400 12px var(--f);color:var(--muted)}
+.price .yours{display:block;margin-top:2px;font:600 12px var(--f);color:var(--ok)}
+.btn.done{background:var(--ok);border-color:var(--ok)}
 .buy .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:auto}
 .empty{padding:40px 10px;text-align:center;color:var(--muted)}
 
@@ -104,6 +108,16 @@
 .saved .none{display:block;border-style:dashed;background:none;color:var(--muted);font-size:13px}
 .bempty{color:var(--muted);padding:18px 0;text-align:center;font-size:13px}
 
+.mbuild{display:none}
+@media (max-width:1000px){
+  .mbuild{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border:0;border-top:1px solid var(--line);background:var(--card);box-shadow:0 -6px 18px rgba(84,46,22,.1);text-align:left;font-variant-numeric:tabular-nums}
+  .mbuild .t{margin-left:auto;font:700 17px var(--f-display)}
+  .mbuild .go{color:var(--brand-dk);font-weight:600}
+  .mbuild.off{display:none}
+  body{padding-bottom:64px}
+  .toast{bottom:76px}
+  .bi .x{padding:8px;margin:-8px}
+}
 .dacts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .dlg{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18px}
 .dlg img{width:100%;aspect-ratio:1;object-fit:contain;background:var(--sunk);border-radius:6px}
@@ -125,7 +139,8 @@
   <div class="wrap">
     <a class="logo" href="index.html"><b>DRP</b><span><strong>B2B PARTS PORTAL</strong>FOR DEALERS, INSTALLERS &amp; FLEET BUYERS</span></a>
     <form class="search" id="topSearch" role="search">
-      <input id="q" type="search" placeholder="Search by SKU, part number or keyword…" aria-label="Search parts">
+      <input id="q" type="search" placeholder="Search SKU, part number or keyword   ( / )" aria-label="Search parts" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugg" autocomplete="off">
+      <div class="sugg" id="sugg" role="listbox" aria-label="Matching parts" hidden></div>
       <button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
     </form>
     <a class="phone" href="tel:+18005550199" aria-label="Call dealer support at (800) 555-0199"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2"/></svg><span><small>Dealer support</small><b>(800) 555-0199</b></span></a>
@@ -208,6 +223,7 @@
   </aside>
 </main>
 
+<button type="button" class="mbuild" id="mbuild" aria-label="Go to your build"><span><b id="mbN">0 items</b> in your build</span><span class="t" id="mbT">$0.00</span><span class="go">View ↓</span></button>
 <dialog id="dlg"></dialog>
 <div class="toast" id="toast" role="status"></div>
 
@@ -244,6 +260,7 @@ const TYPES=[...DRP.PARTS,...DRP.TUNING]; /* Parts and Tuning categories from dr
 const BYSKU=Object.fromEntries(P.map(x=>[x.sku.toUpperCase(),x]));
 const img=(x,w)=>CDN+x.img+(x.img.includes("?")?"&":"?")+"width="+w;
 const $=s=>document.querySelector(s);
+const net=n=>n-Math.round(n*S.disc)/100; /* price after the dealer discount */
 const money=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
@@ -262,7 +279,7 @@ function renderMakes(){
     const open=S.make===k;
     return `<div class="make${open?" open":""}"><button data-m="${k}" aria-expanded="${open}">${m.name}<span class="chev">›</span></button>${open?`<ul>
       <li><button data-e="" aria-pressed="${S.engine===""}">Shop all ${m.name}<small>${P.filter(p=>p.e.some(e=>m.list.some(l=>l[0]===e))).length}</small></button></li>
-      ${m.list.map(([id,n])=>`<li><button data-e="${id}" aria-pressed="${S.engine===id}">${n}<small>${P.filter(p=>p.e.includes(id)).length}</small></button></li>`).join("")}</ul>`:""}</div>`}).join("");
+      ${m.list.map(([id,n])=>{const c=P.filter(p=>p.e.includes(id)).length;return `<li><button data-e="${id}" aria-pressed="${S.engine===id}"${c?"":' class="zero"'}>${n}<small>${c}</small></button></li>`;}).join("")}</ul>`:""}</div>`}).join("");
 }
 $("#makes").addEventListener("click",e=>{
   const m=e.target.closest("[data-m]"),en=e.target.closest("[data-e]");
@@ -291,9 +308,13 @@ function results(ignoreType){
 function renderTypes(){
   const base=results(true),tq=$("#tq").value.trim().toLowerCase();
   const row=(v,l,c)=>`<label><input type="checkbox" value="${esc(v)}" ${v===""?(S.types.size?"":"checked"):(S.types.has(v)?"checked":"")}><span>${esc(l)}</span><small>${c}</small></label>`;
-  const group=(name,list)=>{const r=list.filter(t=>!tq||t.toLowerCase().includes(tq));return r.length?`<h3 class="tgroup">${name}</h3>`+r.map(t=>row(t,t,base.filter(p=>p.ty===t).length)).join(""):"";};
-  $("#types").innerHTML=(!tq||"all product types".includes(tq)?row("","All Product Types",base.length):"")+group("Parts",DRP.PARTS)+group("Tuning",DRP.TUNING);
+  const n=t=>base.filter(p=>p.ty===t).length,shown=t=>(!tq||t.toLowerCase().includes(tq))&&(S.allTypes||tq||n(t)>0||S.types.has(t));
+  const hidden=TYPES.filter(t=>!shown(t)&&(!tq||t.toLowerCase().includes(tq))).length;
+  const group=(name,list)=>{const r=list.filter(shown);return r.length?`<h3 class="tgroup">${name}</h3>`+r.map(t=>row(t,t,n(t))).join(""):"";};
+  $("#types").innerHTML=(!tq||"all product types".includes(tq)?row("","All Product Types",base.length):"")+group("Parts",DRP.PARTS)+group("Tuning",DRP.TUNING)
+    +(hidden||S.allTypes?`<button type="button" class="linkbtn tmore" id="tmore">${S.allTypes?"Hide empty categories":`Show ${hidden} more with no matching parts`}</button>`:"");
 }
+$("#types").addEventListener("click",e=>{if(e.target.id==="tmore"){S.allTypes=!S.allTypes;renderTypes();}});
 $("#types").addEventListener("change",e=>{
   const v=e.target.value;
   if(v==="")S.types.clear();else e.target.checked?S.types.add(v):S.types.delete(v);
@@ -320,7 +341,7 @@ function renderList(){
     const q=S.qty[p.sku]||1,fit=S.engine?`<div class="fit">✓ Fitment matched for ${esc(ENG_NAME[S.engine])}</div>`:`<div class="fit no">Fits: ${p.e.map(e=>esc(ENG_NAME[e])).join(" · ")}</div>`;
     return `<article class="prod${p.best?" hl":""}">
       ${p.best?'<span class="badge" title="Core part we recommend for most builds on this platform">Essential</span>':""}
-      <a class="thumb" href="product.html" tabindex="-1"><img loading="lazy" src="${img(p,320)}" alt="${esc(p.t)}"></a>
+      <a class="thumb" href="product.html" tabindex="-1"><img loading="lazy" decoding="async" width="150" height="150" src="${img(p,320)}" alt="${esc(p.t)}"></a>
       <div style="min-width:0">
         <h3><a href="product.html">${esc(p.t)}</a></h3>
         <div class="meta"><b>${esc(p.b)}</b> · ${esc(p.ty)} · SKU: ${esc(p.sku)}</div>
@@ -328,7 +349,7 @@ function renderList(){
         <ul class="feat">${p.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${fit}
       </div>
       <div class="buy">
-        <div class="price">${p.was?`<s>${money(p.was)}</s> `:""}${money(p.p)}<small>Dealer Price</small></div>
+        <div class="price">${p.was?`<s>${money(p.was)}</s> `:""}${money(p.p)}<small>Dealer price</small><span class="yours">Your price ${money(net(p.p))}</span></div>
         <div class="qty"><button data-a="dec" data-s="${p.sku}" aria-label="Less">−</button><input id="q-${p.sku}" data-s="${p.sku}" value="${q}" inputmode="numeric" aria-label="Quantity"><button data-a="inc" data-s="${p.sku}" aria-label="More">+</button></div>
         <div class="acts"><button class="btn lite" data-a="view" data-s="${p.sku}">View Details</button><button class="btn" data-a="add" data-s="${p.sku}">Add to Build</button></div>
       </div></article>`}).join("");
@@ -339,7 +360,7 @@ $("#list").addEventListener("click",e=>{
   if(e.target.id==="resetF"){S.types.clear();S.q="";$("#q").value="";S.instock=false;$("#instock").checked=false;S.engine="";renderAll();return;}
   const b=e.target.closest("[data-a]");if(!b)return;const s=b.dataset.s,a=b.dataset.a;
   if(a==="inc"||a==="dec"){S.qty[s]=Math.max(1,(S.qty[s]||1)+(a==="inc"?1:-1));document.getElementById("q-"+s).value=S.qty[s];}
-  else if(a==="add"){addToBuild(s,S.qty[s]||1);}
+  else if(a==="add"){addToBuild(s,S.qty[s]||1);b.textContent="Added ✓";b.classList.add("done");setTimeout(()=>{b.textContent="Add to Build";b.classList.remove("done");},1400);}
   else if(a==="view")openDetail(s);
 });
 $("#list").addEventListener("change",e=>{if(e.target.dataset.s){S.qty[e.target.dataset.s]=Math.max(1,parseInt(e.target.value)||1);e.target.value=S.qty[e.target.dataset.s];}});
@@ -348,7 +369,7 @@ $("#list").addEventListener("change",e=>{if(e.target.dataset.s){S.qty[e.target.d
 function openDetail(s){
   const p=BYSKU[s.toUpperCase()],d=$("#dlg");
   d.innerHTML=`<div style="position:relative"><button class="dlgx" aria-label="Close">×</button><div class="dlg">
-    <img src="${img(p,700)}" alt="${esc(p.t)}">
+    <img decoding="async" src="${img(p,700)}" alt="${esc(p.t)}">
     <div><h3>${esc(p.t)}</h3><div class="price" style="margin:6px 0">${money(p.p)} <small style="display:inline">Dealer Price</small></div>
     <ul class="feat">${p.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
     <table><tr><td>SKU</td><td>${esc(p.sku)}</td></tr><tr><td>Brand</td><td>${esc(p.b)}</td></tr><tr><td>Category</td><td>${esc(p.ty)}</td></tr><tr><td>Fitment</td><td>${p.e.map(e=>esc(ENG_NAME[e])).join("<br>")}</td></tr><tr><td>Availability</td><td>${p.out?"Backordered":"In stock"}${p.note?"<br>"+esc(p.note):""}</td></tr></table>
@@ -369,17 +390,21 @@ function renderBuild(){
   const t=totals(S.build);
   $("#bTitle").textContent=`Your Build (${S.build.length} Item${S.build.length===1?"":"s"})`;
   $("#bItems").innerHTML=S.build.length?S.build.map(i=>{const p=BYSKU[i.sku.toUpperCase()],fits=!S.engine||p.e.includes(S.engine);
-    return `<div class="bi"><img src="${img(p,140)}" alt=""><div style="min-width:0"><h4>${esc(p.t)}</h4><div class="sku">SKU: ${esc(p.sku)}</div>
+    return `<div class="bi"><img loading="lazy" decoding="async" width="64" height="64" src="${img(p,140)}" alt=""><div style="min-width:0"><h4>${esc(p.t)}</h4><div class="sku">SKU: ${esc(p.sku)}</div>
       <div class="qty"><button data-b="dec" data-s="${p.sku}" aria-label="Less">−</button><input data-bs="${p.sku}" value="${i.q}" inputmode="numeric" aria-label="Quantity"><button data-b="inc" data-s="${p.sku}" aria-label="More">+</button></div>
       <div class="fit${fits?"":" no"}" style="${fits?"":"color:var(--warn)"}">${fits?"✓ Fitment matched":"⚠ Not listed for selected engine"}</div></div>
       <div class="r"><button class="x" data-b="rm" data-s="${p.sku}" aria-label="Remove">×</button><span class="lt">${money(p.p*i.q)}</span></div></div>`}).join(""):`<div class="bempty">No parts yet. Add parts from the list or enter a SKU above.</div>`;
   $("#subLbl").textContent=`Subtotal (${t.n} item${t.n===1?"":"s"})`;
+  $("#mbN").textContent=`${t.n} item${t.n===1?"":"s"}`;$("#mbT").textContent=money(t.tot);
   $("#sub").textContent=money(t.sub);$("#disc").textContent="-"+money(t.d);$("#total").textContent=money(t.tot);$("#discPct").textContent=S.disc;
 }
 $("#bItems").addEventListener("click",e=>{const b=e.target.closest("[data-b]");if(!b)return;const i=S.build.find(x=>x.sku===b.dataset.s);
-  if(b.dataset.b==="rm")S.build=S.build.filter(x=>x!==i);else if(b.dataset.b==="inc")i.q++;else i.q=Math.max(1,i.q-1);renderBuild();});
+  if(b.dataset.b==="rm"){const prev=S.build.map(x=>({...x}));S.build=S.build.filter(x=>x!==i);renderBuild();undoable(`Removed ${i.sku}`,prev);return;}
+  if(b.dataset.b==="inc")i.q++;else i.q=Math.max(1,i.q-1);renderBuild();});
+/* Removing parts can be undone for a few seconds instead of asking "Are you sure?" every time */
+function undoable(msg,prev){toast(msg,{label:"Undo",fn:()=>{S.build=prev;renderBuild();toast("Build restored");}});}
 $("#bItems").addEventListener("change",e=>{const i=S.build.find(x=>x.sku===e.target.dataset.bs);if(i){i.q=Math.max(1,parseInt(e.target.value)||1);renderBuild();}});
-$("#clearBtn").onclick=()=>{S.build=[];renderBuild();};
+$("#clearBtn").onclick=()=>{if(!S.build.length)return;const prev=S.build.map(x=>({...x})),n=prev.length;S.build=[];renderBuild();undoable(`Cleared ${n} item${n===1?"":"s"} from your build`,prev);};
 $("#toCart").onclick=()=>{
   if(!S.build.length){toast("Your build is empty");return;}
   for(const i of S.build){const c=S.cart.find(x=>x.sku===i.sku);if(c)c.q+=i.q;else S.cart.push({...i});}
@@ -415,7 +440,35 @@ $("#saveBtn").onclick=()=>{if(!S.build.length){toast("Add parts before saving");
   S.saved.unshift({name:n,items:S.build.map(x=>({...x})),date:new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})});renderSaved();$("#buildName").value="";toast("Saved “"+n+"”");};
 
 /* ---------- Header / nav ---------- */
-$("#topSearch").addEventListener("submit",e=>{e.preventDefault();S.q=$("#q").value;const p=BYSKU[S.q.trim().toUpperCase()];if(p){S.q="";$("#q").value="";openDetail(p.sku);}renderAll();});
+/* ---------- Search as you type: SKU and keyword matches with your price and stock ---------- */
+const norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,"");
+function findParts(q){const nq=norm(q),toks=q.toLowerCase().split(/\s+/).filter(Boolean);if(!nq)return [];
+  return P.map(p=>{const ns=norm(p.sku),hay=(p.t+" "+p.sku+" "+p.b+" "+p.ty+" "+p.e.map(e=>ENG_NAME[e]).join(" ")).toLowerCase();
+    return {p,s:ns.startsWith(nq)?3:ns.includes(nq)?2:toks.every(t=>hay.includes(t))?1:0};})
+    .filter(x=>x.s).sort((a,b)=>b.s-a.s||(b.p.best||0)-(a.p.best||0)).slice(0,6).map(x=>x.p);}
+let sIdx=-1,sRes=[];
+const sBox=$("#sugg"),qIn=$("#q");
+function closeSugg(){sBox.hidden=true;qIn.setAttribute("aria-expanded","false");qIn.removeAttribute("aria-activedescendant");sIdx=-1;}
+function renderSugg(){const q=qIn.value.trim();sRes=findParts(q);sIdx=-1;
+  if(!q){closeSugg();return;}
+  sBox.innerHTML=sRes.length?sRes.map((p,i)=>`<div class="si" role="option" id="si${i}" data-i="${i}" aria-selected="false"><img src="${img(p,96)}" alt="" decoding="async"><span class="st"><b>${esc(p.t)}</b><small><span class="sku">${esc(p.sku)}</span> · ${p.out?'<em class="bo">Backordered</em>':'<em class="ok">In stock</em>'}</small></span><span class="sp">${money(net(p.p))}</span><button type="button" class="btn" data-sadd="${p.sku}" tabindex="-1" aria-label="Add ${esc(p.sku)} to build">Add</button></div>`).join("")+`<div class="sfoot">↑↓ to choose · Enter to open · Esc to close</div>`
+    :`<div class="snone">No parts match “${esc(q)}”. Try the SKU or a shorter keyword.</div>`;
+  sBox.hidden=false;qIn.setAttribute("aria-expanded","true");}
+function moveSugg(d){if(!sRes.length)return;const n=sRes.length+1;sIdx=((sIdx+1+d)%n+n)%n-1; /* cycles through the matches and back to the typed text */
+  sBox.querySelectorAll(".si").forEach((el,i)=>{el.classList.toggle("on",i===sIdx);el.setAttribute("aria-selected",i===sIdx);});
+  if(sIdx<0)qIn.removeAttribute("aria-activedescendant");else qIn.setAttribute("aria-activedescendant","si"+sIdx);}
+qIn.addEventListener("input",renderSugg);
+qIn.addEventListener("focus",()=>{if(qIn.value.trim())renderSugg();});
+qIn.addEventListener("keydown",e=>{
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){if(sBox.hidden)renderSugg();e.preventDefault();moveSugg(e.key==="ArrowDown"?1:-1);}
+  else if(e.key==="Escape"&&!sBox.hidden){e.preventDefault();closeSugg();}
+  else if(e.key==="Enter"&&sIdx>=0){e.preventDefault();const p=sRes[sIdx];closeSugg();openDetail(p.sku);}});
+sBox.addEventListener("mousedown",e=>e.preventDefault()); /* keep focus in the search box */
+sBox.addEventListener("click",e=>{const a=e.target.closest("[data-sadd]");
+  if(a){addToBuild(a.dataset.sadd,1);a.textContent="Added ✓";return;}
+  const r=e.target.closest(".si");if(r){const p=sRes[+r.dataset.i];closeSugg();openDetail(p.sku);}});
+document.addEventListener("click",e=>{if(!sBox.hidden&&!e.target.closest("#topSearch"))closeSugg();});
+$("#topSearch").addEventListener("submit",e=>{e.preventDefault();closeSugg();S.q=qIn.value;const p=BYSKU[S.q.trim().toUpperCase()];if(p){S.q="";qIn.value="";openDetail(p.sku);}renderAll();$(".ws").scrollIntoView({behavior:"smooth"});});
 $("#sort").onchange=e=>{S.sort=e.target.value;renderList();};
 $("#instock").onchange=e=>{S.instock=e.target.checked;renderAll();};
 /* ---------- Main nav lives in drp.js; on this page it acts in place and shows live counts and totals ---------- */
@@ -447,6 +500,8 @@ function renderAll(){renderMakes();renderTypes();renderList();renderBuild();}
     else document.querySelector(".ws").scrollIntoView({block:"start"});});
 })();
 renderAll();renderCart();renderSaved();
+$("#mbuild").onclick=()=>$("#buildPanel").scrollIntoView({behavior:"smooth",block:"start"});
+if("IntersectionObserver" in window)new IntersectionObserver(([e])=>$("#mbuild").classList.toggle("off",e.isIntersecting),{threshold:.15}).observe($("#buildPanel"));
 </script>
 </body>
 </html>
